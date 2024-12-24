@@ -1,7 +1,7 @@
 <div align="center">
     <img src="./assets/logo.svg" width="200" height="200">
 </div align="center">
-<div align="center"><h3>A self hostable serverless private npm registry</h3></div>
+<div align="center"><h3>A serverless private npm registry</h3></div>
 
 > [!IMPORTANT]  
 > Npflared is at it's early stage, it can already be use to distribute packages but some features or documentation are still in draft/development
