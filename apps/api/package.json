@@ -23,7 +23,7 @@
 		"@cloudflare/vitest-pool-workers": "^0.6.8",
 		"@cloudflare/workers-types": "^4.20250124.3",
 		"drizzle-kit": "^0.30.3",
-		"vitest": "2.1.9",
+		"vitest": "3.0.5",
 		"wrangler": "^3.106.0"
 	}
 }
