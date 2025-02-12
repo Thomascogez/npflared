@@ -22,7 +22,7 @@ importers:
     dependencies:
       '@hono/zod-validator':
         specifier: ^0.4.2
-        version: 0.4.2(hono@4.7.0)(zod@3.24.1)
+        version: 0.4.2(hono@4.7.0)(zod@3.24.2)
       drizzle-orm:
         specifier: ^0.39.0
         version: 0.39.3(@cloudflare/workers-types@4.20250204.0)
@@ -34,7 +34,7 @@ importers:
         version: 4.0.5
       zod:
         specifier: ^3.24.1
-        version: 3.24.1
+        version: 3.24.2
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: ^0.6.8
@@ -2210,6 +2210,9 @@ packages:
   pathe@2.0.2:
     resolution: {integrity: sha512-15Ztpk+nov8DR524R4BF7uEuzESgzUEAV4Ah7CUMNGXdE5ELuvxElxGXndBl32vMSsWa1jpNf22Z+Er3sKwq+w==}
 
+  pathe@2.0.3:
+    resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
+
   pathval@2.0.0:
     resolution: {integrity: sha512-vE7JKRyES09KiunauX7nd2Q9/L7lhok4smP9RZTDeD4MVs72Dp2qNFVz39Nz5a0FVEW0BJR6C0DYrq6unoziZA==}
     engines: {node: '>= 14.16'}
@@ -2941,8 +2944,8 @@ packages:
   youch@3.3.4:
     resolution: {integrity: sha512-UeVBXie8cA35DS6+nBkls68xaBBXCye0CNznrhszZjTbRVnJKQuNsyLKBTTL4ln1o1rh2PKtv35twV7irj5SEg==}
 
-  zod@3.24.1:
-    resolution: {integrity: sha512-muH7gBL9sI1nciMZV67X5fTKKBLtwpZ5VBp1vsOQzj1MhrBZ4wlVCm3gedKZWLp0Oyel8sIGfeiz54Su+OVT+A==}
+  zod@3.24.2:
+    resolution: {integrity: sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -3006,7 +3009,7 @@ snapshots:
       semver: 7.7.1
       vitest: 2.1.9(@types/node@22.13.1)(sass-embedded@1.83.4)(terser@5.38.2)
       wrangler: 3.107.3(@cloudflare/workers-types@4.20250204.0)
-      zod: 3.24.1
+      zod: 3.24.2
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
       - bufferutil
@@ -3327,10 +3330,10 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
-  '@hono/zod-validator@0.4.2(hono@4.7.0)(zod@3.24.1)':
+  '@hono/zod-validator@0.4.2(hono@4.7.0)(zod@3.24.2)':
     dependencies:
       hono: 4.7.0
-      zod: 3.24.1
+      zod: 3.24.2
 
   '@jridgewell/gen-mapping@0.3.8':
     dependencies:
@@ -3815,7 +3818,7 @@ snapshots:
   '@vitest/runner@3.0.4':
     dependencies:
       '@vitest/utils': 3.0.4
-      pathe: 2.0.2
+      pathe: 2.0.3
 
   '@vitest/snapshot@2.1.9':
     dependencies:
@@ -3827,7 +3830,7 @@ snapshots:
     dependencies:
       '@vitest/pretty-format': 3.0.4
       magic-string: 0.30.17
-      pathe: 2.0.2
+      pathe: 2.0.3
 
   '@vitest/spy@2.1.9':
     dependencies:
@@ -5082,7 +5085,7 @@ snapshots:
       workerd: 1.20250129.0
       ws: 8.18.0
       youch: 3.3.4
-      zod: 3.24.1
+      zod: 3.24.2
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -5147,6 +5150,8 @@ snapshots:
   pathe@1.1.2: {}
 
   pathe@2.0.2: {}
+
+  pathe@2.0.3: {}
 
   pathval@2.0.0: {}
 
@@ -5930,6 +5935,6 @@ snapshots:
       mustache: 4.2.0
       stacktracey: 2.1.8
 
-  zod@3.24.1: {}
+  zod@3.24.2: {}
 
   zwitch@2.0.4: {}
