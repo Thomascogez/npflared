@@ -1,0 +1,13 @@
+{
+	"name": "@npflared/cli",
+	"version": "0.0.1",
+	"scripts": {
+		"lint": "biome check"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"tsup": "^8.3.6"
+	}
+}

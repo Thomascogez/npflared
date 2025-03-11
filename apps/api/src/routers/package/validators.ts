@@ -1,8 +1,6 @@
 import semverRegex from "semver-regex";
 import { z } from "zod";
 
-const packageNameRegex = /^(@[a-z0-9-~][a-z0-9-._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/;
-
 export const putPackage = {
 	json: z.object({
 		_id: z.string().min(1),
