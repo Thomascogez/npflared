@@ -22,13 +22,13 @@ importers:
     dependencies:
       '@hono/zod-validator':
         specifier: ^0.4.2
-        version: 0.4.3(hono@4.7.4)(zod@3.24.2)
+        version: 0.4.3(hono@4.7.5)(zod@3.24.2)
       drizzle-orm:
         specifier: ^0.40.0
         version: 0.40.0(@cloudflare/workers-types@4.20250311.0)(gel@2.0.1)
       hono:
         specifier: ^4.6.19
-        version: 4.7.4
+        version: 4.7.5
       semver-regex:
         specifier: ^4.0.5
         version: 4.0.5
@@ -1470,6 +1470,9 @@ packages:
   caniuse-lite@1.0.30001703:
     resolution: {integrity: sha512-kRlAGTRWgPsOj7oARC9m1okJEXdL/8fekFVcxA8Hl7GH4r/sN4OJn/i6Flde373T50KS7Y37oFbMwlE8+F42kQ==}
 
+  caniuse-lite@1.0.30001706:
+    resolution: {integrity: sha512-3ZczoTApMAZwPKYWmwVbQMFpXBDds3/0VciVoUwPUbldlYyVLmRVuRs/PcUZtHpbLRpzzDvrvnFuREsGt6lUug==}
+
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
 
@@ -1715,8 +1718,8 @@ packages:
       sqlite3:
         optional: true
 
-  electron-to-chromium@1.5.114:
-    resolution: {integrity: sha512-DFptFef3iktoKlFQK/afbo274/XNWD00Am0xa7M8FZUepHlHT8PEuiNBoRfFHbH1okqN58AlhbJ4QTkcnXorjA==}
+  electron-to-chromium@1.5.122:
+    resolution: {integrity: sha512-EML1wnwkY5MFh/xUnCvY8FrhUuKzdYhowuZExZOfwJo+Zu9OsNCI23Cgl5y7awy7HrUHSwB1Z8pZX5TI34lsUg==}
 
   emojis-list@3.0.0:
     resolution: {integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==}
@@ -1953,8 +1956,8 @@ packages:
   highlightjs-vue@1.0.0:
     resolution: {integrity: sha512-PDEfEF102G23vHmPhLyPboFCD+BkMGu+GuJe2d9/eH4FsCwvgBpnc9n0pGE+ffKdph38s6foEZiEjdgHdzp+IA==}
 
-  hono@4.7.4:
-    resolution: {integrity: sha512-Pst8FuGqz3L7tFF+u9Pu70eI0xa5S3LPUmrNd5Jm8nTHze9FxLTK9Kaj5g/k4UcwuJSXTP65SyHOPLrffpcAJg==}
+  hono@4.7.5:
+    resolution: {integrity: sha512-fDOK5W2C1vZACsgLONigdZTRZxuBqFtcKh7bUQ5cVSbwI2RWjloJDcgFOVzbQrlI6pCmhlTsVYZ7zpLj4m4qMQ==}
     engines: {node: '>=16.9.0'}
 
   html-entities@2.5.2:
@@ -3552,9 +3555,9 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
-  '@hono/zod-validator@0.4.3(hono@4.7.4)(zod@3.24.2)':
+  '@hono/zod-validator@0.4.3(hono@4.7.5)(zod@3.24.2)':
     dependencies:
-      hono: 4.7.4
+      hono: 4.7.5
       zod: 3.24.2
 
   '@img/sharp-darwin-arm64@0.33.5':
@@ -4267,8 +4270,8 @@ snapshots:
 
   browserslist@4.24.4:
     dependencies:
-      caniuse-lite: 1.0.30001703
-      electron-to-chromium: 1.5.114
+      caniuse-lite: 1.0.30001706
+      electron-to-chromium: 1.5.122
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
@@ -4279,6 +4282,8 @@ snapshots:
   cac@6.7.14: {}
 
   caniuse-lite@1.0.30001703: {}
+
+  caniuse-lite@1.0.30001706: {}
 
   ccount@2.0.1: {}
 
@@ -4440,7 +4445,7 @@ snapshots:
       '@cloudflare/workers-types': 4.20250311.0
       gel: 2.0.1
 
-  electron-to-chromium@1.5.114: {}
+  electron-to-chromium@1.5.122: {}
 
   emojis-list@3.0.0: {}
 
@@ -4783,7 +4788,7 @@ snapshots:
 
   highlightjs-vue@1.0.0: {}
 
-  hono@4.7.4: {}
+  hono@4.7.5: {}
 
   html-entities@2.5.2: {}
 
