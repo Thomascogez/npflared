@@ -24,8 +24,8 @@ importers:
         specifier: ^0.4.2
         version: 0.4.3(hono@4.7.4)(zod@3.24.2)
       drizzle-orm:
-        specifier: ^0.40.0
-        version: 0.40.0(@cloudflare/workers-types@4.20250311.0)(gel@2.0.1)
+        specifier: ^0.41.0
+        version: 0.41.0(@cloudflare/workers-types@4.20250311.0)(gel@2.0.1)
       hono:
         specifier: ^4.6.19
         version: 4.7.4
@@ -1626,8 +1626,8 @@ packages:
     resolution: {integrity: sha512-l6dMSE100u7sDaTbLczibrQZjA35jLsHNqIV+jmhNVO3O8jzM6kywMOmV9uOz9ZVSCMPQhAZEFjL/qDPVrqpUA==}
     hasBin: true
 
-  drizzle-orm@0.40.0:
-    resolution: {integrity: sha512-7ptk/HQiMSrEZHnAsSlBESXWj52VwgMmyTEfoNmpNN2ZXpcz13LwHfXTIghsAEud7Z5UJhDOp8U07ujcqme7wg==}
+  drizzle-orm@0.41.0:
+    resolution: {integrity: sha512-7A4ZxhHk9gdlXmTdPj/lREtP+3u8KvZ4yEN6MYVxBzZGex5Wtdc+CWSbu7btgF6TB0N+MNPrvW7RKBbxJchs/Q==}
     peerDependencies:
       '@aws-sdk/client-rds-data': '>=3'
       '@cloudflare/workers-types': '>=4'
@@ -4435,7 +4435,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.40.0(@cloudflare/workers-types@4.20250311.0)(gel@2.0.1):
+  drizzle-orm@0.41.0(@cloudflare/workers-types@4.20250311.0)(gel@2.0.1):
     optionalDependencies:
       '@cloudflare/workers-types': 4.20250311.0
       gel: 2.0.1
