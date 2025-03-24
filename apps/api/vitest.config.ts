@@ -12,7 +12,6 @@ export default defineWorkersConfig(async () => {
 	const testSpecificMigrations: D1Migration[] = [
 		{
 			name: "admin-token",
-			// [{"type": "token:read+write", "values": ["*"]}]
 			queries: [
 				`INSERT INTO \`token\` (token, name, scopes, created_at, updated_at) VALUES ('${adminToken}', 'admin-token', '[{"type": "token:read+write", "values": ["*"]}, {"type": "user:read+write", "values": ["*"]}, {"type": "package:read+write", "values": ["*"]}]', ${now}, ${now})`
 			]
