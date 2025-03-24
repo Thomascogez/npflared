@@ -25,7 +25,7 @@ importers:
         version: 0.4.3(hono@4.7.5)(zod@3.24.2)
       drizzle-orm:
         specifier: ^0.41.0
-        version: 0.41.0(@cloudflare/workers-types@4.20250311.0)(gel@2.0.1)
+        version: 0.41.0(@cloudflare/workers-types@4.20250321.0)(gel@2.0.1)
       hono:
         specifier: ^4.6.19
         version: 4.7.5
@@ -38,19 +38,19 @@ importers:
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: ^0.7.0
-        version: 0.7.7(@cloudflare/workers-types@4.20250311.0)(@vitest/runner@2.1.9)(@vitest/snapshot@2.1.9)(vitest@2.1.9(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0))
+        version: 0.7.7(@cloudflare/workers-types@4.20250321.0)(@vitest/runner@2.1.9)(@vitest/snapshot@2.1.9)(vitest@2.1.9(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0))
       '@cloudflare/workers-types':
         specifier: ^4.20250124.3
-        version: 4.20250311.0
+        version: 4.20250321.0
       drizzle-kit:
         specifier: ^0.30.3
         version: 0.30.5
       vitest:
         specifier: 2.1.9
-        version: 2.1.9(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0)
+        version: 2.1.9(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0)
       wrangler:
         specifier: ^4.0.0
-        version: 4.0.0(@cloudflare/workers-types@4.20250311.0)
+        version: 4.0.0(@cloudflare/workers-types@4.20250321.0)
 
   apps/doc:
     dependencies:
@@ -217,8 +217,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@cloudflare/workers-types@4.20250311.0':
-    resolution: {integrity: sha512-5ftSdP1vEdKM6in4p3DZ5SIgaJtRh6LqVeitQtFFsHCyHSPES0KX5HaqTYai+T/5UwmZrB2a3fBUKpGmfDOXBg==}
+  '@cloudflare/workers-types@4.20250321.0':
+    resolution: {integrity: sha512-jPwtZJC7tVFOwFazuwq96be8haTnY9qik8hJ+oLFi50d9LTWPPrnrNHC4OxZmJTEcPIAy0y1WFZHe8C/b7xFXQ==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -1426,6 +1426,9 @@ packages:
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
 
+  '@types/estree@1.0.7':
+    resolution: {integrity: sha512-w28IoSUCJpidD/TGviZwwMJckNESJZXFu7NBZ5YJ4mEUnNraUn9Pm8HSZm/jDF1pDWYKspWE7oVphigUPRakIQ==}
+
   '@types/hast@2.3.10':
     resolution: {integrity: sha512-McWspRw8xx8J9HurkVBfYj0xKoE25tOFlHGdx4MJ5xORQrMGZNqJhVQWaIbm6Oyla5kYOXtDiopzKRJzEOkwJw==}
 
@@ -1446,6 +1449,9 @@ packages:
 
   '@types/node@22.13.10':
     resolution: {integrity: sha512-I6LPUvlRH+O6VRUqYOcMudhaIdUVWfsjnZavnsraHvpBwaEyMN29ry+0UVJhImYL16xsscu0aske3yA+uPOWfw==}
+
+  '@types/node@22.13.13':
+    resolution: {integrity: sha512-ClsL5nMwKaBRwPcCvH8E7+nU4GxHVx1axNvMZTFHMEfNI7oahimt26P5zjVCRrjiIWj6YFXfE1v3dEp94wLcGQ==}
 
   '@types/react@19.0.10':
     resolution: {integrity: sha512-JuRQ9KXLEjaUNjTWpzuR231Z2WpIwczOkBEIvbHNCzQefFIT0L8IqE6NV6ULLyC1SI/i234JnDoMkfg+RjQj2g==}
@@ -1633,8 +1639,8 @@ packages:
   caniuse-lite@1.0.30001703:
     resolution: {integrity: sha512-kRlAGTRWgPsOj7oARC9m1okJEXdL/8fekFVcxA8Hl7GH4r/sN4OJn/i6Flde373T50KS7Y37oFbMwlE8+F42kQ==}
 
-  caniuse-lite@1.0.30001706:
-    resolution: {integrity: sha512-3ZczoTApMAZwPKYWmwVbQMFpXBDds3/0VciVoUwPUbldlYyVLmRVuRs/PcUZtHpbLRpzzDvrvnFuREsGt6lUug==}
+  caniuse-lite@1.0.30001707:
+    resolution: {integrity: sha512-3qtRjw/HQSMlDWf+X79N206fepf4SOOU6SQLMaq/0KkZLmSjPxAkBOQQ+FxbHKfHmYLZFfdWsO3KA90ceHPSnw==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -1878,8 +1884,8 @@ packages:
       sqlite3:
         optional: true
 
-  electron-to-chromium@1.5.122:
-    resolution: {integrity: sha512-EML1wnwkY5MFh/xUnCvY8FrhUuKzdYhowuZExZOfwJo+Zu9OsNCI23Cgl5y7awy7HrUHSwB1Z8pZX5TI34lsUg==}
+  electron-to-chromium@1.5.123:
+    resolution: {integrity: sha512-refir3NlutEZqlKaBLK0tzlVLe5P2wDKS7UQt/3SpibizgsRAPOsqQC3ffw1nlv3ze5gjRQZYHoPymgVZkplFA==}
 
   emojis-list@3.0.0:
     resolution: {integrity: sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==}
@@ -3368,7 +3374,7 @@ snapshots:
     optionalDependencies:
       workerd: 1.20250310.0
 
-  '@cloudflare/vitest-pool-workers@0.7.7(@cloudflare/workers-types@4.20250311.0)(@vitest/runner@2.1.9)(@vitest/snapshot@2.1.9)(vitest@2.1.9(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0))':
+  '@cloudflare/vitest-pool-workers@0.7.7(@cloudflare/workers-types@4.20250321.0)(@vitest/runner@2.1.9)(@vitest/snapshot@2.1.9)(vitest@2.1.9(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0))':
     dependencies:
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -3378,8 +3384,8 @@ snapshots:
       esbuild: 0.17.19
       miniflare: 3.20250224.0
       semver: 7.7.1
-      vitest: 2.1.9(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0)
-      wrangler: 3.114.0(@cloudflare/workers-types@4.20250311.0)
+      vitest: 2.1.9(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0)
+      wrangler: 3.114.0(@cloudflare/workers-types@4.20250321.0)
       zod: 3.24.2
     transitivePeerDependencies:
       - '@cloudflare/workers-types'
@@ -3416,7 +3422,7 @@ snapshots:
   '@cloudflare/workerd-windows-64@1.20250310.0':
     optional: true
 
-  '@cloudflare/workers-types@4.20250311.0': {}
+  '@cloudflare/workers-types@4.20250321.0': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -4285,11 +4291,11 @@ snapshots:
   '@types/eslint-scope@3.7.7':
     dependencies:
       '@types/eslint': 9.6.1
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
 
   '@types/eslint@9.6.1':
     dependencies:
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       '@types/json-schema': 7.0.15
 
   '@types/estree-jsx@1.0.5':
@@ -4297,6 +4303,8 @@ snapshots:
       '@types/estree': 1.0.6
 
   '@types/estree@1.0.6': {}
+
+  '@types/estree@1.0.7': {}
 
   '@types/hast@2.3.10':
     dependencies:
@@ -4320,6 +4328,10 @@ snapshots:
     dependencies:
       undici-types: 6.20.0
 
+  '@types/node@22.13.13':
+    dependencies:
+      undici-types: 6.20.0
+
   '@types/react@19.0.10':
     dependencies:
       csstype: 3.1.3
@@ -4337,13 +4349,13 @@ snapshots:
       chai: 5.2.0
       tinyrainbow: 1.2.0
 
-  '@vitest/mocker@2.1.9(vite@5.4.14(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0))':
+  '@vitest/mocker@2.1.9(vite@5.4.14(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0))':
     dependencies:
       '@vitest/spy': 2.1.9
       estree-walker: 3.0.3
       magic-string: 0.30.17
     optionalDependencies:
-      vite: 5.4.14(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0)
+      vite: 5.4.14(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0)
 
   '@vitest/pretty-format@2.1.9':
     dependencies:
@@ -4511,8 +4523,8 @@ snapshots:
 
   browserslist@4.24.4:
     dependencies:
-      caniuse-lite: 1.0.30001706
-      electron-to-chromium: 1.5.122
+      caniuse-lite: 1.0.30001707
+      electron-to-chromium: 1.5.123
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
@@ -4524,7 +4536,7 @@ snapshots:
 
   caniuse-lite@1.0.30001703: {}
 
-  caniuse-lite@1.0.30001706: {}
+  caniuse-lite@1.0.30001707: {}
 
   ccount@2.0.1: {}
 
@@ -4679,12 +4691,12 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  drizzle-orm@0.41.0(@cloudflare/workers-types@4.20250311.0)(gel@2.0.1):
+  drizzle-orm@0.41.0(@cloudflare/workers-types@4.20250321.0)(gel@2.0.1):
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20250311.0
+      '@cloudflare/workers-types': 4.20250321.0
       gel: 2.0.1
 
-  electron-to-chromium@1.5.122: {}
+  electron-to-chromium@1.5.123: {}
 
   emojis-list@3.0.0: {}
 
@@ -5152,7 +5164,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.13.10
+      '@types/node': 22.13.13
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -6402,13 +6414,13 @@ snapshots:
       '@types/unist': 3.0.3
       vfile-message: 4.0.2
 
-  vite-node@2.1.9(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0):
+  vite-node@2.1.9(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0):
     dependencies:
       cac: 6.7.14
       debug: 4.4.0
       es-module-lexer: 1.6.0
       pathe: 1.1.2
-      vite: 5.4.14(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0)
+      vite: 5.4.14(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -6420,21 +6432,21 @@ snapshots:
       - supports-color
       - terser
 
-  vite@5.4.14(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0):
+  vite@5.4.14(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.5.3
       rollup: 4.35.0
     optionalDependencies:
-      '@types/node': 22.13.10
+      '@types/node': 22.13.13
       fsevents: 2.3.3
       sass-embedded: 1.85.1
       terser: 5.39.0
 
-  vitest@2.1.9(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0):
+  vitest@2.1.9(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0):
     dependencies:
       '@vitest/expect': 2.1.9
-      '@vitest/mocker': 2.1.9(vite@5.4.14(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0))
+      '@vitest/mocker': 2.1.9(vite@5.4.14(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0))
       '@vitest/pretty-format': 2.1.9
       '@vitest/runner': 2.1.9
       '@vitest/snapshot': 2.1.9
@@ -6450,11 +6462,11 @@ snapshots:
       tinyexec: 0.3.2
       tinypool: 1.0.2
       tinyrainbow: 1.2.0
-      vite: 5.4.14(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0)
-      vite-node: 2.1.9(@types/node@22.13.10)(sass-embedded@1.85.1)(terser@5.39.0)
+      vite: 5.4.14(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0)
+      vite-node: 2.1.9(@types/node@22.13.13)(sass-embedded@1.85.1)(terser@5.39.0)
       why-is-node-running: 2.3.0
     optionalDependencies:
-      '@types/node': 22.13.10
+      '@types/node': 22.13.13
     transitivePeerDependencies:
       - less
       - lightningcss
@@ -6478,7 +6490,7 @@ snapshots:
   webpack@5.98.0:
     dependencies:
       '@types/eslint-scope': 3.7.7
-      '@types/estree': 1.0.6
+      '@types/estree': 1.0.7
       '@webassemblyjs/ast': 1.14.1
       '@webassemblyjs/wasm-edit': 1.14.1
       '@webassemblyjs/wasm-parser': 1.14.1
@@ -6530,7 +6542,7 @@ snapshots:
       '@cloudflare/workerd-linux-arm64': 1.20250310.0
       '@cloudflare/workerd-windows-64': 1.20250310.0
 
-  wrangler@3.114.0(@cloudflare/workers-types@4.20250311.0):
+  wrangler@3.114.0(@cloudflare/workers-types@4.20250321.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.3.4
       '@cloudflare/unenv-preset': 2.0.0(unenv@2.0.0-rc.8)(workerd@1.20250224.0)
@@ -6543,14 +6555,14 @@ snapshots:
       unenv: 2.0.0-rc.8
       workerd: 1.20250224.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20250311.0
+      '@cloudflare/workers-types': 4.20250321.0
       fsevents: 2.3.3
       sharp: 0.33.5
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
 
-  wrangler@4.0.0(@cloudflare/workers-types@4.20250311.0):
+  wrangler@4.0.0(@cloudflare/workers-types@4.20250321.0):
     dependencies:
       '@cloudflare/kv-asset-handler': 0.4.0
       '@cloudflare/unenv-preset': 2.0.2(unenv@2.0.0-rc.14)(workerd@1.20250310.0)
@@ -6561,7 +6573,7 @@ snapshots:
       unenv: 2.0.0-rc.14
       workerd: 1.20250310.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20250311.0
+      '@cloudflare/workers-types': 4.20250321.0
       fsevents: 2.3.3
       sharp: 0.33.5
     transitivePeerDependencies:
