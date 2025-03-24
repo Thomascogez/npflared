@@ -14,16 +14,16 @@
 	},
 	"dependencies": {
 		"@hono/zod-validator": "^0.4.2",
-		"drizzle-orm": "^0.39.0",
+		"drizzle-orm": "^0.41.0",
 		"hono": "^4.6.19",
 		"semver-regex": "^4.0.5",
 		"zod": "^3.24.1"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "^0.6.8",
+		"@cloudflare/vitest-pool-workers": "^0.7.0",
 		"@cloudflare/workers-types": "^4.20250124.3",
 		"drizzle-kit": "^0.30.3",
-		"vitest": "2.1.8",
-		"wrangler": "^3.106.0"
+		"vitest": "2.1.9",
+		"wrangler": "^4.0.0"
 	}
 }
