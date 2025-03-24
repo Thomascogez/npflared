@@ -7,7 +7,10 @@
 		"build": "tsup",
 		"build:watch": "tsup --watch"
 	},
-	"keywords": [],
+	"bin": {
+		"npflared": "./dist/index.js"
+	},
+	"keywords": ["npm", "registry", "npflared"],
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
