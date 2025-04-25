@@ -16,7 +16,7 @@ importers:
         version: 2.28.1
       turbo:
         specifier: ^2.3.4
-        version: 2.5.0
+        version: 2.5.2
       typescript:
         specifier: 5.8.3
         version: 5.8.3
@@ -1578,8 +1578,8 @@ packages:
   '@types/node@22.12.0':
     resolution: {integrity: sha512-Fll2FZ1riMjNmlmJOdAyY5pUbkftXslB5DgEzlIuNaiWhXd00FhWxVC/r4yV/4wBb9JfImTu+jiSvXTkJ7F/gA==}
 
-  '@types/node@22.14.1':
-    resolution: {integrity: sha512-u0HuPQwe/dHrItgHHpmw3N2fYCR6x4ivMNbPHRkBVP4CvN+kiRrKHWk3i8tXiO/joPwXLMYvF9TTF0eqgHIuOw==}
+  '@types/node@22.15.2':
+    resolution: {integrity: sha512-uKXqKN9beGoMdBfcaTY1ecwz6ctxuJAcUlwE55938g0ZJ8lRxwAZqRz2AJ4pzpt5dHdTPMB863UZ0ESiFUcP7A==}
 
   '@types/react@19.0.8':
     resolution: {integrity: sha512-9P/o1IGdfmQxrujGbIMDyYaaCykhLKc0NGCtYcECNUr9UAaDe4gwvV9bR6tvd5Br1SG0j+PBpbKr2UYY8CwqSw==}
@@ -2146,8 +2146,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.5.141:
-    resolution: {integrity: sha512-qS+qH9oqVYc1ooubTiB9l904WVyM6qNYxtOEEGReoZXw3xlqeYdFr5GclNzbkAufWgwWLEPoDi3d9MoRwwIjGw==}
+  electron-to-chromium@1.5.142:
+    resolution: {integrity: sha512-Ah2HgkTu/9RhTDNThBtzu2Wirdy4DC9b0sMT1pUhbkZQ5U/iwmE+PHZX1MpjD5IkJCc2wSghgGG/B04szAx07w==}
 
   emoji-regex@8.0.0:
     resolution: {integrity: sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==}
@@ -3650,38 +3650,38 @@ packages:
       typescript:
         optional: true
 
-  turbo-darwin-64@2.5.0:
-    resolution: {integrity: sha512-fP1hhI9zY8hv0idym3hAaXdPi80TLovmGmgZFocVAykFtOxF+GlfIgM/l4iLAV9ObIO4SUXPVWHeBZQQ+Hpjag==}
+  turbo-darwin-64@2.5.2:
+    resolution: {integrity: sha512-2aIl0Sx230nLk+Cg2qSVxvPOBWCZpwKNuAMKoROTvWKif6VMpkWWiR9XEPoz7sHeLmCOed4GYGMjL1bqAiIS/g==}
     cpu: [x64]
     os: [darwin]
 
-  turbo-darwin-arm64@2.5.0:
-    resolution: {integrity: sha512-p9sYq7kXH7qeJwIQE86cOWv/xNqvow846l6c/qWc26Ib1ci5W7V0sI5thsrP3eH+VA0d+SHalTKg5SQXgNQBWA==}
+  turbo-darwin-arm64@2.5.2:
+    resolution: {integrity: sha512-MrFYhK/jYu8N6QlqZtqSHi3e4QVxlzqU3ANHTKn3/tThuwTLbNHEvzBPWSj5W7nZcM58dCqi6gYrfRz6bJZyAA==}
     cpu: [arm64]
     os: [darwin]
 
-  turbo-linux-64@2.5.0:
-    resolution: {integrity: sha512-1iEln2GWiF3iPPPS1HQJT6ZCFXynJPd89gs9SkggH2EJsj3eRUSVMmMC8y6d7bBbhBFsiGGazwFIYrI12zs6uQ==}
+  turbo-linux-64@2.5.2:
+    resolution: {integrity: sha512-LxNqUE2HmAJQ/8deoLgMUDzKxd5bKxqH0UBogWa+DF+JcXhtze3UTMr6lEr0dEofdsEUYK1zg8FRjglmwlN5YA==}
     cpu: [x64]
     os: [linux]
 
-  turbo-linux-arm64@2.5.0:
-    resolution: {integrity: sha512-bKBcbvuQHmsX116KcxHJuAcppiiBOfivOObh2O5aXNER6mce7YDDQJy00xQQNp1DhEfcSV2uOsvb3O3nN2cbcA==}
+  turbo-linux-arm64@2.5.2:
+    resolution: {integrity: sha512-0MI1Ao1q8zhd+UUbIEsrM+yLq1BsrcJQRGZkxIsHFlGp7WQQH1oR3laBgfnUCNdCotCMD6w4moc9pUbXdOR3bg==}
     cpu: [arm64]
     os: [linux]
 
-  turbo-windows-64@2.5.0:
-    resolution: {integrity: sha512-9BCo8oQ7BO7J0K913Czbc3tw8QwLqn2nTe4E47k6aVYkM12ASTScweXPTuaPFP5iYXAT6z5Dsniw704Ixa5eGg==}
+  turbo-windows-64@2.5.2:
+    resolution: {integrity: sha512-hOLcbgZzE5ttACHHyc1ajmWYq4zKT42IC3G6XqgiXxMbS+4eyVYTL+7UvCZBd3Kca1u4TLQdLQjeO76zyDJc2A==}
     cpu: [x64]
     os: [win32]
 
-  turbo-windows-arm64@2.5.0:
-    resolution: {integrity: sha512-OUHCV+ueXa3UzfZ4co/ueIHgeq9B2K48pZwIxKSm5VaLVuv8M13MhM7unukW09g++dpdrrE1w4IOVgxKZ0/exg==}
+  turbo-windows-arm64@2.5.2:
+    resolution: {integrity: sha512-fMU41ABhSLa18H8V3Z7BMCGynQ8x+wj9WyBMvWm1jeyRKgkvUYJsO2vkIsy8m0vrwnIeVXKOIn6eSe1ddlBVqw==}
     cpu: [arm64]
     os: [win32]
 
-  turbo@2.5.0:
-    resolution: {integrity: sha512-PvSRruOsitjy6qdqwIIyolv99+fEn57gP6gn4zhsHTEcCYgXPhv6BAxzAjleS8XKpo+Y582vTTA9nuqYDmbRuA==}
+  turbo@2.5.2:
+    resolution: {integrity: sha512-Qo5lfuStr6LQh3sPQl7kIi243bGU4aHGDQJUf6ylAdGwks30jJFloc9NYHP7Y373+gGU9OS0faA4Mb5Sy8X9Xw==}
     hasBin: true
 
   typescript@5.8.3:
@@ -5185,7 +5185,7 @@ snapshots:
     dependencies:
       undici-types: 6.20.0
 
-  '@types/node@22.14.1':
+  '@types/node@22.15.2':
     dependencies:
       undici-types: 6.21.0
 
@@ -5451,7 +5451,7 @@ snapshots:
   browserslist@4.24.4:
     dependencies:
       caniuse-lite: 1.0.30001715
-      electron-to-chromium: 1.5.141
+      electron-to-chromium: 1.5.142
       node-releases: 2.0.19
       update-browserslist-db: 1.1.3(browserslist@4.24.4)
 
@@ -5662,7 +5662,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.5.141: {}
+  electron-to-chromium@1.5.142: {}
 
   emoji-regex@8.0.0: {}
 
@@ -6236,7 +6236,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 22.14.1
+      '@types/node': 22.15.2
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
@@ -7543,32 +7543,32 @@ snapshots:
       - tsx
       - yaml
 
-  turbo-darwin-64@2.5.0:
+  turbo-darwin-64@2.5.2:
     optional: true
 
-  turbo-darwin-arm64@2.5.0:
+  turbo-darwin-arm64@2.5.2:
     optional: true
 
-  turbo-linux-64@2.5.0:
+  turbo-linux-64@2.5.2:
     optional: true
 
-  turbo-linux-arm64@2.5.0:
+  turbo-linux-arm64@2.5.2:
     optional: true
 
-  turbo-windows-64@2.5.0:
+  turbo-windows-64@2.5.2:
     optional: true
 
-  turbo-windows-arm64@2.5.0:
+  turbo-windows-arm64@2.5.2:
     optional: true
 
-  turbo@2.5.0:
+  turbo@2.5.2:
     optionalDependencies:
-      turbo-darwin-64: 2.5.0
-      turbo-darwin-arm64: 2.5.0
-      turbo-linux-64: 2.5.0
-      turbo-linux-arm64: 2.5.0
-      turbo-windows-64: 2.5.0
-      turbo-windows-arm64: 2.5.0
+      turbo-darwin-64: 2.5.2
+      turbo-darwin-arm64: 2.5.2
+      turbo-linux-64: 2.5.2
+      turbo-linux-arm64: 2.5.2
+      turbo-windows-64: 2.5.2
+      turbo-windows-arm64: 2.5.2
 
   typescript@5.8.3: {}
 
