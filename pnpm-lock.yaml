@@ -24,8 +24,8 @@ importers:
   apps/api:
     dependencies:
       '@hono/zod-validator':
-        specifier: ^0.4.2
-        version: 0.4.2(hono@4.6.19)(zod@3.24.1)
+        specifier: ^0.5.0
+        version: 0.5.0(hono@4.6.19)(zod@3.24.1)
       drizzle-orm:
         specifier: ^0.41.0
         version: 0.41.0
@@ -1041,8 +1041,8 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
-  '@hono/zod-validator@0.4.2':
-    resolution: {integrity: sha512-1rrlBg+EpDPhzOV4hT9pxr5+xDVmKuz6YJl+la7VCwK6ass5ldyKm5fD+umJdV2zhHD6jROoCCv8NbTwyfhT0g==}
+  '@hono/zod-validator@0.5.0':
+    resolution: {integrity: sha512-ds5bW6DCgAnNHP33E3ieSbaZFd5dkV52ZjyaXtGoR06APFrCtzAsKZxTHwOrJNBdXsi0e5wNwo5L4nVEVnJUdg==}
     peerDependencies:
       hono: '>=3.9.0'
       zod: ^3.19.1
@@ -4616,7 +4616,7 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
-  '@hono/zod-validator@0.4.2(hono@4.6.19)(zod@3.24.1)':
+  '@hono/zod-validator@0.5.0(hono@4.6.19)(zod@3.24.1)':
     dependencies:
       hono: 4.6.19
       zod: 3.24.1
