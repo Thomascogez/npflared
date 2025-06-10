@@ -14,7 +14,7 @@
 		"check-types": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@hono/zod-validator": "^0.6.0",
+		"@hono/zod-validator": "^0.7.0",
 		"drizzle-orm": "^0.44.0",
 		"hono": "^4.6.19",
 		"semver-regex": "^4.0.5",
