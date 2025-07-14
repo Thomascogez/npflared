@@ -1,4 +1,4 @@
-import { SELF, env } from "cloudflare:test";
+import { env, SELF } from "cloudflare:test";
 import type { tokenTable } from "../src/db/schema";
 import packagePublishPayload from "./mocks/package-publish-payload.json";
 export const createToken = async (

@@ -1,8 +1,7 @@
-import { SELF, env } from "cloudflare:test";
+import { env, SELF } from "cloudflare:test";
 import { describe, expect, it } from "vitest";
-import { createToken } from "../utils";
-
 import type { tokenTable } from "../../src/db/schema";
+import { createToken } from "../utils";
 
 describe("token routes", () => {
 	describe("POST /tokens", () => {

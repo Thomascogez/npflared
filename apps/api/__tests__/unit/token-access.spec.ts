@@ -38,14 +38,6 @@ describe("assetTokenAccess", () => {
 			scopes: [{ type: "package:read", values: ["*"] }]
 		};
 
-		const writeOnlyAccessTokenWildcardAccess: Token = {
-			name: "test-token",
-			token: "test-token",
-			createdAt: Date.now(),
-			updatedAt: Date.now(),
-			scopes: [{ type: "package:read", values: ["*"] }]
-		};
-
 		it("should not allow package read access when token has no access for provided package", () => {
 			const access = assertTokenAccess(readOnlyAccessToken);
 			expect(access("read", "package", "test-package-not-allowed")).toBe(false);

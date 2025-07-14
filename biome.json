@@ -1,7 +1,12 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"ignore": ["**/worker-configuration.d.ts", "**/package.json"]
+		"includes": [
+			"apps/**",
+			"!**/node_modules",
+			"!**/worker-configuration.d.ts",
+			"!**/package.json"
+		]
 	},
 	"vcs": {
 		"enabled": true,
@@ -16,8 +21,18 @@
 		"lineEnding": "lf",
 		"lineWidth": 120
 	},
-	"organizeImports": {
-		"enabled": true
+	"assist": {
+		"enabled": true,
+		"actions": {
+			"source": {
+				"organizeImports": {
+					"level": "on",
+					"options": {
+						"groups": [":URL:", ":NODE:"]
+					}
+				}
+			}
+		}
 	},
 	"linter": {
 		"enabled": true,

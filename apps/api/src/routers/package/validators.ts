@@ -5,7 +5,7 @@ export const putPackage = {
 	json: z.object({
 		_id: z.string().min(1),
 		name: z.string().min(1),
-		"dist-tags": z.record(z.string()),
+		"dist-tags": z.record(z.string(), z.string()),
 		versions: z.record(
 			z.string().refine((value) => semverRegex().test(value), { message: "Version is not in semver format" }),
 			z.object({
@@ -16,9 +16,9 @@ export const putPackage = {
 					.string()
 					.refine((value) => semverRegex().test(value), { message: "Version is not in semver format" }),
 				readme: z.string(),
-				scripts: z.record(z.string()).optional(),
-				devDependencies: z.record(z.string()).optional(),
-				dependencies: z.record(z.string()).optional(),
+				scripts: z.record(z.string(), z.string()).optional(),
+				devDependencies: z.record(z.string(), z.string()).optional(),
+				dependencies: z.record(z.string(), z.string()).optional(),
 				_nodeVersion: z.string().optional(),
 				_npmVersion: z.string().optional(),
 				dist: z.object({

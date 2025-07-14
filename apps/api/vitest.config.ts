@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { join } from "node:path";
-
 import { type D1Migration, defineWorkersConfig, readD1Migrations } from "@cloudflare/vitest-pool-workers/config";
+
 export default defineWorkersConfig(async () => {
 	const migrationsPath = join(__dirname, "migrations");
 	const migrations = await readD1Migrations(migrationsPath);

@@ -1,4 +1,4 @@
-import { SELF, env, fetchMock } from "cloudflare:test";
+import { env, fetchMock, SELF } from "cloudflare:test";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import packagePublishPayload from "../mocks/package-publish-payload.json";
 import { createToken, publishMockPackage } from "../utils";
