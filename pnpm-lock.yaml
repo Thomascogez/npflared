@@ -76,8 +76,8 @@ importers:
         specifier: ^18.0.0
         version: 18.0.0
       zod:
-        specifier: ^3.24.2
-        version: 3.25.51
+        specifier: ^4.0.0
+        version: 4.0.5
       zx:
         specifier: ^8.4.1
         version: 8.5.5
@@ -3769,9 +3769,6 @@ packages:
 
   zod@3.22.3:
     resolution: {integrity: sha512-EjIevzuJRiRPbVH4mGc8nApb/lVLKVpmUhAaR5R5doKGfAnGJ6Gr3CViAVjP+4FWSxCsybeWQdcgCtbX+7oZug==}
-
-  zod@3.25.51:
-    resolution: {integrity: sha512-TQSnBldh+XSGL+opiSIq0575wvDPqu09AqWe1F7JhUMKY+M91/aGlK4MhpVNO7MgYfHcVCB1ffwAUTJzllKJqg==}
 
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
@@ -7589,8 +7586,6 @@ snapshots:
       youch-core: 0.3.3
 
   zod@3.22.3: {}
-
-  zod@3.25.51: {}
 
   zod@3.25.76: {}
 
