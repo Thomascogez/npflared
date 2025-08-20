@@ -25,7 +25,7 @@ importers:
     dependencies:
       '@hono/zod-validator':
         specifier: ^0.7.1
-        version: 0.7.1(hono@4.9.2)(zod@4.0.5)
+        version: 0.7.1(hono@4.9.2)(zod@4.0.17)
       drizzle-orm:
         specifier: ^0.44.2
         version: 0.44.4
@@ -37,7 +37,7 @@ importers:
         version: 4.0.5
       zod:
         specifier: ^4.0.5
-        version: 4.0.5
+        version: 4.0.17
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: ^0.8.53
@@ -77,7 +77,7 @@ importers:
         version: 18.0.0
       zod:
         specifier: ^4.0.0
-        version: 4.0.5
+        version: 4.0.17
       zx:
         specifier: ^8.4.1
         version: 8.8.0
@@ -4010,8 +4010,8 @@ packages:
   zod@3.25.76:
     resolution: {integrity: sha512-gzUt/qt81nXsFGKIFcC3YnfEAx5NkunCfnDlvuBSSFS02bcXu4Lmea0AFIUwbLWxWPx3d9p8S5QoaujKcNQxcQ==}
 
-  zod@4.0.5:
-    resolution: {integrity: sha512-/5UuuRPStvHXu7RS+gmvRf4NXrNxpSllGwDnCBcJZtQsKrviYXm54yDGV2KYNLT5kq0lHGcl7lqWJLgSaG+tgA==}
+  zod@4.0.17:
+    resolution: {integrity: sha512-1PHjlYRevNxxdy2JZ8JcNAw7rX8V9P1AKkP+x/xZfxB0K5FYfuV+Ug6P/6NVSR2jHQ+FzDDoDHS04nYUsOIyLQ==}
 
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
@@ -4598,10 +4598,10 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
-  '@hono/zod-validator@0.7.1(hono@4.9.2)(zod@4.0.5)':
+  '@hono/zod-validator@0.7.1(hono@4.9.2)(zod@4.0.17)':
     dependencies:
       hono: 4.9.2
-      zod: 4.0.5
+      zod: 4.0.17
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
@@ -8014,7 +8014,7 @@ snapshots:
 
   zod@3.25.76: {}
 
-  zod@4.0.5: {}
+  zod@4.0.17: {}
 
   zwitch@2.0.4: {}
 
