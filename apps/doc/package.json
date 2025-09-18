@@ -4,14 +4,13 @@
 	"scripts": {
 		"dev": "rspress dev",
 		"build": "rspress build",
-		"preview": "rspress preview",
-		"lint": "biome check"
+		"preview": "rspress preview"
 	},
 	"dependencies": {
 		"rspress": "^1.40.2"
 	},
 	"devDependencies": {
-		"@types/node": "^24.0.0"
+		"@types/node": "^24.0.13"
 	},
 	"files": [
 		"dist"

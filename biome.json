@@ -1,12 +1,7 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"includes": [
-			"apps/**",
-			"!**/node_modules",
-			"!**/worker-configuration.d.ts",
-			"!**/package.json"
-		]
+		"includes": ["apps/**", "!**/node_modules", "!**/worker-configuration.d.ts", "!**/package.json"]
 	},
 	"vcs": {
 		"enabled": true,

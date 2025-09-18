@@ -10,7 +10,7 @@ import { assertTokenAccess } from "../../utils/access";
 import { ensureRequestParam, uint8ArrayFromBinaryString } from "../../utils/common";
 import { putPackage } from "./validators";
 
-export const packageRouterFactory = createFactory<AppEnv>();
+const packageRouterFactory = createFactory<AppEnv>();
 
 const getPackageHandler = packageRouterFactory.createHandlers(loadToken, async (c) => {
 	const db = drizzle(c.env.DB);

@@ -3,14 +3,12 @@ import { rmSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rename, writeFile } from "node:fs/promises";
 import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
-
 import { confirm, intro, isCancel, log, outro, select, spinner, text } from "@clack/prompts";
 import chalk from "chalk";
 import dedent from "dedent";
 import degit from "degit";
 import { encode } from "uuid-b32";
 import { $ } from "zx";
-
 import {
 	applyD1Migrations,
 	createD1Database,

@@ -9,7 +9,7 @@ yargs(hideBin(process.argv))
 		"install",
 		"Configure and deploy your own npflared instance on your cloudflare account",
 		(yargs) => yargs,
-		async (argv) => {
+		async () => {
 			await install();
 		}
 	)

@@ -15,11 +15,9 @@
         "!.next/cache/**"
       ]
     },
-    "lint": {
-      "dependsOn": [
-        "^lint"
-      ]
-    },
+    "//#check-format": {},
+    "//#knip": {},
+    "//#sherif": {},
     "check-types": {
       "dependsOn": [
         "^check-types"

@@ -57,8 +57,8 @@ export const listD1Databases = async () => {
 					name: name.trim(),
 					createdAt: createdAt.trim(),
 					version: version.trim(),
-					numberOfTables: Number.parseInt(numberOfTables),
-					size: Number.parseInt(size)
+					numberOfTables: Number.parseInt(numberOfTables, 10),
+					size: Number.parseInt(size, 10)
 				});
 			}
 		}
