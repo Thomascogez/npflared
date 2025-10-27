@@ -31,13 +31,13 @@ importers:
     dependencies:
       '@hono/zod-validator':
         specifier: ^0.7.1
-        version: 0.7.3(hono@4.9.8)(zod@4.1.9)
+        version: 0.7.3(hono@4.10.3)(zod@4.1.9)
       drizzle-orm:
         specifier: ^0.44.2
         version: 0.44.5
       hono:
         specifier: ^4.8.5
-        version: 4.9.8
+        version: 4.10.3
       semver-regex:
         specifier: ^4.0.5
         version: 4.0.5
@@ -2374,8 +2374,8 @@ packages:
   highlightjs-vue@1.0.0:
     resolution: {integrity: sha512-PDEfEF102G23vHmPhLyPboFCD+BkMGu+GuJe2d9/eH4FsCwvgBpnc9n0pGE+ffKdph38s6foEZiEjdgHdzp+IA==}
 
-  hono@4.9.8:
-    resolution: {integrity: sha512-JW8Bb4RFWD9iOKxg5PbUarBYGM99IcxFl2FPBo2gSJO11jjUDqlP1Bmfyqt8Z/dGhIQ63PMA9LdcLefXyIasyg==}
+  hono@4.10.3:
+    resolution: {integrity: sha512-2LOYWUbnhdxdL8MNbNg9XZig6k+cZXm5IjHn2Aviv7honhBMOHb+jxrKIeJRZJRmn+htUCKhaicxwXuUDlchRA==}
     engines: {node: '>=16.9.0'}
 
   html-entities@2.6.0:
@@ -4424,9 +4424,9 @@ snapshots:
   '@esbuild/win32-x64@0.25.4':
     optional: true
 
-  '@hono/zod-validator@0.7.3(hono@4.9.8)(zod@4.1.9)':
+  '@hono/zod-validator@0.7.3(hono@4.10.3)(zod@4.1.9)':
     dependencies:
-      hono: 4.9.8
+      hono: 4.10.3
       zod: 4.1.9
 
   '@img/sharp-darwin-arm64@0.33.5':
@@ -6007,7 +6007,7 @@ snapshots:
 
   highlightjs-vue@1.0.0: {}
 
-  hono@4.9.8: {}
+  hono@4.10.3: {}
 
   html-entities@2.6.0: {}
 
