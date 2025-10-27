@@ -31,7 +31,7 @@ importers:
     dependencies:
       '@hono/zod-validator':
         specifier: ^0.7.1
-        version: 0.7.4(hono@4.10.3)(zod@4.1.9)
+        version: 0.7.4(hono@4.10.3)(zod@4.1.12)
       drizzle-orm:
         specifier: ^0.44.2
         version: 0.44.7
@@ -43,7 +43,7 @@ importers:
         version: 4.0.5
       zod:
         specifier: ^4.0.5
-        version: 4.1.9
+        version: 4.1.12
     devDependencies:
       '@cloudflare/vitest-pool-workers':
         specifier: ^0.9.0
@@ -83,7 +83,7 @@ importers:
         version: 18.0.0
       zod:
         specifier: ^4.0.5
-        version: 4.1.9
+        version: 4.1.12
       zx:
         specifier: ^8.4.1
         version: 8.8.5
@@ -2080,8 +2080,8 @@ packages:
   eastasianwidth@0.2.0:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
 
-  electron-to-chromium@1.5.240:
-    resolution: {integrity: sha512-OBwbZjWgrCOH+g6uJsA2/7Twpas2OlepS9uvByJjR2datRDuKGYeD+nP8lBBks2qnB7bGJNHDUx7c/YLaT3QMQ==}
+  electron-to-chromium@1.5.241:
+    resolution: {integrity: sha512-ILMvKX/ZV5WIJzzdtuHg8xquk2y0BOGlFOxBVwTpbiXqWIH0hamG45ddU4R3PQ0gYu+xgo0vdHXHli9sHIGb4w==}
 
   emoji-regex@10.5.0:
     resolution: {integrity: sha512-lb49vf1Xzfx080OKA0o6l8DQQpV+6Vg95zyCJX9VB/BqKYlhG7N4wgROUUHRA+ZPUefLnteQOad7z1kT2bV7bg==}
@@ -3911,9 +3911,6 @@ packages:
   zod@4.1.12:
     resolution: {integrity: sha512-JInaHOamG8pt5+Ey8kGmdcAcg3OL9reK8ltczgHTAwNhMys/6ThXHityHxVV2p3fkw/c+MAvBHFVYHFZDmjMCQ==}
 
-  zod@4.1.9:
-    resolution: {integrity: sha512-HI32jTq0AUAC125z30E8bQNz0RQ+9Uc+4J7V97gLYjZVKRjeydPgGt6dvQzFrav7MYOUGFqqOGiHpA/fdbd0cQ==}
-
   zwitch@2.0.4:
     resolution: {integrity: sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A==}
 
@@ -4416,10 +4413,10 @@ snapshots:
   '@esbuild/win32-x64@0.25.4':
     optional: true
 
-  '@hono/zod-validator@0.7.4(hono@4.10.3)(zod@4.1.9)':
+  '@hono/zod-validator@0.7.4(hono@4.10.3)(zod@4.1.12)':
     dependencies:
       hono: 4.10.3
-      zod: 4.1.9
+      zod: 4.1.12
 
   '@img/sharp-darwin-arm64@0.33.5':
     optionalDependencies:
@@ -5399,7 +5396,7 @@ snapshots:
     dependencies:
       baseline-browser-mapping: 2.8.20
       caniuse-lite: 1.0.30001751
-      electron-to-chromium: 1.5.240
+      electron-to-chromium: 1.5.241
       node-releases: 2.0.26
       update-browserslist-db: 1.1.4(browserslist@4.27.0)
 
@@ -5606,7 +5603,7 @@ snapshots:
 
   eastasianwidth@0.2.0: {}
 
-  electron-to-chromium@1.5.240: {}
+  electron-to-chromium@1.5.241: {}
 
   emoji-regex@10.5.0: {}
 
@@ -7861,8 +7858,6 @@ snapshots:
   zod@3.25.76: {}
 
   zod@4.1.12: {}
-
-  zod@4.1.9: {}
 
   zwitch@2.0.4: {}
 
