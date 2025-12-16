@@ -16,7 +16,7 @@ importers:
         version: 2.29.7(@types/node@24.10.4)
       knip:
         specifier: ^5.63.1
-        version: 5.66.3(@types/node@24.10.4)(typescript@5.9.2)
+        version: 5.66.3(@types/node@24.10.4)(typescript@5.9.3)
       sherif:
         specifier: ^1.6.1
         version: 1.6.1
@@ -24,8 +24,8 @@ importers:
         specifier: ^2.5.6
         version: 2.6.3
       typescript:
-        specifier: 5.9.2
-        version: 5.9.2
+        specifier: 5.9.3
+        version: 5.9.3
 
   apps/api:
     dependencies:
@@ -99,7 +99,7 @@ importers:
         version: 17.0.34
       tsup:
         specifier: ^8.3.6
-        version: 8.5.0(jiti@2.6.1)(postcss@8.5.6)(typescript@5.9.2)
+        version: 8.5.0(jiti@2.6.1)(postcss@8.5.6)(typescript@5.9.3)
 
   apps/doc:
     dependencies:
@@ -3997,8 +3997,8 @@ packages:
     resolution: {integrity: sha512-bf6YKUv11l5Xfcmg76PyWoy/e2vbkkxFNBGJSnfdSXQC33ZiUfutYh6IXidc5MhsnrFkWfdNNLyaRk+kHMLlwA==}
     hasBin: true
 
-  typescript@5.9.2:
-    resolution: {integrity: sha512-CWBzXQrc/qOkhidw1OzBTQuYRbfyxDXJMVJ1XNwUHGROVmuaeiEm3OslpZ1RV96d7SKKjZKrSJu3+t/xlw3R9A==}
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -6789,7 +6789,7 @@ snapshots:
 
   kleur@4.1.5: {}
 
-  knip@5.66.3(@types/node@24.10.4)(typescript@5.9.2):
+  knip@5.66.3(@types/node@24.10.4)(typescript@5.9.3):
     dependencies:
       '@nodelib/fs.walk': 1.2.8
       '@types/node': 24.10.4
@@ -6803,7 +6803,7 @@ snapshots:
       picomatch: 4.0.3
       smol-toml: 1.4.2
       strip-json-comments: 5.0.2
-      typescript: 5.9.2
+      typescript: 5.9.3
       zod: 4.2.1
 
   leac@0.6.0: {}
@@ -8105,7 +8105,7 @@ snapshots:
 
   tslib@2.8.1: {}
 
-  tsup@8.5.0(jiti@2.6.1)(postcss@8.5.6)(typescript@5.9.2):
+  tsup@8.5.0(jiti@2.6.1)(postcss@8.5.6)(typescript@5.9.3):
     dependencies:
       bundle-require: 5.1.0(esbuild@0.25.10)
       cac: 6.7.14
@@ -8126,7 +8126,7 @@ snapshots:
       tree-kill: 1.2.2
     optionalDependencies:
       postcss: 8.5.6
-      typescript: 5.9.2
+      typescript: 5.9.3
     transitivePeerDependencies:
       - jiti
       - supports-color
@@ -8160,7 +8160,7 @@ snapshots:
       turbo-windows-64: 2.6.3
       turbo-windows-arm64: 2.6.3
 
-  typescript@5.9.2: {}
+  typescript@5.9.3: {}
 
   ufo@1.6.1: {}
 
