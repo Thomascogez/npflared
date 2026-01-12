@@ -1,7 +1,16 @@
 import semverRegex from "semver-regex";
 import { z } from "zod";
 
-export const putPackage = {
+export const getPackageValidators = {
+	param: z.object({
+		packageName: z.string().nonempty()
+	})
+};
+
+export const putPackageValidators = {
+	param: z.object({
+		packageName: z.string().nonempty()
+	}),
 	json: z.object({
 		_id: z.string().min(1),
 		name: z.string().min(1),
@@ -36,5 +45,21 @@ export const putPackage = {
 				length: z.number()
 			})
 		)
+	})
+};
+
+export const getPackageTarballValidators = {
+	param: z.object({
+		packageName: z.string().nonempty(),
+		tarballName: z.string().nonempty()
+	})
+};
+
+export const getScopePackageTarballValidators = {
+	param: z.object({
+		packageScope: z.string().nonempty(),
+		packageName: z.string().nonempty(),
+		tarballName: z.string().nonempty(),
+		tarballScope: z.string().nonempty()
 	})
 };

@@ -1,11 +1,7 @@
-import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/d1";
-import { createMiddleware } from "hono/factory";
-import { tokenTable } from "../db/schema";
+import { db } from "#db/index";
+import { $ } from "#utils/factory";
 
-export const loadToken = createMiddleware<AppEnv>(async (c, next) => {
-	const db = drizzle(c.env.DB);
-
+export const loadToken = $.createMiddleware(async (c, next) => {
 	const authorizationHeader = c.req.header("Authorization");
 
 	if (!authorizationHeader) {
@@ -18,11 +14,12 @@ export const loadToken = createMiddleware<AppEnv>(async (c, next) => {
 		return await next();
 	}
 
-	const tokenQueryResult = await db.select().from(tokenTable).where(eq(tokenTable.token, token));
+	const targetedToken = await db.query.tokenTable.findFirst({
+		where: (table, { eq }) => eq(table.token, token)
+	});
 
-	const tokenDetails = tokenQueryResult.at(0);
-	if (tokenDetails) {
-		c.set("token", tokenDetails);
+	if (targetedToken) {
+		c.set("token", targetedToken);
 	}
 
 	await next();

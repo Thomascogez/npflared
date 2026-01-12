@@ -1,4 +1,4 @@
-import type { tokenTable } from "../db/schema";
+import type { tokenTable } from "#db/schema";
 
 export const assertTokenAccess = (token: typeof tokenTable.$inferSelect) => {
 	return (operation: "read" | "write", entity: "user" | "package" | "token", targetedPackage: string) => {
