@@ -2,6 +2,9 @@
 	"name": "@npflared/api",
 	"version": "0.0.5",
 	"private": true,
+	"imports": {
+		"#*": "./src/*.ts"
+	},
 	"scripts": {
 		"dev": "wrangler dev",
 		"deploy": "wrangler deploy --minify",

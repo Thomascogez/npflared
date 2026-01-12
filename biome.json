@@ -22,9 +22,7 @@
 			"source": {
 				"organizeImports": {
 					"level": "on",
-					"options": {
-						"groups": [":URL:", ":NODE:"]
-					}
+					"options": {}
 				}
 			}
 		}
@@ -70,5 +68,24 @@
 			"semicolons": "always",
 			"trailingCommas": "none"
 		}
-	}
+	},
+	"overrides": [
+		{
+			"includes": ["apps/api/**"],
+			"linter": {
+				"rules": {
+					"style": {
+						"noRestrictedImports": {
+							"level": "error",
+							"options": {
+								"paths": {
+									"@hono/zod-validator": "Please use zValidator #utils/validation"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	]
 }
