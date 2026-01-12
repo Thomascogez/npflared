@@ -3,8 +3,8 @@
 	"version": "0.0.7",
 	"type": "module",
 	"scripts": {
-		"build": "tsup",
-		"build:watch": "tsup --watch",
+		"build": "tsdown",
+		"build:watch": "tsdown --watch",
 		"prepublishOnly": "pnpm run build"
 	},
 	"bin": {
@@ -20,7 +20,7 @@
 		"@types/degit": "^2.8.6",
 		"@types/node": "^25.0.6",
 		"@types/yargs": "^17.0.35",
-		"tsup": "^8.5.1"
+		"tsdown": "^0.19.0"
 	},
 	"dependencies": {
 		"@clack/prompts": "^0.11.0",
