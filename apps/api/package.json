@@ -16,17 +16,17 @@
 		"check-types": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@hono/zod-validator": "^0.7.1",
-		"drizzle-orm": "^0.44.2",
-		"hono": "^4.8.5",
+		"@hono/zod-validator": "^0.7.6",
+		"drizzle-orm": "^0.45.1",
+		"hono": "^4.11.3",
 		"semver-regex": "^4.0.5",
-		"zod": "^4.0.5"
+		"zod": "^4.3.5"
 	},
 	"devDependencies": {
-		"@cloudflare/vitest-pool-workers": "^0.9.0",
-		"@types/node": "^24.0.13",
+		"@cloudflare/vitest-pool-workers": "^0.12.1",
+		"@types/node": "^25.0.6",
 		"drizzle-kit": "^0.31.4",
 		"vitest": "3.2.4",
-		"wrangler": "^4.24.3"
+		"wrangler": "^4.58.0"
 	}
 }
