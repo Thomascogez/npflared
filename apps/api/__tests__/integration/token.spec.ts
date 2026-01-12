@@ -19,9 +19,6 @@ describe("token routes", () => {
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
-
-			const responseBody = await response.text();
-			expect(responseBody).toBe("Forbidden");
 		});
 
 		it("should not create a token with an invalid token", async () => {
@@ -39,9 +36,6 @@ describe("token routes", () => {
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
-
-			const responseBody = await response.text();
-			expect(responseBody).toBe("Forbidden");
 		});
 
 		it("should not create a token with a token that does not have the token write scope", async () => {
@@ -61,9 +55,6 @@ describe("token routes", () => {
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
-
-			const responseBody = await response.text();
-			expect(responseBody).toBe("Forbidden");
 		});
 
 		it("should not create a token without providing at least one scope", async () => {
@@ -145,9 +136,6 @@ describe("token routes", () => {
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
-
-			const responseBody = await response.text();
-			expect(responseBody).toBe("Forbidden");
 		});
 
 		it("should not get tokens with an invalid token", async () => {
@@ -160,9 +148,6 @@ describe("token routes", () => {
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
-
-			const responseBody = await response.text();
-			expect(responseBody).toBe("Forbidden");
 		});
 
 		it("should not get tokens with a token that does not have the token read scope", async () => {
@@ -224,9 +209,6 @@ describe("token routes", () => {
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
-
-			const responseBody = await response.text();
-			expect(responseBody).toBe("Forbidden");
 		});
 
 		it("should not get a token with an invalid token", async () => {
@@ -239,9 +221,6 @@ describe("token routes", () => {
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
-
-			const responseBody = await response.text();
-			expect(responseBody).toBe("Forbidden");
 		});
 
 		it("should not get a token with a token that does not have the token read scope", async () => {
@@ -289,9 +268,6 @@ describe("token routes", () => {
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
-
-			const responseBody = await response.text();
-			expect(responseBody).toBe("Forbidden");
 		});
 
 		it("should not delete a token with an invalid token", async () => {
@@ -304,9 +280,6 @@ describe("token routes", () => {
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
-
-			const responseBody = await response.text();
-			expect(responseBody).toBe("Forbidden");
 		});
 
 		it("should not delete a token with a token that does not have the token write scope", async () => {

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const postToken = {
+export const postTokenValidators = {
 	json: z.object({
 		name: z.string(),
 		scopes: z
@@ -23,5 +23,17 @@ export const postToken = {
 				})
 			)
 			.min(1)
+	})
+};
+
+export const getTokenValidators = {
+	param: z.object({
+		token: z.string().nonempty()
+	})
+};
+
+export const deleteTokenValidators = {
+	param: z.object({
+		token: z.string().nonempty()
 	})
 };

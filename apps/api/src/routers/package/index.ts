@@ -50,7 +50,7 @@ export const packageRouter = $.createApp()
 
 			await packageService.putPackage(packageName, body);
 
-			return c.json({ message: "ok" }, 201);
+			return c.json({ message: "ok" });
 		}
 	)
 	.get("/:packageName/-/:tarballName", zValidator("param", getPackageTarballValidators.param), async (c) => {

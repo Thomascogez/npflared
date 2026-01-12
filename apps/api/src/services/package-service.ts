@@ -1,6 +1,6 @@
 import { env } from "cloudflare:workers";
 import { sql } from "drizzle-orm";
-import type z from "zod";
+import type { z } from "zod";
 import { db } from "#db/index";
 import { packageReleaseTable, packageTable } from "#db/schema";
 import type { putPackageValidators } from "#routers/package/validators";
@@ -65,7 +65,7 @@ export const packageService = {
 			throw HttpError.badRequest("Attachment name does not match");
 		}
 
-		if (!packageData.versions[versionToUpload].dist.tarball.endsWith(`${packageName}/-/${expectedAttachmentName}`)) {
+		if (!packageData.versions[versionToUpload]?.dist.tarball?.endsWith(`${packageName}/-/${expectedAttachmentName}`)) {
 			throw HttpError.badRequest("Attachment name does not match");
 		}
 
