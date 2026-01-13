@@ -2,6 +2,7 @@
 
 import { hideBin } from "yargs/helpers";
 import yargs from "yargs/yargs";
+import { clean } from "./commands/clean";
 import { install } from "./commands/install";
 
 yargs(hideBin(process.argv))
@@ -11,6 +12,14 @@ yargs(hideBin(process.argv))
 		(yargs) => yargs,
 		async () => {
 			await install();
+		}
+	)
+	.command(
+		"clean",
+		"Clean the local npflared folder",
+		(yargs) => yargs,
+		async () => {
+			await clean();
 		}
 	)
 	.demandCommand(1)

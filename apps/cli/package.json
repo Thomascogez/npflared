@@ -3,12 +3,12 @@
 	"version": "0.0.7",
 	"type": "module",
 	"scripts": {
-		"build": "tsup",
-		"build:watch": "tsup --watch",
+		"build": "tsdown",
+		"build:watch": "tsdown --watch",
 		"prepublishOnly": "pnpm run build"
 	},
 	"bin": {
-		"npflared": "./dist/index.js"
+		"npflared": "./dist/index.mjs"
 	},
 	"keywords": [
 		"npm",
@@ -18,18 +18,19 @@
 	"license": "ISC",
 	"devDependencies": {
 		"@types/degit": "^2.8.6",
-		"@types/node": "^24.0.13",
-		"@types/yargs": "^17.0.33",
-		"tsup": "^8.3.6"
+		"@types/node": "^25.0.6",
+		"@types/yargs": "^17.0.35",
+		"tsdown": "^0.19.0"
 	},
 	"dependencies": {
 		"@clack/prompts": "^0.11.0",
-		"chalk": "^5.4.1",
-		"dedent": "^1.5.3",
+		"chalk": "^5.6.2",
+		"dedent": "^1.7.1",
 		"degit": "^2.8.4",
 		"uuid-b32": "^1.0.1",
 		"yargs": "^18.0.0",
-		"zod": "^4.0.5",
-		"zx": "^8.4.1"
-	}
+		"zod": "^4.3.5",
+		"zx": "^8.8.5"
+	},
+	"files": ["dist"]
 }

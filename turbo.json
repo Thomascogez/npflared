@@ -11,8 +11,7 @@
         ".env*"
       ],
       "outputs": [
-        ".next/**",
-        "!.next/cache/**"
+        "dist/**"
       ]
     },
     "//#check-format": {},

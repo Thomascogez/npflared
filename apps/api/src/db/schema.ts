@@ -26,9 +26,5 @@ export const packageReleaseTable = sqliteTable(
 		manifest: text("manifest", { mode: "json" }).notNull(),
 		createdAt: integer("created_at").notNull()
 	},
-	(table) => {
-		return {
-			pk: primaryKey({ columns: [table.package, table.version] })
-		};
-	}
+	(table) => [primaryKey({ columns: [table.package, table.version] })]
 );

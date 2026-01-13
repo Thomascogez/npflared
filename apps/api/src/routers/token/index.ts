@@ -1,95 +1,138 @@
-import { zValidator } from "@hono/zod-validator";
-import { eq } from "drizzle-orm";
-import { drizzle } from "drizzle-orm/d1";
-import { Hono } from "hono";
-import { createFactory } from "hono/factory";
-import { HTTPException } from "hono/http-exception";
-import { tokenTable } from "../../db/schema";
-import { loadToken } from "../../middlewares/loadToken";
-import { assertTokenAccess } from "../../utils/access";
-import { ensureRequestParam } from "../../utils/common";
-import { postToken } from "./validators";
+import { describeRoute, resolver } from "hono-openapi";
+import { standardOpenApiErrorResponses } from "#openapi";
+import { tokenService } from "#services/token-service";
+import { assertTokenAccess } from "#utils/access";
+import { $ } from "#utils/factory";
+import { HttpError } from "#utils/http";
+import { zValidator } from "#utils/validation";
+import { validators } from "./validators";
 
-const tokenRouterFactory = createFactory<AppEnv>();
+export const tokenRouter = $.createApp()
+	.post(
+		"/-/npm/v1/tokens",
+		describeRoute({
+			description: "Create a new token with specific scopes",
+			responses: {
+				...standardOpenApiErrorResponses,
+				201: {
+					description: "Token created",
+					content: {
+						"application/json": {
+							schema: resolver(validators.post.response[201])
+						}
+					}
+				}
+			}
+		}),
+		zValidator("json", validators.post.request.json),
+		async (c) => {
+			const can = assertTokenAccess(c.get("token"));
 
-const postTokenHandler = tokenRouterFactory.createHandlers(loadToken, zValidator("json", postToken.json), async (c) => {
-	const db = drizzle(c.env.DB);
-	const can = assertTokenAccess(c.get("token"));
+			const body = c.req.valid("json");
 
-	if (!can("write", "token", "*")) {
-		throw new HTTPException(403, { message: "Forbidden" });
-	}
+			if (!can("write", "token", "*")) {
+				throw HttpError.forbidden();
+			}
 
-	const body = c.req.valid("json");
-	const now = Date.now();
+			const token = await tokenService.createToken(body);
+			if (!token) {
+				throw HttpError.internalServerError();
+			}
 
-	const tokenQueryResult = await db
-		.insert(tokenTable)
-		.values({
-			name: body.name,
-			token: crypto.randomUUID(),
-			scopes: body.scopes,
-			createdAt: now,
-			updatedAt: now
-		})
-		.returning();
+			return c.json(token, 201);
+		}
+	)
+	.get(
+		"/-/npm/v1/tokens",
+		describeRoute({
+			description: "List all tokens",
+			responses: {
+				...standardOpenApiErrorResponses,
+				200: {
+					description: "List of tokens",
+					content: {
+						"application/json": {
+							schema: resolver(validators.list.response[200])
+						}
+					}
+				}
+			}
+		}),
+		async (c) => {
+			const can = assertTokenAccess(c.get("token"));
 
-	const [token] = tokenQueryResult;
+			if (!can("read", "token", "*")) {
+				throw HttpError.forbidden();
+			}
 
-	return c.json(token, 201);
-});
+			const tokens = await tokenService.listTokens();
 
-const deleteTokenHandler = tokenRouterFactory.createHandlers(loadToken, async (c) => {
-	const db = drizzle(c.env.DB);
-	const can = assertTokenAccess(c.get("token"));
+			return c.json(tokens);
+		}
+	)
+	.get(
+		"/-/npm/v1/tokens/token/:token",
+		describeRoute({
+			description: "Get a token",
+			responses: {
+				...standardOpenApiErrorResponses,
+				200: {
+					description: "Token",
+					content: {
+						"application/json": {
+							schema: resolver(validators.get.response[200])
+						}
+					}
+				}
+			}
+		}),
+		zValidator("param", validators.get.request.param),
+		async (c) => {
+			const can = assertTokenAccess(c.get("token"));
 
-	if (!can("write", "token", "*")) {
-		// special case for token
-		throw new HTTPException(403, { message: "Forbidden" });
-	}
+			const { token } = c.req.valid("param");
 
-	await db.delete(tokenTable).where(eq(tokenTable.token, ensureRequestParam(c.req, "token")));
+			if (!can("read", "token", token)) {
+				throw HttpError.forbidden();
+			}
 
-	return c.json({ message: "ok" }, 200);
-});
+			const targetedToken = await tokenService.getToken(token);
 
-const getTokenHandler = tokenRouterFactory.createHandlers(loadToken, async (c) => {
-	const db = drizzle(c.env.DB);
-	const can = assertTokenAccess(c.get("token"));
+			if (!targetedToken) {
+				throw HttpError.notFound();
+			}
 
-	if (!can("read", "token", ensureRequestParam(c.req, "token"))) {
-		throw new HTTPException(403, { message: "Forbidden" });
-	}
+			return c.json(targetedToken);
+		}
+	)
+	.delete(
+		"/-/npm/v1/tokens/token/:token",
+		describeRoute({
+			description: "Delete a token",
+			responses: {
+				...standardOpenApiErrorResponses,
+				200: {
+					description: "Token deleted",
+					content: {
+						"application/json": {
+							schema: resolver(validators.delete.response[200])
+						}
+					}
+				}
+			}
+		}),
+		zValidator("param", validators.delete.request.param),
+		async (c) => {
+			const can = assertTokenAccess(c.get("token"));
 
-	const tokenQueryResult = await db
-		.select()
-		.from(tokenTable)
-		.where(eq(tokenTable.token, ensureRequestParam(c.req, "token")));
+			const { token } = c.req.valid("param");
 
-	if (tokenQueryResult.length === 0) {
-		throw new HTTPException(404, { message: "Not found" });
-	}
+			if (!can("write", "token", token)) {
+				throw HttpError.forbidden();
+			}
 
-	const [token] = tokenQueryResult;
+			await tokenService.deleteToken(token);
 
-	return c.json(token);
-});
-
-const getTokensHandler = tokenRouterFactory.createHandlers(loadToken, async (c) => {
-	const db = drizzle(c.env.DB);
-	const can = assertTokenAccess(c.get("token"));
-
-	if (!can("read", "token", "*")) {
-		throw new HTTPException(403, { message: "Forbidden" });
-	}
-
-	const tokenQueryResult = await db.select().from(tokenTable);
-
-	return c.json(tokenQueryResult);
-});
-
-export const tokenRouter = new Hono<AppEnv>()
-	.post("/-/npm/v1/tokens", ...postTokenHandler)
-	.get("/-/npm/v1/tokens", ...getTokensHandler)
-	.get("/-/npm/v1/tokens/token/:token", ...getTokenHandler)
-	.delete("/-/npm/v1/tokens/token/:token", ...deleteTokenHandler);
+			return c.json({ message: "ok" });
+		}
+	);
