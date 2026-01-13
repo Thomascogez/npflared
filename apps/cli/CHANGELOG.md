@@ -1,5 +1,11 @@
 # @npflared/cli
 
+## 0.1.2
+
+### Patch Changes
+
+- 75e7d6b: Improve cross package manager command run support
+
 ## 0.1.1
 
 ### Patch Changes
