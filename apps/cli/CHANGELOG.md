@@ -1,5 +1,11 @@
 # @npflared/cli
 
+## 0.1.1
+
+### Patch Changes
+
+- a7e2a7a: Fix d1 list output parsing
+
 ## 0.1.0
 
 ### Minor Changes
