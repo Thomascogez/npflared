@@ -45,11 +45,15 @@ export const listD1Databases = async () => {
 	try {
 		const d1Databases: D1Database[] = [];
 
-		const result = await $({ quiet: true })`npx -y wrangler d1 list`;
-		const matches = result.stdout.matchAll(/│(.*)│(.*)│(.*)│(.*)│(.*)│(.*)│/gm);
+		const result = await $({ quiet: true })`bunx -y wrangler d1 list`;
+		const matches = Array.from(
+			result.stdout.matchAll(
+				/│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│/gm
+			)
+		).slice(1); // Skip header row
 
 		for (const match of matches) {
-			const [id, name, createdAt, version, numberOfTables, size] = match;
+			const [, id, name, createdAt, version, numberOfTables, size] = match;
 
 			if (id || name || createdAt || version || numberOfTables || size) {
 				d1Databases.push({
