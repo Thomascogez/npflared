@@ -27,13 +27,14 @@ const createR2BucketOutputSchema = z.object({
 		.min(1)
 });
 
-const executeCommand = (command: ExtendedResolvedCommand, options: { cwd?: string } = {}) =>
-	$({ quiet: true, ...options })`${command.command} ${command.args.join(" ")}`;
+const executeCommand = (command: ExtendedResolvedCommand, options: { cwd?: string } = {}) => {
+	return $({ quiet: true, ...options })`${command.command} ${command.args}`;
+};
 
 export const getLocalAccountId = async () => {
 	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
 	try {
-		const command = getCommand(packageManager, "execute", ["-y", "wrangler", "whoami"]);
+		const command = getCommand(packageManager, "execute", ["wrangler", "whoami"]);
 		const result = await executeCommand(command);
 
 		const match = result.stdout.match(/([0-9a-f]{32})/);
