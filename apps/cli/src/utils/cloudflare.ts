@@ -26,8 +26,6 @@ const createR2BucketOutputSchema = z.object({
 });
 
 export const getLocalAccountId = async () => {
-	console.log(import.meta.dirname);
-
 	try {
 		const result = await $({ quiet: true })`npx -y wrangler whoami`;
 		const match = result.stdout.match(/([0-9a-f]{32})/);
