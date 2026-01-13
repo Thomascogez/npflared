@@ -45,7 +45,7 @@ export const listD1Databases = async () => {
 	try {
 		const d1Databases: D1Database[] = [];
 
-		const result = await $({ quiet: true })`bunx -y wrangler d1 list`;
+		const result = await $({ quiet: true })`npx -y wrangler d1 list`;
 		const matches = Array.from(
 			result.stdout.matchAll(
 				/│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│/gm
