@@ -1,6 +1,8 @@
+import { type ExtendedResolvedCommand, getCommand } from "@antfu/ni";
 import { z } from "zod";
 import { $, ProcessOutput } from "zx";
 import type { D1Database, R2Bucket } from "../types";
+import { cliContext } from "./context";
 
 const createD1DatabaseOutputSchema = z.object({
 	d1_databases: z
@@ -25,9 +27,15 @@ const createR2BucketOutputSchema = z.object({
 		.min(1)
 });
 
+const executeCommand = (command: ExtendedResolvedCommand, options: { cwd?: string } = {}) =>
+	$({ quiet: true, ...options })`${command.command} ${command.args.join(" ")}`;
+
 export const getLocalAccountId = async () => {
+	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
 	try {
-		const result = await $({ quiet: true })`npx -y wrangler whoami`;
+		const command = getCommand(packageManager, "execute", ["-y", "wrangler", "whoami"]);
+		const result = await executeCommand(command);
+
 		const match = result.stdout.match(/([0-9a-f]{32})/);
 		const [accountId] = match ?? [];
 
@@ -42,10 +50,14 @@ export const getLocalAccountId = async () => {
 };
 
 export const listD1Databases = async () => {
+	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
+
 	try {
 		const d1Databases: D1Database[] = [];
 
-		const result = await $({ quiet: true })`npx -y wrangler d1 list`;
+		const command = getCommand(packageManager, "execute", ["-y", "wrangler", "d1", "list"]);
+		const result = await executeCommand(command);
+
 		const matches = Array.from(
 			result.stdout.matchAll(
 				/│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│\s*([^│]+?)\s*│/gm
@@ -78,10 +90,13 @@ export const listD1Databases = async () => {
 };
 
 export const listR2Buckets = async () => {
-	try {
-		const result = await $({ quiet: true })`npx -y wrangler r2 bucket list`;
-		const matches = result.stdout.matchAll(/name:(.*)\ncreation_date:(.*)/gim);
+	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
 
+	try {
+		const command = getCommand(packageManager, "execute", ["-y", "wrangler", "r2", "bucket", "list"]);
+		const result = await executeCommand(command);
+
+		const matches = result.stdout.matchAll(/name:(.*)\ncreation_date:(.*)/gim);
 		const r2Buckets: R2Bucket[] = [];
 
 		for (const match of matches) {
@@ -106,8 +121,12 @@ export const listR2Buckets = async () => {
 };
 
 export const createR2Bucket = async (name: string) => {
+	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
+
 	try {
-		const result = await $({ quiet: true })`npx -y wrangler r2 bucket create ${name}`;
+		const command = getCommand(packageManager, "execute", ["-y", "wrangler", "r2", "bucket", "create", name]);
+		const result = await executeCommand(command);
+
 		const match = result.stdout.match(/\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\}/gim);
 
 		const parsedR2Binding = createR2BucketOutputSchema.safeParse(JSON.parse(match?.[0] ?? ""));
@@ -127,8 +146,12 @@ export const createR2Bucket = async (name: string) => {
 };
 
 export const createD1Database = async (name: string) => {
+	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
+
 	try {
-		const result = await $({ quiet: true })`npx -y wrangler d1 create ${name}`;
+		const command = getCommand(packageManager, "execute", ["-y", "wrangler", "d1", "create", name]);
+		const result = await executeCommand(command);
+
 		const match = result.stdout.match(/\{(?:[^{}]*|\{(?:[^{}]*|\{[^{}]*\})*\})*\}/gim);
 
 		const parsedD1Binding = createD1DatabaseOutputSchema.safeParse(JSON.parse(match?.[0] ?? ""));
@@ -147,8 +170,22 @@ export const createD1Database = async (name: string) => {
 };
 
 export const applyD1Migrations = async (d1DatabaseName: string, config: { cwd?: string } = {}) => {
+	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
+
 	try {
-		await $({ cwd: config.cwd })`npx -y wrangler d1 migrations apply ${d1DatabaseName} --remote --config wrangler.json`;
+		const command = getCommand(packageManager, "execute", [
+			"-y",
+			"wrangler",
+			"d1",
+			"migrations",
+			"apply",
+			d1DatabaseName,
+			"--remote",
+			"--config",
+			"wrangler.json"
+		]);
+
+		await executeCommand(command, { cwd: config.cwd });
 	} catch (error) {
 		if (error instanceof ProcessOutput) {
 			throw new Error(error.stderr || error.stdout);
@@ -159,8 +196,12 @@ export const applyD1Migrations = async (d1DatabaseName: string, config: { cwd?: 
 };
 
 export const deploy = async (config: { cwd?: string } = {}) => {
+	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
+
 	try {
-		const result = await $({ quiet: true, cwd: config.cwd })`npx -y wrangler deploy --config wrangler.json`;
+		const command = getCommand(packageManager, "execute", ["-y", "wrangler", "deploy", "--config", "wrangler.json"]);
+		const result = await executeCommand(command, { cwd: config.cwd });
+
 		const match = result.stdout.match(/([a-z0-9-]+\.[a-z0-9-]+\.workers\.dev)/i);
 
 		return match ? `https://${match[0]}` : "<unknown>";

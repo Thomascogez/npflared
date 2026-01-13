@@ -3,6 +3,7 @@ import { rmSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rename, writeFile } from "node:fs/promises";
 import { homedir, tmpdir } from "node:os";
 import { join } from "node:path";
+import { type AGENTS, getCommand } from "@antfu/ni";
 import { confirm, intro, isCancel, log, outro, select, spinner, text } from "@clack/prompts";
 import chalk from "chalk";
 import dedent from "dedent";
@@ -18,6 +19,7 @@ import {
 	listD1Databases,
 	listR2Buckets
 } from "../utils/cloudflare";
+import { cliContext } from "../utils/context";
 import { pathExists } from "../utils/fs";
 
 const npflaredDirName = ".npflared";
@@ -246,61 +248,65 @@ export const install = async () => {
 
 		const workerName = await promptWorkerName();
 
-		const packageManager = await promptPackageManager();
+		const packageManager = (await promptPackageManager()) as (typeof AGENTS)[number];
+		await cliContext.run({ packageManagerAgent: packageManager }, async () => {
+			cliSpinner.start(`Installing dependencies using ${packageManager}...`);
+			const installCommand = getCommand(packageManager, "install");
+			await $({
+				quiet: true,
+				cwd: npflaredCurrentVersionDirectory
+			})`${installCommand.command} ${installCommand.args.join(" ")}`;
+			cliSpinner.stop(`Successfully installed dependencies using ${packageManager}`);
 
-		cliSpinner.start(`Installing dependencies using ${packageManager}...`);
-		await $({ quiet: true, cwd: npflaredCurrentVersionDirectory })`npx -y ${packageManager} install`;
-		cliSpinner.stop(`Successfully installed dependencies using ${packageManager}`);
+			cliSpinner.start("Retrieving Cloudflare account id...");
+			const cloudflareAccountId = await getLocalAccountId();
+			cliSpinner.stop();
 
-		cliSpinner.start("Retrieving Cloudflare account id...");
-		const cloudflareAccountId = await getLocalAccountId();
-		cliSpinner.stop();
+			if (!cloudflareAccountId) {
+				log.error(
+					chalk.red(`Could not retrieve Cloudflare account id, please login with ${chalk.bold.white("wrangler login")}`)
+				);
 
-		if (!cloudflareAccountId) {
-			log.error(
-				chalk.red(`Could not retrieve Cloudflare account id, please login with ${chalk.bold.white("wrangler login")}`)
+				process.exit(1);
+			} else {
+				log.info(chalk.green(`Using cloudflare account id: ${chalk.bold.white(cloudflareAccountId)}`));
+			}
+
+			const d1Database = await promptD1Database();
+			const r2Bucket = await promptR2Bucket();
+
+			cliSpinner.start("Generating wrangler configuration...");
+			const wranglerConfig = {
+				name: workerName,
+				main: "src/index.ts",
+				compatibility_date: "2024-11-24",
+				compatibility_flags: ["nodejs_compat"],
+				d1_databases: [{ binding: "DB", database_name: d1Database.name, database_id: d1Database.id }],
+				r2_buckets: [{ binding: "BUCKET", bucket_name: r2Bucket.name }]
+			};
+			const wranglerConfigFilePath = join(npflaredCurrentVersionDirectory, "wrangler.json");
+
+			await writeFile(join(npflaredCurrentVersionDirectory, "wrangler.json"), JSON.stringify(wranglerConfig, null, 2));
+			cliSpinner.stop(`Wrangler configuration generated at ${wranglerConfigFilePath}`);
+
+			const adminToken = await generateAdminToken(npflaredCurrentVersionDirectory);
+
+			cliSpinner.start("Applying D1 migrations...");
+			await applyD1Migrations(d1Database.name, { cwd: npflaredCurrentVersionDirectory });
+			cliSpinner.stop("Successfully applied D1 migrations");
+
+			cliSpinner.start("Deploying...");
+			const deployedUrl = await deploy({ cwd: npflaredCurrentVersionDirectory });
+			cliSpinner.stop();
+			log.info(
+				chalk.green(dedent`
+				🔥 npflared is now ready to use!
+				🔗 Deployed to: ${chalk.bold.white(deployedUrl)}
+				👮 Admin token: ${chalk.bold.white(adminToken)}
+				📚 Check documentation for more information: ${chalk.bold.white("https://npflared.thomas-cogez.fr")}
+			`)
 			);
-
-			process.exit(1);
-		} else {
-			log.info(chalk.green(`Using cloudflare account id: ${chalk.bold.white(cloudflareAccountId)}`));
-		}
-
-		const d1Database = await promptD1Database();
-		const r2Bucket = await promptR2Bucket();
-
-		cliSpinner.start("Generating wrangler configuration...");
-		const wranglerConfig = {
-			name: workerName,
-			main: "src/index.ts",
-			compatibility_date: "2024-11-24",
-			compatibility_flags: ["nodejs_compat"],
-			d1_databases: [{ binding: "DB", database_name: d1Database.name, database_id: d1Database.id }],
-			r2_buckets: [{ binding: "BUCKET", bucket_name: r2Bucket.name }]
-		};
-		const wranglerConfigFilePath = join(npflaredCurrentVersionDirectory, "wrangler.json");
-
-		await writeFile(join(npflaredCurrentVersionDirectory, "wrangler.json"), JSON.stringify(wranglerConfig, null, 2));
-		cliSpinner.stop(`Wrangler configuration generated at ${wranglerConfigFilePath}`);
-
-		const adminToken = await generateAdminToken(npflaredCurrentVersionDirectory);
-
-		cliSpinner.start("Applying D1 migrations...");
-		await applyD1Migrations(d1Database.name, { cwd: npflaredCurrentVersionDirectory });
-		cliSpinner.stop("Successfully applied D1 migrations");
-
-		cliSpinner.start("Deploying...");
-		const deployedUrl = await deploy({ cwd: npflaredCurrentVersionDirectory });
-		cliSpinner.stop();
-
-		log.info(
-			chalk.green(dedent`
-			🔥 npflared is now ready to use!
-			🔗 Deployed to: ${chalk.bold.white(deployedUrl)}
-			👮 Admin token: ${chalk.bold.white(adminToken)}
-			📚 Check documentation for more information: ${chalk.bold.white("https://npflared.thomas-cogez.fr")}
-		`)
-		);
+		});
 
 		outro(`You're all set!`);
 	} catch (error) {
