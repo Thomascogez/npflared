@@ -1,6 +1,5 @@
-// biome-ignore lint/style/noRestrictedImports: It's the only time we import from @hono/zod-validator
-
 import type { ValidationTargets } from "hono";
+// biome-ignore lint/style/noRestrictedImports: It's the only time we import from hono-openapi for overloading
 import { validator as zv } from "hono-openapi";
 import type { ZodType } from "zod";
 import { HttpError } from "./http";

@@ -79,7 +79,10 @@
 							"level": "error",
 							"options": {
 								"paths": {
-									"@hono/zod-validator": "Please use zValidator #utils/validation"
+									"hono-openapi": {
+										"message": "Please use zValidator #utils/validation",
+										"importNames": ["validator"]
+									}
 								}
 							}
 						}

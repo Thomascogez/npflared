@@ -3,7 +3,7 @@ import { sql } from "drizzle-orm";
 import type { z } from "zod";
 import { db } from "#db/index";
 import { packageReleaseTable, packageTable } from "#db/schema";
-import type { putPackageValidators } from "#routers/package/validators";
+import type { validators } from "#routers/package/validators";
 import { base64ToReadableStream } from "#utils/common";
 import { HttpError } from "#utils/http";
 
@@ -34,7 +34,7 @@ export const packageService = {
 		};
 	},
 
-	async putPackage(packageName: string, packageData: z.infer<typeof putPackageValidators.json>) {
+	async putPackage(packageName: string, packageData: z.infer<typeof validators.put.request.json>) {
 		const tag = Object.keys(packageData["dist-tags"]).at(0);
 		if (!tag) {
 			throw HttpError.badRequest("No tag");

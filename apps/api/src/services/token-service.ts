@@ -2,10 +2,10 @@ import { eq } from "drizzle-orm";
 import type { z } from "zod";
 import { db } from "#db/index";
 import { tokenTable } from "#db/schema";
-import type { postTokenValidators } from "#routers/token/validators";
+import type { validators } from "#routers/token/validators";
 
 export const tokenService = {
-	async createToken(tokenData: z.infer<typeof postTokenValidators.json>) {
+	async createToken(tokenData: z.infer<typeof validators.post.request.json>) {
 		const now = Date.now();
 
 		const insertQueryResult = await db

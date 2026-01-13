@@ -1,7 +1,7 @@
 import { type DescribeRouteOptions, resolver } from "hono-openapi";
 import { z } from "zod";
 
-export const errorSchema = z.object({
+const errorSchema = z.object({
 	error: z.string(),
 	statusCode: z.number()
 });
