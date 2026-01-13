@@ -49,7 +49,7 @@ export const listD1Databases = async () => {
 		const matches = result.stdout.matchAll(/│(.*)│(.*)│(.*)│(.*)│(.*)│(.*)│/gm);
 
 		for (const match of matches) {
-			const [, id, name, createdAt, version, numberOfTables, size] = match;
+			const [id, name, createdAt, version, numberOfTables, size] = match;
 
 			if (id || name || createdAt || version || numberOfTables || size) {
 				d1Databases.push({
