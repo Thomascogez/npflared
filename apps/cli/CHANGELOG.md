@@ -1,5 +1,11 @@
 # @npflared/cli
 
+## 0.1.0
+
+### Minor Changes
+
+- 1b1d139: Change build tool from tsup to tsdown + add clean command
+
 ## 0.0.7
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @npflared/api
 
+## 0.1.0
+
+### Minor Changes
+
+- 4c27e54: Separator logic into dedicated services + rework validator and routing structure + open api documentation generation
+
 ## 0.0.5
 
 ### Patch Changes

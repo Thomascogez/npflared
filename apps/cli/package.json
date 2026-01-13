@@ -1,6 +1,6 @@
 {
 	"name": "@npflared/cli",
-	"version": "0.0.7",
+	"version": "0.1.0",
 	"type": "module",
 	"scripts": {
 		"build": "tsdown",
@@ -32,5 +32,7 @@
 		"zod": "^4.3.5",
 		"zx": "^8.8.5"
 	},
-	"files": ["dist"]
+	"files": [
+		"dist"
+	]
 }
