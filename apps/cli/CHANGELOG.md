@@ -1,5 +1,11 @@
 # @npflared/cli
 
+## 0.1.3
+
+### Patch Changes
+
+- 4c09ced: Fix edge case with pnpm install
+
 ## 0.1.2
 
 ### Patch Changes
