@@ -71,7 +71,7 @@ importers:
     dependencies:
       '@antfu/ni':
         specifier: ^28.1.0
-        version: 28.1.0
+        version: 28.2.0
       '@clack/prompts':
         specifier: ^0.11.0
         version: 0.11.0
@@ -122,8 +122,8 @@ importers:
 
 packages:
 
-  '@antfu/ni@28.1.0':
-    resolution: {integrity: sha512-CwNepqzcItyoRDlZyQXFzgSPbPoek7Udb5URvhIS3fWVZwfXiwYcgrfsFBGWQLylVSPC6S47gTjBLbt/OzC2Vw==}
+  '@antfu/ni@28.2.0':
+    resolution: {integrity: sha512-+pnatqUMTpi1g/VxbaTsX9UxibTp5oWCMbfUAQPV91UL9lTIMmlU2uvG8bDETDJ0kJdsZT8zLBctKLJOeL5jmg==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -1935,6 +1935,9 @@ packages:
   '@types/node@25.2.0':
     resolution: {integrity: sha512-DZ8VwRFUNzuqJ5khrvwMXHmvPe+zGayJhr2CDNiKB1WBE1ST8Djl00D0IC4vvNmHMdj6DlbYRIaFE7WHjlDl5w==}
 
+  '@types/node@25.2.1':
+    resolution: {integrity: sha512-CPrnr8voK8vC6eEtyRzvMpgp3VyVRhgclonE7qYi6P9sXwYb59ucfrnmFBTaP0yUi8Gk4yZg/LlTJULGxvTNsg==}
+
   '@types/react@19.2.8':
     resolution: {integrity: sha512-3MbSL37jEchWZz2p2mjntRZtPt837ij10ApxKfgmXCTuHWagYg7iA5bqPw6C8BMPfwidlvfPI/fxOc42HLhcyg==}
 
@@ -2178,8 +2181,8 @@ packages:
   caniuse-lite@1.0.30001764:
     resolution: {integrity: sha512-9JGuzl2M+vPL+pz70gtMF9sHdMFbY9FJaQBi186cHKH3pSzDvzoUJUPV6fqiKIMyXbud9ZLg4F3Yza1vJ1+93g==}
 
-  caniuse-lite@1.0.30001767:
-    resolution: {integrity: sha512-34+zUAMhSH+r+9eKmYG+k2Rpt8XttfE4yXAjoZvkAPs15xcYQhyBYdalJ65BzivAvGRMViEjy6oKr/S91loekQ==}
+  caniuse-lite@1.0.30001768:
+    resolution: {integrity: sha512-qY3aDRZC5nWPgHUgIB84WL+nySuo19wk0VJpp/XI9T34lrvkyhRvNVOFJOp2kxClQhiFBu+TaUSudf6oa3vkSA==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -4270,7 +4273,7 @@ packages:
 
 snapshots:
 
-  '@antfu/ni@28.1.0':
+  '@antfu/ni@28.2.0':
     dependencies:
       ansis: 4.2.0
       fzf: 0.5.2
@@ -5725,6 +5728,10 @@ snapshots:
     dependencies:
       undici-types: 7.16.0
 
+  '@types/node@25.2.1':
+    dependencies:
+      undici-types: 7.16.0
+
   '@types/react@19.2.8':
     dependencies:
       csstype: 3.2.3
@@ -5958,7 +5965,7 @@ snapshots:
   browserslist@4.28.1:
     dependencies:
       baseline-browser-mapping: 2.9.19
-      caniuse-lite: 1.0.30001767
+      caniuse-lite: 1.0.30001768
       electron-to-chromium: 1.5.286
       node-releases: 2.0.27
       update-browserslist-db: 1.2.3(browserslist@4.28.1)
@@ -5971,7 +5978,7 @@ snapshots:
 
   caniuse-lite@1.0.30001764: {}
 
-  caniuse-lite@1.0.30001767: {}
+  caniuse-lite@1.0.30001768: {}
 
   ccount@2.0.1: {}
 
@@ -6665,7 +6672,7 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 25.2.0
+      '@types/node': 25.2.1
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
