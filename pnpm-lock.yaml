@@ -71,7 +71,7 @@ importers:
     dependencies:
       '@antfu/ni':
         specifier: ^28.1.0
-        version: 28.1.0
+        version: 28.2.0
       '@clack/prompts':
         specifier: ^0.11.0
         version: 0.11.0
@@ -122,8 +122,8 @@ importers:
 
 packages:
 
-  '@antfu/ni@28.1.0':
-    resolution: {integrity: sha512-CwNepqzcItyoRDlZyQXFzgSPbPoek7Udb5URvhIS3fWVZwfXiwYcgrfsFBGWQLylVSPC6S47gTjBLbt/OzC2Vw==}
+  '@antfu/ni@28.2.0':
+    resolution: {integrity: sha512-+pnatqUMTpi1g/VxbaTsX9UxibTp5oWCMbfUAQPV91UL9lTIMmlU2uvG8bDETDJ0kJdsZT8zLBctKLJOeL5jmg==}
     engines: {node: '>=20'}
     hasBin: true
 
@@ -4330,7 +4330,7 @@ packages:
 
 snapshots:
 
-  '@antfu/ni@28.1.0':
+  '@antfu/ni@28.2.0':
     dependencies:
       ansis: 4.2.0
       fzf: 0.5.2
