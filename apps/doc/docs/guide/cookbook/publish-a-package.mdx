@@ -51,7 +51,7 @@ Check [this](/guide/api/tokens) in order to generate a new token
 ## Setup you registry access
 In order to authenticate to your registry you will need to add a `.npmrc` file with the following content
 
-```txt file=".npmrc"
+```txt title=".npmrc"
 //your-npflared-registry.dev/:_authToken=YOUR_AUTH_TOKEN
 ```
 
@@ -73,7 +73,7 @@ Then you can run the following command:
 --- 
 
 If you are using scoped package eg `@acme/math` you can add the following to your `.npmrc` file
-```txt file=".npmrc"
+```txt title=".npmrc"
 @acme:registry=http://your-npflared-registry.dev
 ```
 In order to automatically resolve your scoped package with your private registry.
@@ -83,7 +83,7 @@ For example I have multiple package in my private registry scoped with `@thomasc
 That I use in my projects. 
 
 In every project want to use them i add the following to my `.npmrc` file
-```txt file=".npmrc"
+```txt title=".npmrc"
 @thomascogez:registry=http://your-npflared-registry.dev
 //your-npflared-registry.dev/:_authToken=${NPFLARED_AUTH_TOKEN} # <- NPFLARED_AUTH_TOKEN is stored on my machine env
 ```

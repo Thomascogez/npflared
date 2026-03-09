@@ -1,4 +1,4 @@
-import { PackageManagerTabs } from '@theme';
+import { PackageManagerTabs } from '@rspress/core/theme';
 
 # Manual
 
@@ -25,7 +25,7 @@ In order to configure the project you will need to edit the `wrangler.toml` file
 Go to your [Cloudflare Dashboard](https://dash.cloudflare.com/) and create a new **R2** bucket.
 Copy the name of your bucket and edit your `wrangler.toml` file 
 
-```toml file="wrangler.toml"
+```toml title="wrangler.toml"
 [[r2_buckets]]
 binding = "BUCKET"
 bucket_name = "BUCKET_NAME" # Replace BUCKET_NAME with the value you have previously copied
@@ -36,7 +36,7 @@ Go to your [Cloudflare Dashboard](https://dash.cloudflare.com/) and create a new
 Copy the id and the name of your d1 database
 
 
-```toml file="wrangler.toml"
+```toml title="wrangler.toml"
 [[d1_databases]]
 binding = "DB"
 database_name = "D1_DATABASE_NAME" # Replace D1_DATABASE_NAME with the value you have previously copied

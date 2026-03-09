@@ -3,8 +3,6 @@
 	--rp-c-brand-light: #f48120;
 	--rp-c-brand-dark: #f48120;
 	--rp-c-brand-darker: #f48120;
-}
-
-.rspress-home-feature-detail {
-	text-align: center;
+	--rp-home-hero-secondary-color: #CC3534;
+	--rp-home-background-bg: unset
 }
