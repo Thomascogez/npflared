@@ -80,7 +80,7 @@ importers:
         version: 5.6.2
       dedent:
         specifier: ^1.7.1
-        version: 1.7.1
+        version: 1.7.2
       degit:
         specifier: ^2.8.4
         version: 2.8.4
@@ -1958,8 +1958,8 @@ packages:
   decode-named-character-reference@1.2.0:
     resolution: {integrity: sha512-c6fcElNV6ShtZXmsgNgFFV5tVX2PaV4g+MOAkb8eXHvn6sryJBrZa9r0zV6+dtTyoCKxtDy5tyQ5ZwQuidtd+Q==}
 
-  dedent@1.7.1:
-    resolution: {integrity: sha512-9JmrhGZpOlEgOLdQgSm0zxFaYoQon408V1v49aqTWuXENVlnCuY9JBZcXZiCsZQWDjTm5Qf/nIvAy77mXDAjEg==}
+  dedent@1.7.2:
+    resolution: {integrity: sha512-WzMx3mW98SN+zn3hgemf4OzdmyNhhhKz5Ay0pUfQiMQ3e1g+xmTJWp/pKdwKVXhdSkAEGIIzqeuWrL3mV/AXbA==}
     peerDependencies:
       babel-plugin-macros: ^3.1.0
     peerDependenciesMeta:
@@ -4975,7 +4975,7 @@ snapshots:
     dependencies:
       character-entities: 2.0.2
 
-  dedent@1.7.1: {}
+  dedent@1.7.2: {}
 
   deep-eql@5.0.2: {}
 
