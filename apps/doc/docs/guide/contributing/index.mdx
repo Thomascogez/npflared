@@ -1,0 +1,67 @@
+# Contributing
+
+First of all, thank you for considering contributing to Npflared!
+
+## Project Structure
+
+Npflared is a monorepo managed with [pnpm](https://pnpm.io/) and [Turbo](https://turbo.build/).
+
+- `apps/api`: The core registry API built with Hono and Cloudflare Workers.
+- `apps/cli`: The Npflared CLI tool.
+- `apps/doc`: This documentation site built with Rspress.
+
+## Architecture
+
+- **API**: Built with [Hono](https://hono.dev/) for high performance and compatibility with Cloudflare Workers.
+- **Database**: Uses [Drizzle ORM](https://orm.drizzle.team/) with [Cloudflare D1](https://developers.cloudflare.com/d1/).
+- **Storage**: Tarballs are stored in [Cloudflare R2](https://developers.cloudflare.com/r2/).
+
+## Development Setup
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/thomas-cogez/npflared.git
+   cd npflared
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   pnpm install
+   ```
+
+3. **Local Development**:
+   To start the API in development mode:
+   ```bash
+   pnpm --filter @npflared/api dev
+   ```
+
+## Testing
+
+We use [Vitest](https://vitest.dev/) for testing.
+
+- **Run all tests**:
+  ```bash
+  pnpm run test:single
+  ```
+- **Run tests for a specific package**:
+  ```bash
+  pnpm --filter @npflared/api run test:single
+  ```
+
+## Code Style
+
+We use [Biome](https://biomejs.dev/) for formatting and linting.
+
+```bash
+pnpm run check-format
+```
+
+## Making a Pull Request
+
+1. **Create a branch**: `git checkout -b my-feature`
+2. **Make your changes**: Ensure your code follows the existing style and includes relevant tests.
+3. **Verify**: Run tests and linting.
+4. **Commit**: Use descriptive commit messages.
+5. **Push and PR**: Push your branch and open a PR against the `main` branch.
+
+Thank you again for your help!
