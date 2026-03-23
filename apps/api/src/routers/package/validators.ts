@@ -15,6 +15,14 @@ export const validators = {
 				packageName: z.string().nonempty()
 			})
 		},
+		scoped: {
+			request: {
+				param: z.object({
+					packageScope: z.string().nonempty(),
+					packageName: z.string().nonempty()
+				})
+			}
+		},
 		response: {
 			200: packageSchema
 		}
@@ -57,6 +65,14 @@ export const validators = {
 					})
 				)
 			})
+		},
+		scoped: {
+			request: {
+				param: z.object({
+					packageScope: z.string().nonempty(),
+					packageName: z.string().nonempty()
+				})
+			}
 		},
 		response: {
 			200: z.object({ message: z.string() })

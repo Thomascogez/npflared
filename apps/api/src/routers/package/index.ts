@@ -49,6 +49,47 @@ export const packageRouter = $.createApp()
 			return c.json(publishedPackage);
 		}
 	)
+	.get(
+		"/:packageScope/:packageName",
+		describeRoute({
+			description: "Get a scoped package by it's name from the registry or the fallback registry",
+			responses: {
+				...standardOpenApiErrorResponses,
+				200: {
+					description: "Returns the package",
+					content: {
+						"application/json": {
+							schema: resolver(validators.get.response[200])
+						}
+					}
+				}
+			}
+		}),
+		zValidator("param", validators.get.scoped.request.param),
+		async (c) => {
+			const { packageScope, packageName } = c.req.valid("param");
+			const fullName = `${packageScope}/${packageName}`;
+			const can = assertTokenAccess(c.get("token"));
+
+			const publishedPackage = await packageService.getPackage(fullName);
+
+			if (!publishedPackage) {
+				if (env.FALLBACK_REGISTRY_ENDPOINT) {
+					const fallbackRegistryURL = new URL(env.FALLBACK_REGISTRY_ENDPOINT);
+					fallbackRegistryURL.pathname = `/${fullName}`;
+					return fetch(fallbackRegistryURL);
+				}
+
+				throw HttpError.notFound();
+			}
+
+			if (!can("read", "package", fullName)) {
+				throw HttpError.forbidden();
+			}
+
+			return c.json(publishedPackage);
+		}
+	)
 	.put(
 		"/:packageName",
 		describeRoute({
@@ -78,6 +119,40 @@ export const packageRouter = $.createApp()
 			}
 
 			await packageService.putPackage(packageName, body);
+
+			return c.json({ message: "ok" });
+		}
+	)
+	.put(
+		"/:packageScope/:packageName",
+		describeRoute({
+			description: "Create or update a scoped package by publishing a new version",
+			responses: {
+				...standardOpenApiErrorResponses,
+				200: {
+					description: "Package updated success message",
+					content: {
+						"application/json": {
+							schema: resolver(validators.put.response[200])
+						}
+					}
+				}
+			}
+		}),
+		zValidator("param", validators.put.scoped.request.param),
+		zValidator("json", validators.put.request.json),
+		async (c) => {
+			const can = assertTokenAccess(c.get("token"));
+
+			const { packageScope, packageName } = c.req.valid("param");
+			const fullName = `${packageScope}/${packageName}`;
+			const body = c.req.valid("json");
+
+			if (!can("write", "package", fullName)) {
+				throw HttpError.forbidden();
+			}
+
+			await packageService.putPackage(fullName, body);
 
 			return c.json({ message: "ok" });
 		}
