@@ -35,7 +35,7 @@ You can send has many scopes as you want.
 | `token:read+write` | Read and write access to a token |
 
 :::info
-The `values` property is an array of strings. You can use glob patterns to match packages.
+The `values` property is an array of strings. You can use `*` to match all packages or provide exact package names (including scopes, e.g., `@my-scope/my-pkg`).
 :::
 
 ## Get all tokens
@@ -68,3 +68,4 @@ curl -X DELETE https://my-npflared.dev/-/npm/v1/tokens/token/my-token
 
 :::info
 The `:token` parameter is the token you want to delete.
+:::
