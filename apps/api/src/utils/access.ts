@@ -1,3 +1,4 @@
+import micromatch from "micromatch";
 import type { tokenTable } from "#db/schema";
 
 export const assertTokenAccess = (token: typeof tokenTable.$inferSelect | undefined) => {
@@ -19,6 +20,6 @@ export const assertTokenAccess = (token: typeof tokenTable.$inferSelect | undefi
 			})
 			.flatMap(({ values }) => values);
 
-		return targetedScopesValue.some((value) => value === "*" || value === targetedPackage);
+		return targetedScopesValue.some((value) => value === "*" || value === targetedPackage || micromatch.isMatch(targetedPackage, value));
 	};
 };
