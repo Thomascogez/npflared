@@ -11,7 +11,8 @@
     "check-format": "biome check",
     "check-types": "turbo check-types",
     "test:watch": "turbo test:watch",
-    "test:single": "turbo test:single"
+    "test:single": "turbo test:single",
+    "smoke-test": "pnpm --filter @npflared/api run test:single"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.11",

@@ -35,15 +35,26 @@ Npflared is a monorepo managed with [pnpm](https://pnpm.io/) and [Turbo](https:/
    pnpm --filter @npflared/api dev
    ```
 
-## Testing
+## Testing Strategy
 
-We use [Vitest](https://vitest.dev/) for testing.
+We leverage [Vitest](https://vitest.dev/) along with [`@cloudflare/vitest-pool-workers`](https://developers.cloudflare.com/workers/testing/vitest-testing/) to provide a robust safety net for our Worker logic.
+
+### Integration Tests (The "Safety Net")
+
+Our primary testing method is hitting the Worker with real HTTP requests using the `SELF` (or `unstable_startWorker`) utility. This ensures that:
+- Routing is correct (including scoped packages).
+- Authentication and permission gates (like `package:read`, `package:write`) work as expected.
+- Database (D1) and Storage (R2) interactions are functional.
+
+We maintain a **Permission Matrix** test suite (`apps/api/__tests__/integration/permission-matrix.spec.ts`) that hammers the Worker with various token and package combinations to prevent regressions in access control.
+
+### Running Tests
 
 - **Run all tests**:
   ```bash
   pnpm run test:single
   ```
-- **Run tests for a specific package**:
+- **Run tests for the API only**:
   ```bash
   pnpm --filter @npflared/api run test:single
   ```
