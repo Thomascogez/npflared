@@ -14,5 +14,10 @@
 		"type": "dir",
 		"name": "cookbook",
 		"label": "Cookbook"
+	},
+	{
+		"type": "dir",
+		"name": "contributing",
+		"label": "Contributing"
 	}
 ]

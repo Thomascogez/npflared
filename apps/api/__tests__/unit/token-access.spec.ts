@@ -144,4 +144,24 @@ describe("assetTokenAccess", () => {
 			expect(access("write", "package", "test-package")).toBe(true);
 		});
 	});
+
+	describe("Check glob access", () => {
+		const globAccessToken: Token = {
+			name: "test-token",
+			token: "test-token",
+			createdAt: Date.now(),
+			updatedAt: Date.now(),
+			scopes: [{ type: "package:read", values: ["@test/*"] }]
+		};
+
+		it("should allow package read access when token has glob access for provided package", () => {
+			const access = assertTokenAccess(globAccessToken);
+			expect(access("read", "package", "@test/my-pkg")).toBe(true);
+		});
+
+		it("should not allow package read access when token has glob access but package doesn't match", () => {
+			const access = assertTokenAccess(globAccessToken);
+			expect(access("read", "package", "@other/my-pkg")).toBe(false);
+		});
+	});
 });

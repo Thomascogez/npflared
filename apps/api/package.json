@@ -21,11 +21,13 @@
 		"drizzle-orm": "^0.45.1",
 		"hono": "^4.11.3",
 		"hono-openapi": "^1.1.2",
+		"micromatch": "^4.0.8",
 		"semver-regex": "^4.0.5",
 		"zod": "^4.3.5"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.12.1",
+		"@types/micromatch": "^4.0.10",
 		"@types/node": "^25.0.6",
 		"drizzle-kit": "^0.31.4",
 		"vitest": "3.2.4",

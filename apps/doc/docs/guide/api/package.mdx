@@ -10,10 +10,12 @@ You can get a package by sending a `GET` request to the `/:package` endpoint.
 
 ```bash
 curl -X GET https://my-npflared.dev/package
+# Or for a scoped package:
+curl -X GET https://my-npflared.dev/@scope/package
 ```
 
 :::info
-The `:package` parameter is the package you want to get.
+The `:package` parameter is the package you want to get. It can be a simple name or a scoped name.
 :::
 
 ## Publish a package 
@@ -22,7 +24,15 @@ The `:package` parameter is the package you want to get.
 In order to publish a package, you will need to be authenticated and having at least the `package:write` permission on the targeted package.
 :::
 
-You can publish a package by sending a `PUT` request to the `/:package`. It usually done by your package manager.
+You can publish a package by sending a `PUT` request to the `/:package`. It is usually done by your package manager.
+
+```bash
+# Standard package:
+PUT https://my-npflared.dev/package
+# Scoped package:
+PUT https://my-npflared.dev/@scope/package
+```
+
 Here an overview of what happen when you publish a package:
 
 ![Publish a package](/publish-flow.png)
