@@ -41,7 +41,7 @@ describe("Permission Matrix", () => {
 				{ path: "/pkg-c", method: "GET", expectedStatus: 403 }
 			]
 		},
-        {
+		{
 			name: "Glob pattern for scope",
 			tokenScopes: [{ type: "package:read", values: ["@scope/*"] }],
 			checks: [
@@ -61,71 +61,77 @@ describe("Permission Matrix", () => {
 				});
 
 				for (const check of scenario.checks) {
-                    const fullName = check.path.startsWith("/") ? check.path.substring(1) : check.path;
-                    const version = check.version || "1.0.0";
+					const fullName = check.path.startsWith("/") ? check.path.substring(1) : check.path;
+					const version = check.version || "1.0.0";
 
-                    if (check.method === "GET") {
-                        const { token: adminToken } = await createToken({
-                            name: "admin",
-                            scopes: [{ type: "package:read+write", values: ["*"] }]
-                        });
+					if (check.method === "GET") {
+						const { token: adminToken } = await createToken({
+							name: "admin",
+							scopes: [{ type: "package:read+write", values: ["*"] }]
+						});
 
-                        const payload = {
-                            ...packagePublishPayload,
-                            _id: fullName,
-                            name: fullName,
-                            versions: {
-                                "1.0.0": {
-                                    ...packagePublishPayload.versions["1.0.0"],
-                                    _id: `${fullName}@1.0.0`,
-                                    name: fullName,
-                                    dist: {
-                                        ...packagePublishPayload.versions["1.0.0"].dist,
-                                        tarball: `http://localhost:8787/${fullName}/-/${fullName.replace("/", "-")}-1.0.0.tgz`
-                                    }
-                                }
-                            },
-                            _attachments: {
-                                [`${fullName.replace("/", "-")}-1.0.0.tgz`]: packagePublishPayload._attachments["mock-1.0.0.tgz"]
-                            }
-                        };
+						const payload = {
+							...packagePublishPayload,
+							_id: fullName,
+							name: fullName,
+							versions: {
+								"1.0.0": {
+									...packagePublishPayload.versions["1.0.0"],
+									_id: `${fullName}@1.0.0`,
+									name: fullName,
+									dist: {
+										...packagePublishPayload.versions["1.0.0"].dist,
+										tarball: `http://localhost:8787/${fullName}/-/${fullName.replace("/", "-")}-1.0.0.tgz`
+									}
+								}
+							},
+							_attachments: {
+								[`${fullName.replace("/", "-")}-1.0.0.tgz`]: packagePublishPayload._attachments["mock-1.0.0.tgz"]
+							}
+						};
 
-                        await SELF.fetch(`http://localhost/${fullName}`, {
-                            method: "PUT",
-                            headers: { "Content-Type": "application/json", Authorization: `Bearer ${adminToken}` },
-                            body: JSON.stringify(payload)
-                        });
-                    }
+						await SELF.fetch(`http://localhost/${fullName}`, {
+							method: "PUT",
+							headers: { "Content-Type": "application/json", Authorization: `Bearer ${adminToken}` },
+							body: JSON.stringify(payload)
+						});
+					}
 
 					const response = await SELF.fetch(`http://localhost/${fullName}`, {
 						method: check.method,
 						headers: {
 							Authorization: `Bearer ${token}`,
-                            ...(check.method === "PUT" ? { "Content-Type": "application/json" } : {})
+							...(check.method === "PUT" ? { "Content-Type": "application/json" } : {})
 						},
-                        body: check.method === "PUT" ? JSON.stringify({
-                            ...packagePublishPayload,
-                            _id: fullName,
-                            name: fullName,
-                            versions: {
-                                [version]: {
-                                    ...packagePublishPayload.versions["1.0.0"],
-                                    _id: `${fullName}@${version}`,
-                                    name: fullName,
-                                    version: version,
-                                    dist: {
-                                        ...packagePublishPayload.versions["1.0.0"].dist,
-                                        tarball: `http://localhost:8787/${fullName}/-/${fullName.replace("/", "-")}-${version}.tgz`
-                                    }
-                                }
-                            },
-                            _attachments: {
-                                [`${fullName.replace("/", "-")}-${version}.tgz`]: packagePublishPayload._attachments["mock-1.0.0.tgz"]
-                            }
-                        }) : undefined
+						body:
+							check.method === "PUT"
+								? JSON.stringify({
+										...packagePublishPayload,
+										_id: fullName,
+										name: fullName,
+										versions: {
+											[version]: {
+												...packagePublishPayload.versions["1.0.0"],
+												_id: `${fullName}@${version}`,
+												name: fullName,
+												version: version,
+												dist: {
+													...packagePublishPayload.versions["1.0.0"].dist,
+													tarball: `http://localhost:8787/${fullName}/-/${fullName.replace("/", "-")}-${version}.tgz`
+												}
+											}
+										},
+										_attachments: {
+											[`${fullName.replace("/", "-")}-${version}.tgz`]:
+												packagePublishPayload._attachments["mock-1.0.0.tgz"]
+										}
+									})
+								: undefined
 					});
 
-					expect(response.status, `Scenario: ${scenario.name}, Check: ${check.method} ${check.path}`).toBe(check.expectedStatus);
+					expect(response.status, `Scenario: ${scenario.name}, Check: ${check.method} ${check.path}`).toBe(
+						check.expectedStatus
+					);
 				}
 			});
 		});

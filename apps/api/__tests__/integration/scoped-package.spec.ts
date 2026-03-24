@@ -1,7 +1,7 @@
 import { env, fetchMock, SELF } from "cloudflare:test";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
-import { createToken } from "../utils";
 import packagePublishPayload from "../mocks/package-publish-payload.json";
+import { createToken } from "../utils";
 
 describe("scoped package routes", () => {
 	beforeAll(() => {
@@ -18,7 +18,7 @@ describe("scoped package routes", () => {
 				scopes: [{ type: "package:read", values: ["@test/pkg"] }]
 			});
 
-            fetchMock.get(env.FALLBACK_REGISTRY_ENDPOINT).intercept({ path: "/@test/pkg" }).reply(200, { name: "@test/pkg" });
+			fetchMock.get(env.FALLBACK_REGISTRY_ENDPOINT).intercept({ path: "/@test/pkg" }).reply(200, { name: "@test/pkg" });
 
 			const response = await SELF.fetch("http://localhost/@test/pkg", {
 				headers: {
@@ -26,49 +26,52 @@ describe("scoped package routes", () => {
 				}
 			});
 
-            expect(response.status).toBe(200);
-            const body = await response.json();
-            expect(body).toEqual({ name: "@test/pkg" });
+			expect(response.status).toBe(200);
+			const body = await response.json();
+			expect(body).toEqual({ name: "@test/pkg" });
 		});
 
-        it("should fallback to external registry without token being required for the fallback", async () => {
-            fetchMock.get(env.FALLBACK_REGISTRY_ENDPOINT).intercept({ path: "/@fallback/pkg" }).reply(200, { name: "@fallback/pkg" });
+		it("should fallback to external registry without token being required for the fallback", async () => {
+			fetchMock
+				.get(env.FALLBACK_REGISTRY_ENDPOINT)
+				.intercept({ path: "/@fallback/pkg" })
+				.reply(200, { name: "@fallback/pkg" });
 
 			const response = await SELF.fetch("http://localhost/@fallback/pkg");
 
-            expect(response.status).toBe(200);
-            const body = await response.json();
-            expect(body).toEqual({ name: "@fallback/pkg" });
+			expect(response.status).toBe(200);
+			const body = await response.json();
+			expect(body).toEqual({ name: "@fallback/pkg" });
 		});
 
-        it("should return 403 if token doesn't have access to scoped package in local registry", async () => {
-             const scopedPackagePayload = {
-                 ...packagePublishPayload,
-                 _id: "@scoped/pkg",
-                 name: "@scoped/pkg",
-                 versions: {
-                     "1.0.0": {
-                         ...packagePublishPayload.versions["1.0.0"],
-                         _id: "@scoped/pkg@1.0.0",
-                         name: "@scoped/pkg",
-                         dist: {
-                             ...packagePublishPayload.versions["1.0.0"].dist,
-                             tarball: "http://localhost:8787/@scoped/pkg/-/@scoped-pkg-1.0.0.tgz"
-                         }
-                     }
-                 },
-                 _attachments: {
-                     "@scoped-pkg-1.0.0.tgz": packagePublishPayload._attachments["mock-1.0.0.tgz"]
-                 }
-             };
+		it("should return 403 if token doesn't have access to scoped package in local registry", async () => {
+			const scopedPackagePayload = {
+				...packagePublishPayload,
+				_id: "@scoped/pkg",
+				name: "@scoped/pkg",
+				versions: {
+					"1.0.0": {
+						...packagePublishPayload.versions["1.0.0"],
+						_id: "@scoped/pkg@1.0.0",
+						name: "@scoped/pkg",
+						dist: {
+							...packagePublishPayload.versions["1.0.0"].dist,
+							tarball: "http://localhost:8787/@scoped/pkg/-/@scoped-pkg-1.0.0.tgz"
+						}
+					}
+				},
+				_attachments: {
+					"@scoped-pkg-1.0.0.tgz": packagePublishPayload._attachments["mock-1.0.0.tgz"]
+				}
+			};
 
-             const { token: adminToken } = await createToken({
+			const { token: adminToken } = await createToken({
 				name: "admin",
 				scopes: [{ type: "package:read+write", values: ["*"] }]
 			});
 
-            // Publish scoped package
-            const publishResponse = await SELF.fetch("http://localhost/@scoped/pkg", {
+			// Publish scoped package
+			const publishResponse = await SELF.fetch("http://localhost/@scoped/pkg", {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -76,50 +79,50 @@ describe("scoped package routes", () => {
 				},
 				body: JSON.stringify(scopedPackagePayload)
 			});
-            expect(publishResponse.status).toBe(200);
+			expect(publishResponse.status).toBe(200);
 
-            const { token: userToken } = await createToken({
+			const { token: userToken } = await createToken({
 				name: "user",
 				scopes: [{ type: "package:read", values: ["something-else"] }]
 			});
 
-            const response = await SELF.fetch("http://localhost/@scoped/pkg", {
+			const response = await SELF.fetch("http://localhost/@scoped/pkg", {
 				headers: {
 					Authorization: `Bearer ${userToken}`
 				}
 			});
 
-            expect(response.status).toBe(403);
-        });
+			expect(response.status).toBe(403);
+		});
 
-        it("should allow access if token has access to scoped package in local registry", async () => {
-             const scopedPackagePayload = {
-                 ...packagePublishPayload,
-                 _id: "@scoped/pkg-ok",
-                 name: "@scoped/pkg-ok",
-                 versions: {
-                     "1.0.0": {
-                         ...packagePublishPayload.versions["1.0.0"],
-                         _id: "@scoped/pkg-ok@1.0.0",
-                         name: "@scoped/pkg-ok",
-                         dist: {
-                             ...packagePublishPayload.versions["1.0.0"].dist,
-                             tarball: "http://localhost:8787/@scoped/pkg-ok/-/@scoped-pkg-ok-1.0.0.tgz"
-                         }
-                     }
-                 },
-                 _attachments: {
-                     "@scoped-pkg-ok-1.0.0.tgz": packagePublishPayload._attachments["mock-1.0.0.tgz"]
-                 }
-             };
+		it("should allow access if token has access to scoped package in local registry", async () => {
+			const scopedPackagePayload = {
+				...packagePublishPayload,
+				_id: "@scoped/pkg-ok",
+				name: "@scoped/pkg-ok",
+				versions: {
+					"1.0.0": {
+						...packagePublishPayload.versions["1.0.0"],
+						_id: "@scoped/pkg-ok@1.0.0",
+						name: "@scoped/pkg-ok",
+						dist: {
+							...packagePublishPayload.versions["1.0.0"].dist,
+							tarball: "http://localhost:8787/@scoped/pkg-ok/-/@scoped-pkg-ok-1.0.0.tgz"
+						}
+					}
+				},
+				_attachments: {
+					"@scoped-pkg-ok-1.0.0.tgz": packagePublishPayload._attachments["mock-1.0.0.tgz"]
+				}
+			};
 
-             const { token: adminToken } = await createToken({
+			const { token: adminToken } = await createToken({
 				name: "admin",
 				scopes: [{ type: "package:read+write", values: ["*"] }]
 			});
 
-            // Publish scoped package
-            const publishResponse = await SELF.fetch("http://localhost/@scoped/pkg-ok", {
+			// Publish scoped package
+			const publishResponse = await SELF.fetch("http://localhost/@scoped/pkg-ok", {
 				method: "PUT",
 				headers: {
 					"Content-Type": "application/json",
@@ -127,22 +130,23 @@ describe("scoped package routes", () => {
 				},
 				body: JSON.stringify(scopedPackagePayload)
 			});
-            expect(publishResponse.status).toBe(200);
+			expect(publishResponse.status).toBe(200);
 
-            const { token: userToken } = await createToken({
+			const { token: userToken } = await createToken({
 				name: "user",
 				scopes: [{ type: "package:read", values: ["@scoped/pkg-ok"] }]
 			});
 
-            const response = await SELF.fetch("http://localhost/@scoped/pkg-ok", {
+			const response = await SELF.fetch("http://localhost/@scoped/pkg-ok", {
 				headers: {
 					Authorization: `Bearer ${userToken}`
 				}
 			});
 
-            expect(response.status).toBe(200);
-            const body = await response.json();
-            expect(body.name).toBe("@scoped/pkg-ok");
-        });
+			expect(response.status).toBe(200);
+			const body = (await response.json()) as { name: string } | undefined;
+			if (!body) return;
+			expect(body.name).toBe("@scoped/pkg-ok");
+		});
 	});
 });
