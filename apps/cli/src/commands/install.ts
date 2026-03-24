@@ -68,7 +68,8 @@ const promptD1Database = async (): Promise<{ name: string; id: string }> => {
 		initialValue: "npflared",
 		message: "Enter a name for your D1 database:",
 		validate(value) {
-			if (value.length === 0) {
+			const v = value ?? "";
+			if (v.length === 0) {
 				return "Please enter a name for your D1 database";
 			}
 		}
@@ -124,7 +125,8 @@ const promptR2Bucket = async (): Promise<{ name: string }> => {
 		initialValue: "npflared",
 		message: "Enter a name for your R2 bucket:",
 		validate(value) {
-			if (value.length === 0) {
+			const v = value ?? "";
+			if (v.length === 0) {
 				return "Please enter a name for your R2 bucket";
 			}
 		}
@@ -170,7 +172,8 @@ const promptWorkerName = async (): Promise<string> => {
 		initialValue: "npflared",
 		message: "Enter a name for your worker:",
 		validate(value) {
-			if (value.length === 0) {
+			const v = value ?? "";
+			if (v.length === 0) {
 				return "Please enter a name for your worker";
 			}
 		}
@@ -204,12 +207,11 @@ const generateAdminToken = async (basePath: string) => {
 	const migrationFileContent = await readFile(adminTokenMigrationFilePath, "utf-8");
 	cliSpinner.stop(`Admin token migration file already exists at ${adminTokenMigrationFilePath}`);
 
-	// extract token from migration file
 	const match = migrationFileContent.match(
 		/INSERT INTO token \(token, name, scopes, created_at, updated_at\) VALUES \('([^']+)'/
 	);
 
-	return match?.[0] ?? "";
+	return match?.[1] ?? "";
 };
 
 export const install = async () => {
@@ -235,7 +237,7 @@ export const install = async () => {
 
 		const packageJsonPath = join(cloneTmpDir, "package.json");
 		const packageJson = JSON.parse(await readFile(packageJsonPath, "utf-8"));
-		const npflaredVersion = packageJson.version;
+		const npflaredVersion = packageJson.version as string;
 
 		await ensureNpflaredDirExists();
 		const npflaredCurrentVersionDirectory = join(npflaredDirPath, npflaredVersion);
@@ -286,7 +288,7 @@ export const install = async () => {
 			};
 			const wranglerConfigFilePath = join(npflaredCurrentVersionDirectory, "wrangler.json");
 
-			await writeFile(join(npflaredCurrentVersionDirectory, "wrangler.json"), JSON.stringify(wranglerConfig, null, 2));
+			await writeFile(wranglerConfigFilePath, JSON.stringify(wranglerConfig, null, 2));
 			cliSpinner.stop(`Wrangler configuration generated at ${wranglerConfigFilePath}`);
 
 			const adminToken = await generateAdminToken(npflaredCurrentVersionDirectory);
@@ -299,12 +301,14 @@ export const install = async () => {
 			const deployedUrl = await deploy({ cwd: npflaredCurrentVersionDirectory });
 			cliSpinner.stop();
 			log.info(
-				chalk.green(dedent`
-				🔥 npflared is now ready to use!
-				🔗 Deployed to: ${chalk.bold.white(deployedUrl)}
-				👮 Admin token: ${chalk.bold.white(adminToken)}
-				📚 Check documentation for more information: ${chalk.bold.white("https://npflared.thomas-cogez.fr")}
-			`)
+				chalk.green(
+					dedent`
+          🔥 npflared is now ready to use!
+          🔗 Deployed to: ${chalk.bold.white(deployedUrl)}
+          👮 Admin token: ${chalk.bold.white(adminToken)}
+          📚 Check documentation for more information: ${chalk.bold.white("https://npflared.thomas-cogez.fr")}
+        `
+				)
 			);
 		});
 

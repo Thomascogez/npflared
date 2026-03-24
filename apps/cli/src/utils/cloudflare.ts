@@ -1,8 +1,23 @@
 import { type ExtendedResolvedCommand, getCommand } from "@antfu/ni";
 import { z } from "zod";
 import { $, ProcessOutput } from "zx";
+import { mkdtemp, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import type { D1Database, R2Bucket } from "../types";
 import { cliContext } from "./context";
+
+$.verbose = false;
+
+// Configure zx for PowerShell/cmd on Windows
+if (!$.quote) {
+	$.quote = (arg: string) => {
+		if (/^[a-zA-Z0-9_:.\/\\-]+$/.test(arg)) {
+			return arg;
+		}
+		return `"${arg.replace(/"/g, '\\"')}"`;
+	};
+}
 
 const createD1DatabaseOutputSchema = z.object({
 	d1_databases: z
@@ -212,4 +227,46 @@ export const deploy = async (config: { cwd?: string } = {}) => {
 		}
 		throw error;
 	}
+};
+
+export const executeD1 = async (sql: string, options: { cwd?: string; local?: boolean; json?: boolean } = {}) => {
+	const { cwd, local = false, json = false } = options;
+
+	// Write SQL to a temp file
+	const tempDir = await mkdtemp(join(tmpdir(), "npflared-sql-"));
+	const sqlFile = join(tempDir, "query.sql");
+	await writeFile(sqlFile, sql, "utf8");
+
+	const args: string[] = [
+		"d1",
+		"execute",
+		"DB",
+		local ? "--local" : "--remote",
+		"--config",
+		"wrangler.json",
+		"--file",
+		sqlFile
+	];
+
+	if (json) {
+		args.push("--json");
+	}
+
+	try {
+		const result = await $({ quiet: true, cwd })`wrangler ${args}`;
+		return result.stdout as string;
+	} catch (error) {
+		if (error instanceof ProcessOutput) {
+			throw new Error(error.stderr || error.stdout);
+		}
+		throw error;
+	}
+};
+
+export const executeD1Remote = async (sql: string, config: { cwd?: string } = {}) => {
+	await executeD1(sql, { cwd: config.cwd, local: false });
+};
+
+export const executeD1Local = async (sql: string, config: { cwd?: string } = {}) => {
+	await executeD1(sql, { cwd: config.cwd, local: true });
 };
