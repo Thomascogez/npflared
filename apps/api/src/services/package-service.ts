@@ -59,7 +59,7 @@ export const packageService = {
 			throw HttpError.badRequest("No attachment");
 		}
 
-		const expectedAttachmentName = `${packageName.replace("/", "-")}-${versionToUpload}.tgz`;
+		const expectedAttachmentName = `${packageName}-${versionToUpload}.tgz`;
 
 		if (attachmentName !== expectedAttachmentName) {
 			throw HttpError.badRequest("Attachment name does not match");
