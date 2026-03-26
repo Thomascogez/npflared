@@ -189,7 +189,7 @@ export const packageRouter = $.createApp()
 		}
 	)
 	.get(
-		"/:packageScope/:packageName/-/:tarballScope/:tarballName",
+		"/:packageScope/:packageName/-/:tarballName",
 		describeRoute({
 			description: "Get a scoped package tarball by it's name from the registry",
 			responses: {
@@ -208,16 +208,15 @@ export const packageRouter = $.createApp()
 		async (c) => {
 			const can = assertTokenAccess(c.get("token"));
 
-			const { packageScope, packageName, tarballScope, tarballName } = c.req.valid("param");
+			const { packageScope, packageName, tarballName } = c.req.valid("param");
 
 			const scopedPackageName = `${packageScope}/${packageName}`;
-			const scopedTarballName = `${tarballScope}/${tarballName}`;
 
 			if (!can("read", "package", scopedPackageName)) {
 				throw HttpError.forbidden();
 			}
 
-			const packageTarball = await packageService.getPackageTarball(scopedPackageName, scopedTarballName);
+			const packageTarball = await packageService.getPackageTarball(scopedPackageName, tarballName);
 
 			return new Response(packageTarball.body);
 		}

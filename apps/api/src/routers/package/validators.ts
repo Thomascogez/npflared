@@ -96,7 +96,6 @@ export const validators = {
 					param: z.object({
 						packageScope: z.string().nonempty(),
 						packageName: z.string().nonempty(),
-						tarballScope: z.string().nonempty(),
 						tarballName: z.string().nonempty()
 					})
 				},
