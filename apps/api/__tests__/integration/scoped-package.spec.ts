@@ -204,4 +204,82 @@ describe("scoped package routes", () => {
 			expect(blob.size).toBeGreaterThan(0);
 		});
 	});
+
+	describe("403 Forbidden scenarios", () => {
+		it("should match scoped package with @scope/* glob", async () => {
+			const { token } = await createToken({
+				name: "test-token",
+				scopes: [{ type: "package:read+write", values: ["@babadeluxe/*"] }]
+			});
+
+			const scopedPackagePayload = {
+				...packagePublishPayload,
+				_id: "@babadeluxe/xo-config",
+				name: "@babadeluxe/xo-config",
+				versions: {
+					"1.0.0": {
+						...packagePublishPayload.versions["1.0.0"],
+						_id: "@babadeluxe/xo-config@1.0.0",
+						name: "@babadeluxe/xo-config",
+						dist: {
+							...packagePublishPayload.versions["1.0.0"].dist,
+							tarball: "http://localhost:8787/@babadeluxe/xo-config/-/@babadeluxe-xo-config-1.0.0.tgz"
+						}
+					}
+				},
+				_attachments: {
+					"@babadeluxe-xo-config-1.0.0.tgz": packagePublishPayload._attachments["mock-1.0.0.tgz"]
+				}
+			};
+
+			const response = await SELF.fetch("http://localhost/@babadeluxe/xo-config", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`
+				},
+				body: JSON.stringify(scopedPackagePayload)
+			});
+
+			expect(response.status).toBe(200);
+		});
+
+		it("should match scoped package with @scope** glob when slashes are allowed to cross", async () => {
+			const { token } = await createToken({
+				name: "test-token",
+				scopes: [{ type: "package:read+write", values: ["@babadeluxe**"] }]
+			});
+
+			const scopedPackagePayload = {
+				...packagePublishPayload,
+				_id: "@babadeluxe/xo-config",
+				name: "@babadeluxe/xo-config",
+				versions: {
+					"1.0.0": {
+						...packagePublishPayload.versions["1.0.0"],
+						_id: "@babadeluxe/xo-config@1.0.0",
+						name: "@babadeluxe/xo-config",
+						dist: {
+							...packagePublishPayload.versions["1.0.0"].dist,
+							tarball: "http://localhost:8787/@babadeluxe/xo-config/-/@babadeluxe-xo-config-1.0.0.tgz"
+						}
+					}
+				},
+				_attachments: {
+					"@babadeluxe-xo-config-1.0.0.tgz": packagePublishPayload._attachments["mock-1.0.0.tgz"]
+				}
+			};
+
+			const response = await SELF.fetch("http://localhost/@babadeluxe/xo-config", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${token}`
+				},
+				body: JSON.stringify(scopedPackagePayload)
+			});
+
+			expect(response.status).toBe(200);
+		});
+	});
 });
