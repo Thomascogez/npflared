@@ -1,4 +1,13 @@
 {
+	"json.schemaDownload.enable": true,
+	"json.schemas": [
+		{
+			"fileMatch": [
+				"wrangler.json"
+			],
+			"url": "https://raw.githubusercontent.com/snilan/wrangler-json-schema/main/wrangler.schema.json"
+		}
+	],
 	"editor.defaultFormatter": "biomejs.biome",
 	"[json]": {
 		"editor.defaultFormatter": "biomejs.biome"
@@ -16,5 +25,7 @@
 		"quickfix.biome": "explicit",
 		"source.organizeImports.biome": "explicit"
 	},
-	"cSpell.words": ["npflared"]
+	"cSpell.words": [
+		"npflared"
+	]
 }
