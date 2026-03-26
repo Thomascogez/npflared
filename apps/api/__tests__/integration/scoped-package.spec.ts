@@ -149,4 +149,59 @@ describe("scoped package routes", () => {
 			expect(body.name).toBe("@scoped/pkg-ok");
 		});
 	});
+
+	describe("GET /:packageScope/:packageName/-/:tarballName", () => {
+		it("should allow downloading a scoped package tarball", async () => {
+			const scopedPackagePayload = {
+				...packagePublishPayload,
+				_id: "@scoped/pkg-tarball",
+				name: "@scoped/pkg-tarball",
+				versions: {
+					"1.0.0": {
+						...packagePublishPayload.versions["1.0.0"],
+						_id: "@scoped/pkg-tarball@1.0.0",
+						name: "@scoped/pkg-tarball",
+						dist: {
+							...packagePublishPayload.versions["1.0.0"].dist,
+							tarball: "http://localhost:8787/@scoped/pkg-tarball/-/@scoped-pkg-tarball-1.0.0.tgz"
+						}
+					}
+				},
+				_attachments: {
+					"@scoped-pkg-tarball-1.0.0.tgz": packagePublishPayload._attachments["mock-1.0.0.tgz"]
+				}
+			};
+
+			const { token: adminToken } = await createToken({
+				name: "admin",
+				scopes: [{ type: "package:read+write", values: ["*"] }]
+			});
+
+			// Publish scoped package
+			const publishResponse = await SELF.fetch("http://localhost/@scoped/pkg-tarball", {
+				method: "PUT",
+				headers: {
+					"Content-Type": "application/json",
+					Authorization: `Bearer ${adminToken}`
+				},
+				body: JSON.stringify(scopedPackagePayload)
+			});
+			expect(publishResponse.status).toBe(200);
+
+			const { token: userToken } = await createToken({
+				name: "user",
+				scopes: [{ type: "package:read", values: ["@scoped/pkg-tarball"] }]
+			});
+
+			const response = await SELF.fetch("http://localhost/@scoped/pkg-tarball/-/@scoped-pkg-tarball-1.0.0.tgz", {
+				headers: {
+					Authorization: `Bearer ${userToken}`
+				}
+			});
+
+			expect(response.status).toBe(200);
+			const blob = await response.blob();
+			expect(blob.size).toBeGreaterThan(0);
+		});
+	});
 });
