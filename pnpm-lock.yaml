@@ -70,8 +70,8 @@ importers:
   apps/cli:
     dependencies:
       '@antfu/ni':
-        specifier: ^28.1.0
-        version: 28.3.0
+        specifier: ^30.0.0
+        version: 30.1.0
       '@clack/prompts':
         specifier: ^1.0.0
         version: 1.1.0
@@ -122,9 +122,9 @@ importers:
 
 packages:
 
-  '@antfu/ni@28.3.0':
-    resolution: {integrity: sha512-JbRijiCNAGcQcyPfV0EXOJYwV27e/srXfTvETqzbbh4jzHBV2pDYiBz8rj5SyzX27aTbCK+qXR3x6g2WKokcrA==}
-    engines: {node: '>=20'}
+  '@antfu/ni@30.1.0':
+    resolution: {integrity: sha512-3VuAbPjgY52rQNn4wABaXMhBU2Oq91uy6L8nX49eJ35OLI68CyckGU+HZxcaHix4ymuGM2nFL1D6sLpgODK5xw==}
+    engines: {node: '>=20.19.0'}
     hasBin: true
 
   '@babel/generator@8.0.0-rc.2':
@@ -3221,6 +3221,10 @@ packages:
     resolution: {integrity: sha512-W/KYk+NFhkmsYpuHq5JykngiOCnxeVL8v8dFnqxSD8qEEdRfXk1SDM6JzNqcERbcGYj9tMrDQBYV9cjgnunFIg==}
     engines: {node: '>=18'}
 
+  tinyexec@1.1.2:
+    resolution: {integrity: sha512-dAqSqE/RabpBKI8+h26GfLq6Vb3JVXs30XYQjdMjaj/c2tS8IYYMbIzP599KtRj7c57/wYApb3QjgRgXmrCukA==}
+    engines: {node: '>=18'}
+
   tinyglobby@0.2.15:
     resolution: {integrity: sha512-j2Zq4NyQYG5XMST4cbs02Ak8iJUdxRM0XI5QyxXuZOzKOINmWurp3smXu3y5wDcJrptwpSjgXHzIQxR0omXljQ==}
     engines: {node: '>=12.0.0'}
@@ -3533,12 +3537,11 @@ packages:
 
 snapshots:
 
-  '@antfu/ni@28.3.0':
+  '@antfu/ni@30.1.0':
     dependencies:
-      ansis: 4.2.0
       fzf: 0.5.2
       package-manager-detector: 1.6.0
-      tinyexec: 1.0.2
+      tinyexec: 1.1.2
       tinyglobby: 0.2.15
 
   '@babel/generator@8.0.0-rc.2':
@@ -6618,6 +6621,8 @@ snapshots:
   tinyexec@0.3.2: {}
 
   tinyexec@1.0.2: {}
+
+  tinyexec@1.1.2: {}
 
   tinyglobby@0.2.15:
     dependencies:
