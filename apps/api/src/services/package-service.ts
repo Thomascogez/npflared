@@ -26,11 +26,21 @@ export const packageService = {
 			{} as Record<string, unknown>
 		);
 
+		const time: Record<string, string> = {
+			created: new Date(publishedPackage.createdAt).toISOString(),
+			modified: new Date(publishedPackage.updatedAt).toISOString()
+		};
+
+		publishedPackage.packageReleases.forEach((release) => {
+			time[release.version] = new Date(release.createdAt).toISOString();
+		});
+
 		return {
 			_id: publishedPackage.name,
 			name: publishedPackage.name,
 			"dist-tags": publishedPackage.distTags,
-			versions
+			versions,
+			time
 		};
 	},
 

@@ -1,7 +1,7 @@
-import { env, fetchMock, SELF } from "cloudflare:test";
+import { env, fetchMock } from "cloudflare:test";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import packagePublishPayload from "../mocks/package-publish-payload.json";
-import { createToken, publishMockPackage } from "../utils";
+import { createToken, httpTestClient, publishMockPackage } from "../utils";
 
 describe("package routes", () => {
 	beforeAll(() => {
@@ -13,27 +13,35 @@ describe("package routes", () => {
 
 	describe("PUT /:package", () => {
 		it("should not publish a package without being authenticated", async () => {
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json"
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: packagePublishPayload,
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify(packagePublishPayload)
-			});
+				{
+					headers: {
+						"Content-Type": "application/json"
+					}
+				}
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
 		});
 
 		it("should not publish a package with an invalid token", async () => {
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Bearer invalid_token"
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: packagePublishPayload,
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify(packagePublishPayload)
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer invalid_token"
+					}
+				}
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -45,14 +53,18 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["test-package"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: packagePublishPayload,
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify(packagePublishPayload)
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -64,14 +76,18 @@ describe("package routes", () => {
 				scopes: [{ type: "package:read", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: packagePublishPayload,
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify(packagePublishPayload)
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -83,17 +99,21 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: {
+						...packagePublishPayload,
+						"dist-tags": {}
+					},
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify({
-					...packagePublishPayload,
-					"dist-tags": {}
-				})
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(400);
 			expect(response.statusText).toBe("Bad Request");
@@ -108,17 +128,21 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: {
+						...packagePublishPayload,
+						versions: {}
+					},
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify({
-					...packagePublishPayload,
-					versions: {}
-				})
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(400);
 			expect(response.statusText).toBe("Bad Request");
@@ -133,17 +157,21 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: {
+						...packagePublishPayload,
+						_attachments: {}
+					},
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify({
-					...packagePublishPayload,
-					_attachments: {}
-				})
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(400);
 			expect(response.statusText).toBe("Bad Request");
@@ -158,19 +186,23 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: {
+						...packagePublishPayload,
+						_attachments: {
+							"not-matching-1.0.0.tgz": packagePublishPayload._attachments["mock-1.0.0.tgz"]
+						}
+					},
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify({
-					...packagePublishPayload,
-					_attachments: {
-						"not-matching-1.0.0.tgz": {}
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
 					}
-				})
-			});
+				}
+			);
 
 			expect(response.status).toBe(400);
 			expect(response.statusText).toBe("Bad Request");
@@ -185,25 +217,29 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
-				},
-				body: JSON.stringify({
-					...packagePublishPayload,
-					versions: {
-						"1.0.0": {
-							...packagePublishPayload.versions["1.0.0"],
-							dist: {
-								...packagePublishPayload.versions["1.0.0"].dist,
-								tarball: "http://localhost:8787/mock/-/not-matching-1.0.0.tgz"
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: {
+						...packagePublishPayload,
+						versions: {
+							"1.0.0": {
+								...packagePublishPayload.versions["1.0.0"],
+								dist: {
+									...packagePublishPayload.versions["1.0.0"].dist,
+									tarball: "http://localhost:8787/mock/-/not-matching-1.0.0.tgz"
+								}
 							}
 						}
+					},
+					param: { packageName: "mock" }
+				},
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
 					}
-				})
-			});
+				}
+			);
 
 			expect(response.status).toBe(400);
 			expect(response.statusText).toBe("Bad Request");
@@ -218,14 +254,18 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$put(
+				{
+					json: packagePublishPayload,
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify(packagePublishPayload)
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(200);
 
@@ -240,14 +280,18 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["mock"] }]
 			});
 
-			const firstPublishResponse = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const firstPublishResponse = await httpTestClient[":packageName"].$put(
+				{
+					json: packagePublishPayload,
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify(packagePublishPayload)
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(firstPublishResponse.status).toBe(200);
 
@@ -255,14 +299,18 @@ describe("package routes", () => {
 
 			expect(firstPublishResponseBody).to.have.property("message").to.be.a("string").to.equal("ok");
 
-			const secondPublishResponse = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const secondPublishResponse = await httpTestClient[":packageName"].$put(
+				{
+					json: packagePublishPayload,
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify(packagePublishPayload)
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(secondPublishResponse.status).toBe(409);
 			expect(secondPublishResponse.statusText).toBe("Conflict");
@@ -277,14 +325,18 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["mock"] }]
 			});
 
-			const firstPublishResponse = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const firstPublishResponse = await httpTestClient[":packageName"].$put(
+				{
+					json: packagePublishPayload,
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify(packagePublishPayload)
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(firstPublishResponse.status).toBe(200);
 
@@ -292,14 +344,18 @@ describe("package routes", () => {
 
 			expect(firstPublishResponseBody).to.have.property("message").to.be.a("string").to.equal("ok");
 
-			const secondPublishResponse = await SELF.fetch("http://localhost/mock", {
-				method: "PUT",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const secondPublishResponse = await httpTestClient[":packageName"].$put(
+				{
+					json: JSON.parse(JSON.stringify(packagePublishPayload).replaceAll("1.0.0", "2.0.0")),
+					param: { packageName: "mock" }
 				},
-				body: JSON.stringify(packagePublishPayload).replaceAll("1.0.0", "2.0.0")
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(secondPublishResponse.status).toBe(200);
 
@@ -311,7 +367,9 @@ describe("package routes", () => {
 	describe("GET /:package", () => {
 		it("should not get a package without being authenticated", async () => {
 			await publishMockPackage();
-			const response = await SELF.fetch("http://localhost/mock");
+			const response = await httpTestClient[":packageName"].$get({
+				param: { packageName: "mock" }
+			});
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).to.be.a("string").to.equal("Forbidden");
@@ -319,11 +377,16 @@ describe("package routes", () => {
 
 		it("should not get a package with an invalid token", async () => {
 			await publishMockPackage();
-			const response = await SELF.fetch("http://localhost/mock", {
-				headers: {
-					Authorization: "Bearer invalid_token"
+			const response = await httpTestClient[":packageName"].$get(
+				{
+					param: { packageName: "mock" }
+				},
+				{
+					headers: {
+						Authorization: "Bearer invalid_token"
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).to.be.a("string").to.equal("Forbidden");
@@ -337,11 +400,16 @@ describe("package routes", () => {
 
 			await publishMockPackage();
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$get(
+				{
+					param: { packageName: "mock" }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).to.be.a("string").to.equal("Forbidden");
@@ -355,11 +423,16 @@ describe("package routes", () => {
 
 			await publishMockPackage();
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$get(
+				{
+					param: { packageName: "mock" }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).to.be.a("string").to.equal("Forbidden");
@@ -373,11 +446,16 @@ describe("package routes", () => {
 
 			await publishMockPackage();
 
-			const response = await SELF.fetch("http://localhost/mock", {
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"].$get(
+				{
+					param: { packageName: "mock" }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(200);
 
@@ -392,7 +470,9 @@ describe("package routes", () => {
 		it("should get a package that does not belong to the local registry and fallback to the fallback registry", async () => {
 			fetchMock.get(env.FALLBACK_REGISTRY_ENDPOINT).intercept({ path: "/use-discosable" }).reply(200);
 
-			const response = await SELF.fetch("http://localhost/use-discosable");
+			const response = await httpTestClient[":packageName"].$get({
+				param: { packageName: "use-discosable" }
+			});
 			expect(response.status).toBe(200);
 		});
 	});
@@ -401,7 +481,9 @@ describe("package routes", () => {
 		it("should not get a package tarball without being authenticated", async () => {
 			await publishMockPackage();
 
-			const response = await SELF.fetch("http://localhost/mock/-/mock-1.0.0.tgz");
+			const response = await httpTestClient[":packageName"]["-"][":tarballName"].$get({
+				param: { packageName: "mock", tarballName: "mock-1.0.0.tgz" }
+			});
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -410,11 +492,16 @@ describe("package routes", () => {
 		it("should not get a package tarball with an invalid token", async () => {
 			await publishMockPackage();
 
-			const response = await SELF.fetch("http://localhost/mock/-/mock-1.0.0.tgz", {
-				headers: {
-					Authorization: "Bearer invalid_token"
+			const response = await httpTestClient[":packageName"]["-"][":tarballName"].$get(
+				{
+					param: { packageName: "mock", tarballName: "mock-1.0.0.tgz" }
+				},
+				{
+					headers: {
+						Authorization: "Bearer invalid_token"
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -428,11 +515,16 @@ describe("package routes", () => {
 				scopes: [{ type: "package:read", values: ["an-another-package"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock/-/mock-1.0.0.tgz", {
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"]["-"][":tarballName"].$get(
+				{
+					param: { packageName: "mock", tarballName: "mock-1.0.0.tgz" }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -445,11 +537,16 @@ describe("package routes", () => {
 				scopes: [{ type: "package:write", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock/-/mock-1.0.0.tgz", {
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"]["-"][":tarballName"].$get(
+				{
+					param: { packageName: "mock", tarballName: "mock-1.0.0.tgz" }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -461,11 +558,16 @@ describe("package routes", () => {
 				scopes: [{ type: "package:read", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock/-/mock-1.0.0.tgz", {
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"]["-"][":tarballName"].$get(
+				{
+					param: { packageName: "mock", tarballName: "mock-1.0.0.tgz" }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(404);
 			expect(response.statusText).toBe("Not Found");
@@ -478,11 +580,16 @@ describe("package routes", () => {
 				scopes: [{ type: "package:read+write", values: ["mock"] }]
 			});
 
-			const response = await SELF.fetch("http://localhost/mock/-/mock-1.0.0.tgz", {
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient[":packageName"]["-"][":tarballName"].$get(
+				{
+					param: { packageName: "mock", tarballName: "mock-1.0.0.tgz" }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(200);
 			const body = await response.arrayBuffer();

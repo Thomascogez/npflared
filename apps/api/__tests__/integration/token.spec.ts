@@ -1,38 +1,45 @@
-import { env, SELF } from "cloudflare:test";
+import { env } from "cloudflare:test";
+import type { InferRequestType } from "hono";
 import { describe, expect, it } from "vitest";
 import type { tokenTable } from "../../src/db/schema";
-import { createToken } from "../utils";
+import { createToken, httpTestClient } from "../utils";
 
 describe("token routes", () => {
 	describe("POST /tokens", () => {
 		it("should not create a token without being authenticated", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json"
+			const response = await httpTestClient["-"].npm.v1.tokens.$post(
+				{
+					json: {
+						name: "test-token",
+						scopes: [{ type: "package:read", values: ["*"] }]
+					}
 				},
-				body: JSON.stringify({
-					name: "test-token",
-					scopes: [{ type: "package:read", values: ["*"] }]
-				})
-			});
+				{
+					headers: {
+						"Content-Type": "application/json"
+					}
+				}
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
 		});
 
 		it("should not create a token with an invalid token", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: "Bearer invalid_token"
+			const response = await httpTestClient["-"].npm.v1.tokens.$post(
+				{
+					json: {
+						name: "test-token",
+						scopes: [{ type: "package:read", values: ["*"] }]
+					}
 				},
-				body: JSON.stringify({
-					name: "test-token",
-					scopes: [{ type: "package:read", values: ["*"] }]
-				})
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: "Bearer invalid_token"
+					}
+				}
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -41,56 +48,65 @@ describe("token routes", () => {
 		it("should not create a token with a token that does not have the token write scope", async () => {
 			const { token } = await createToken();
 
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient["-"].npm.v1.tokens.$post(
+				{
+					json: {
+						name: "test-token",
+						scopes: [{ type: "package:read", values: ["*"] }]
+					}
 				},
-				body: JSON.stringify({
-					name: "test-token",
-					scopes: [{ type: "package:read", values: ["*"] }]
-				})
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
 		});
 
 		it("should not create a token without providing at least one scope", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${env.ADMIN_TOKEN}`
+			const response = await httpTestClient["-"].npm.v1.tokens.$post(
+				{
+					json: {
+						name: "test-token",
+						scopes: []
+					}
 				},
-				body: JSON.stringify({
-					name: "test-token",
-					scopes: []
-				})
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${env.ADMIN_TOKEN}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(400);
 			expect(response.statusText).toBe("Bad Request");
 		});
 
 		it("should not create a token when providing an invalid scope", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${env.ADMIN_TOKEN}`
+			const response = await httpTestClient["-"].npm.v1.tokens.$post(
+				{
+					json: {
+						name: "test-token",
+						scopes: [
+							{
+								type: "invalid_scope" as never,
+								values: ["*"]
+							}
+						]
+					}
 				},
-				body: JSON.stringify({
-					name: "test-token",
-					scopes: [
-						{
-							type: "invalid_scope",
-							values: ["*"]
-						}
-					]
-				})
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${env.ADMIN_TOKEN}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(400);
 			expect(response.statusText).toBe("Bad Request");
@@ -105,16 +121,19 @@ describe("token routes", () => {
 						values: ["*"]
 					}
 				]
-			};
+			} satisfies InferRequestType<(typeof httpTestClient)["-"]["npm"]["v1"]["tokens"]["$post"]>["json"];
 
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-					Authorization: `Bearer ${env.ADMIN_TOKEN}`
+			const response = await httpTestClient["-"].npm.v1.tokens.$post(
+				{
+					json: body
 				},
-				body: JSON.stringify(body)
-			});
+				{
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${env.ADMIN_TOKEN}`
+					}
+				}
+			);
 
 			expect(response.status).toBe(201);
 
@@ -130,21 +149,21 @@ describe("token routes", () => {
 
 	describe("GET /tokens", () => {
 		it("should not get tokens without been authenticated", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "GET"
-			});
+			const response = await httpTestClient["-"].npm.v1.tokens.$get();
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
 		});
 
 		it("should not get tokens with an invalid token", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "GET",
-				headers: {
-					Authorization: "Bearer invalid_token"
+			const response = await httpTestClient["-"].npm.v1.tokens.$get(
+				{},
+				{
+					headers: {
+						Authorization: "Bearer invalid_token"
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -153,12 +172,14 @@ describe("token routes", () => {
 		it("should not get tokens with a token that does not have the token read scope", async () => {
 			const { token } = await createToken();
 
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient["-"].npm.v1.tokens.$get(
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -166,17 +187,18 @@ describe("token routes", () => {
 
 		it("should get tokens", async () => {
 			const { token, name, scopes, createdAt, updatedAt } = await createToken();
-
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens", {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${env.ADMIN_TOKEN}`
+			const response = await httpTestClient["-"].npm.v1.tokens.$get(
+				{},
+				{
+					headers: {
+						Authorization: `Bearer ${env.ADMIN_TOKEN}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(200);
 
-			const responseBody = await response.json<(typeof tokenTable.$inferSelect)[]>();
+			const responseBody = (await response.json()) as (typeof tokenTable.$inferSelect)[];
 			expect(responseBody).to.be.an("array").to.have.length(2);
 
 			const adminToken = responseBody.find((tokenDetails) => tokenDetails.token === env.ADMIN_TOKEN);
@@ -203,8 +225,8 @@ describe("token routes", () => {
 
 	describe("GET /tokens/:tokenId", () => {
 		it("should not get a token without being authenticated", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens/token/test-token", {
-				method: "GET"
+			const response = await httpTestClient["-"].npm.v1.tokens.token[":token"].$get({
+				param: { token: "test-token" }
 			});
 
 			expect(response.status).toBe(403);
@@ -212,12 +234,16 @@ describe("token routes", () => {
 		});
 
 		it("should not get a token with an invalid token", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens/token/test-token", {
-				method: "GET",
-				headers: {
-					Authorization: "Bearer invalid_token"
+			const response = await httpTestClient["-"].npm.v1.tokens.token[":token"].$get(
+				{
+					param: { token: "test-token" }
+				},
+				{
+					headers: {
+						Authorization: "Bearer invalid_token"
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -226,12 +252,16 @@ describe("token routes", () => {
 		it("should not get a token with a token that does not have the token read scope", async () => {
 			const { token } = await createToken();
 
-			const response = await SELF.fetch(`http://localhost/-/npm/v1/tokens/token/${token}`, {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient["-"].npm.v1.tokens.token[":token"].$get(
+				{
+					param: { token }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -240,16 +270,20 @@ describe("token routes", () => {
 		it("should get a token", async () => {
 			const { token, name, scopes, createdAt, updatedAt } = await createToken();
 
-			const response = await SELF.fetch(`http://localhost/-/npm/v1/tokens/token/${token}`, {
-				method: "GET",
-				headers: {
-					Authorization: `Bearer ${env.ADMIN_TOKEN}`
+			const response = await httpTestClient["-"].npm.v1.tokens.token[":token"].$get(
+				{
+					param: { token }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${env.ADMIN_TOKEN}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(200);
 
-			const responseBody = await response.json<typeof tokenTable.$inferSelect>();
+			const responseBody = (await response.json()) as typeof tokenTable.$inferSelect;
 
 			expect(responseBody).to.be.an("object");
 			expect(responseBody).to.have.property("token", token);
@@ -262,8 +296,8 @@ describe("token routes", () => {
 
 	describe("DELETE /tokens/token/:tokenId", () => {
 		it("should not delete a token without being authenticated", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens/token/test-token", {
-				method: "DELETE"
+			const response = await httpTestClient["-"].npm.v1.tokens.token[":token"].$delete({
+				param: { token: "test-token" }
 			});
 
 			expect(response.status).toBe(403);
@@ -271,12 +305,16 @@ describe("token routes", () => {
 		});
 
 		it("should not delete a token with an invalid token", async () => {
-			const response = await SELF.fetch("http://localhost/-/npm/v1/tokens/token/test-token", {
-				method: "DELETE",
-				headers: {
-					Authorization: "Bearer invalid_token"
+			const response = await httpTestClient["-"].npm.v1.tokens.token[":token"].$delete(
+				{
+					param: { token: "test-token" }
+				},
+				{
+					headers: {
+						Authorization: "Bearer invalid_token"
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -285,12 +323,16 @@ describe("token routes", () => {
 		it("should not delete a token with a token that does not have the token write scope", async () => {
 			const { token } = await createToken();
 
-			const response = await SELF.fetch(`http://localhost/-/npm/v1/tokens/token/${token}`, {
-				method: "DELETE",
-				headers: {
-					Authorization: `Bearer ${token}`
+			const response = await httpTestClient["-"].npm.v1.tokens.token[":token"].$delete(
+				{
+					param: { token }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(403);
 			expect(response.statusText).toBe("Forbidden");
@@ -299,12 +341,16 @@ describe("token routes", () => {
 		it("should delete a token", async () => {
 			const { token } = await createToken();
 
-			const response = await SELF.fetch(`http://localhost/-/npm/v1/tokens/token/${token}`, {
-				method: "DELETE",
-				headers: {
-					Authorization: `Bearer ${env.ADMIN_TOKEN}`
+			const response = await httpTestClient["-"].npm.v1.tokens.token[":token"].$delete(
+				{
+					param: { token }
+				},
+				{
+					headers: {
+						Authorization: `Bearer ${env.ADMIN_TOKEN}`
+					}
 				}
-			});
+			);
 
 			expect(response.status).toBe(200);
 
