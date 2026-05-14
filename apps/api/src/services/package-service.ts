@@ -44,6 +44,50 @@ export const packageService = {
 		};
 	},
 
+	async listPackages() {
+		const packages = await db.query.packageTable.findMany({
+			with: { packageReleases: true },
+			orderBy: (table, { desc }) => desc(table.updatedAt)
+		});
+
+		return packages.map((pkg) => {
+			const distTagKeys = Object.keys(pkg.distTags);
+			const latestTag = pkg.distTags.latest ?? (distTagKeys.length > 0 ? pkg.distTags[distTagKeys[0]!] : undefined);
+			const latestRelease = pkg.packageReleases.find((r) => r.version === latestTag);
+			const description =
+				(typeof latestRelease?.manifest === "object" &&
+					latestRelease?.manifest !== null &&
+					"description" in latestRelease.manifest &&
+					typeof latestRelease.manifest.description === "string" &&
+					latestRelease.manifest.description) ||
+				"No description provided.";
+			const license =
+				(typeof latestRelease?.manifest === "object" &&
+					latestRelease?.manifest !== null &&
+					"license" in latestRelease.manifest &&
+					typeof latestRelease.manifest.license === "string" &&
+					latestRelease.manifest.license) ||
+				"Unknown";
+
+			return {
+				name: pkg.name,
+				distTags: pkg.distTags,
+				latestVersion: latestTag ?? "unknown",
+				description,
+				license,
+				releaseCount: pkg.packageReleases.length,
+				createdAt: pkg.createdAt,
+				updatedAt: pkg.updatedAt,
+				versions: pkg.packageReleases.map((r) => ({
+					version: r.version,
+					tag: r.tag,
+					createdAt: r.createdAt,
+					manifest: r.manifest
+				}))
+			};
+		});
+	},
+
 	async putPackage(packageName: string, packageData: z.infer<typeof validators.put.request.json>) {
 		const tag = Object.keys(packageData["dist-tags"]).at(0);
 		if (!tag) {

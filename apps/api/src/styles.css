@@ -1,0 +1,218 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+	--font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+	--font-mono: "Geist Mono", ui-monospace, monospace;
+	--color-emerald-50: #ecfdf5;
+	--color-emerald-100: #d1fae5;
+	--color-emerald-200: #a7f3d0;
+	--color-emerald-300: #6ee7b7;
+	--color-emerald-400: #34d399;
+	--color-emerald-500: #10b981;
+	--color-emerald-600: #059669;
+	--color-emerald-700: #047857;
+	--color-emerald-800: #065f46;
+	--color-emerald-900: #064e3b;
+	--color-zinc-50: #fafafa;
+	--color-zinc-100: #f4f4f5;
+	--color-zinc-200: #e4e4e7;
+	--color-zinc-300: #d4d4d8;
+	--color-zinc-400: #a1a1aa;
+	--color-zinc-500: #71717a;
+	--color-zinc-600: #52525b;
+	--color-zinc-700: #3f3f46;
+	--color-zinc-800: #27272a;
+	--color-zinc-900: #18181b;
+	--color-zinc-950: #09090b;
+	--color-slate-50: #f8fafc;
+	--color-slate-100: #f1f5f9;
+	--color-slate-200: #e2e8f0;
+	--color-slate-300: #cbd5e1;
+	--color-slate-400: #94a3b8;
+	--color-slate-500: #64748b;
+	--color-slate-600: #475569;
+	--color-slate-700: #334155;
+	--color-slate-800: #1e293b;
+	--color-slate-900: #0f172a;
+	--color-slate-950: #020617;
+}
+
+@layer base {
+	:root {
+		--bg-primary: #f9fafb;
+		--bg-surface: #ffffff;
+		--bg-code: #0d1117;
+		--text-primary: #18181b;
+		--text-secondary: #52525b;
+		--text-muted: #a1a1aa;
+		--border-color: rgba(228, 228, 231, 0.8);
+		--ring-color: rgba(5, 150, 105, 0.2);
+	}
+
+	[data-theme="dark"] {
+		--bg-primary: #09090b;
+		--bg-surface: #18181b;
+		--bg-code: #0d1117;
+		--text-primary: #fafafa;
+		--text-secondary: #a1a1aa;
+		--text-muted: #71717a;
+		--border-color: rgba(63, 63, 70, 0.5);
+		--ring-color: rgba(5, 150, 105, 0.3);
+	}
+}
+
+@layer base {
+	body {
+		font-family: var(--font-sans);
+		background-color: var(--bg-primary);
+		color: var(--text-primary);
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+
+	pre {
+		font-family: var(--font-mono);
+	}
+
+	code {
+		font-family: var(--font-mono);
+	}
+
+	/* Smooth scrolling */
+	html {
+		scroll-behavior: smooth;
+	}
+
+	/* Better selection colors */
+	::selection {
+		background-color: rgba(5, 150, 105, 0.2);
+		color: inherit;
+	}
+}
+
+@layer components {
+	/* Highlight.js overrides for better integration */
+	.hljs {
+		background: transparent !important;
+		padding: 0 !important;
+	}
+
+	/* Code block styling */
+	.prose pre {
+		background: var(--bg-code) !important;
+		border: 1px solid rgba(255, 255, 255, 0.06);
+	}
+
+	.prose pre code {
+		background: transparent !important;
+		padding: 0 !important;
+		color: inherit !important;
+		font-size: 0.875rem;
+		line-height: 1.7;
+	}
+
+	/* Inline code styling */
+	.prose :not(pre) > code {
+		font-weight: 500;
+		font-size: 0.85em;
+	}
+
+	/* Better link styling in prose */
+	.prose a {
+		font-weight: 500;
+		transition: color 0.15s ease;
+	}
+
+	/* Better heading spacing */
+	.prose h1,
+	.prose h2,
+	.prose h3,
+	.prose h4 {
+		margin-top: 2.5em;
+		margin-bottom: 0.8em;
+	}
+
+	.prose h1:first-child,
+	.prose h2:first-child,
+	.prose h3:first-child,
+	.prose h4:first-child {
+		margin-top: 0;
+	}
+
+	/* Better paragraph readability */
+	.prose p {
+		line-height: 1.75;
+		margin-bottom: 1.25em;
+	}
+
+	/* Better list styling */
+	.prose ul > li,
+	.prose ol > li {
+		padding-left: 0.5em;
+		margin-bottom: 0.5em;
+	}
+
+	.prose ul > li::marker,
+	.prose ol > li::marker {
+		color: var(--text-muted);
+	}
+
+	/* Better blockquote styling */
+	.prose blockquote {
+		border-left-width: 3px;
+		border-left-color: var(--border-color);
+		padding-left: 1.25em;
+		font-style: italic;
+		color: var(--text-secondary);
+	}
+
+	/* Better horizontal rule */
+	.prose hr {
+		border-color: var(--border-color);
+		margin-top: 2.5em;
+		margin-bottom: 2.5em;
+	}
+
+	/* Better table styling */
+	.prose table {
+		font-size: 0.875rem;
+		line-height: 1.5;
+	}
+
+	.prose thead th {
+		font-weight: 600;
+		letter-spacing: 0.025em;
+	}
+
+	.prose tbody tr {
+		transition: background-color 0.15s ease;
+	}
+
+	.prose tbody tr:hover {
+		background-color: rgba(0, 0, 0, 0.02);
+	}
+
+	[data-theme="dark"] .prose tbody tr:hover {
+		background-color: rgba(255, 255, 255, 0.02);
+	}
+}
+
+@layer utilities {
+	/* Line clamp utility */
+	.line-clamp-2 {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+
+	.line-clamp-3 {
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+}

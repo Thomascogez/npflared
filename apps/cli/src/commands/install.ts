@@ -12,6 +12,7 @@ import { encode } from "uuid-b32";
 import { $ } from "zx";
 import {
 	applyD1Migrations,
+	build,
 	createD1Database,
 	createR2Bucket,
 	deploy,
@@ -68,7 +69,7 @@ const promptD1Database = async (): Promise<{ name: string; id: string }> => {
 		initialValue: "npflared",
 		message: "Enter a name for your D1 database:",
 		validate(value) {
-			if (value.length === 0) {
+			if (value?.length === 0) {
 				return "Please enter a name for your D1 database";
 			}
 		}
@@ -124,7 +125,7 @@ const promptR2Bucket = async (): Promise<{ name: string }> => {
 		initialValue: "npflared",
 		message: "Enter a name for your R2 bucket:",
 		validate(value) {
-			if (value.length === 0) {
+			if (value?.length === 0) {
 				return "Please enter a name for your R2 bucket";
 			}
 		}
@@ -170,7 +171,7 @@ const promptWorkerName = async (): Promise<string> => {
 		initialValue: "npflared",
 		message: "Enter a name for your worker:",
 		validate(value) {
-			if (value.length === 0) {
+			if (value?.length === 0) {
 				return "Please enter a name for your worker";
 			}
 		}
@@ -294,6 +295,10 @@ export const install = async () => {
 			cliSpinner.start("Applying D1 migrations...");
 			await applyD1Migrations(d1Database.name, { cwd: npflaredCurrentVersionDirectory });
 			cliSpinner.stop("Successfully applied D1 migrations");
+
+			cliSpinner.start("Building...");
+			await build({ cwd: npflaredCurrentVersionDirectory });
+			cliSpinner.stop();
 
 			cliSpinner.start("Deploying...");
 			const deployedUrl = await deploy({ cwd: npflaredCurrentVersionDirectory });
