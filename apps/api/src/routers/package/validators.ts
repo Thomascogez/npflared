@@ -30,7 +30,7 @@ export const validators = {
 				"dist-tags": z.record(z.string(), z.string()),
 				versions: z.record(
 					z.string().regex(semverRegex(), { message: "Version is not in semver format" }),
-					z.object({
+					z.looseObject({
 						_id: z.string().min(1),
 						name: z.string().min(1),
 						type: z.string().optional(),
@@ -39,6 +39,15 @@ export const validators = {
 						scripts: z.record(z.string(), z.string()).optional(),
 						devDependencies: z.record(z.string(), z.string()).optional(),
 						dependencies: z.record(z.string(), z.string()).optional(),
+						peerDependencies: z.record(z.string(), z.string()).optional(),
+						peerDependenciesMeta: z
+							.record(
+								z.string(),
+								z.looseObject({
+									optional: z.boolean().optional()
+								})
+							)
+							.optional(),
 						_nodeVersion: z.string().optional(),
 						_npmVersion: z.string().optional(),
 						dist: z.object({
