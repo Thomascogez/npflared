@@ -1,18 +1,21 @@
+import { sql } from "drizzle-orm";
 import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core";
+
+const unixEpochMs = sql`(unixepoch('subsec') * 1000)`;
 
 export const tokenTable = sqliteTable("token", {
 	token: text("token").primaryKey().notNull(),
 	name: text("name").notNull(),
 	scopes: text("scopes", { mode: "json" }).notNull().$type<Array<{ type: string; values: Array<string> }>>(),
-	createdAt: integer("created_at").notNull(),
-	updatedAt: integer("updated_at").notNull()
+	createdAt: integer("created_at").notNull().default(unixEpochMs),
+	updatedAt: integer("updated_at").notNull().default(unixEpochMs)
 });
 
 export const packageTable = sqliteTable("package", {
 	name: text("name").primaryKey().notNull(),
 	distTags: text("dist_tags", { mode: "json" }).notNull().$type<Record<string, string>>(),
-	createdAt: integer("created_at").notNull(),
-	updatedAt: integer("updated_at").notNull()
+	createdAt: integer("created_at").notNull().default(unixEpochMs),
+	updatedAt: integer("updated_at").notNull().default(unixEpochMs)
 });
 
 export const packageReleaseTable = sqliteTable(
@@ -24,7 +27,7 @@ export const packageReleaseTable = sqliteTable(
 		version: text("version").notNull(),
 		tag: text("tag").notNull(),
 		manifest: text("manifest", { mode: "json" }).notNull(),
-		createdAt: integer("created_at").notNull()
+		createdAt: integer("created_at").notNull().default(unixEpochMs)
 	},
 	(table) => [primaryKey({ columns: [table.package, table.version] })]
 );
