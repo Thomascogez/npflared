@@ -13,6 +13,15 @@
 			"scripts": {
 				"test": "echo \"Error: no test specified\" && exit 1"
 			},
+			"peerDependencies": {
+				"react": "^19.0.0"
+			},
+			"peerDependenciesMeta": {
+				"react": {
+					"optional": true
+				}
+			},
+			"license": "MIT",
 			"_nodeVersion": "21.6.0",
 			"_npmVersion": "10.2.4",
 			"dist": {
