@@ -196,6 +196,20 @@ export const applyD1Migrations = async (d1DatabaseName: string, config: { cwd?: 
 	}
 };
 
+export const build = async (config: { cwd?: string } = {}) => {
+	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
+
+	try {
+		const command = getCommand(packageManager, "run", ["build"]);
+		await executeCommand(command, { cwd: config.cwd });
+	} catch (error) {
+		if (error instanceof ProcessOutput) {
+			throw new Error(error.stderr || error.stdout);
+		}
+		throw error;
+	}
+};
+
 export const deploy = async (config: { cwd?: string } = {}) => {
 	const packageManager = cliContext.getStore()?.packageManagerAgent ?? "npm";
 
