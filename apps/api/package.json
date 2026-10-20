@@ -11,6 +11,8 @@
 		"generate-migrations": "drizzle-kit generate",
 		"migrate:local": "npx wrangler d1 migrations apply DB",
 		"migrate:prod": "npx wrangler d1 migrations apply DB --remote",
+		"migrate-tokens:local": "node scripts/migrate-legacy-tokens.mjs",
+		"migrate-tokens:prod": "node scripts/migrate-legacy-tokens.mjs --remote",
 		"test:watch": "vitest watch",
 		"test:single": "vitest run",
 		"check-types": "tsc --noEmit"

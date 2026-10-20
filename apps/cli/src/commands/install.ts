@@ -1,4 +1,4 @@
-import { randomUUID } from "node:crypto";
+import { createHash, randomBytes, randomUUID } from "node:crypto";
 import { rmSync } from "node:fs";
 import { mkdir, mkdtemp, readFile, rename, writeFile } from "node:fs/promises";
 import { homedir, tmpdir } from "node:os";
@@ -8,7 +8,6 @@ import { confirm, intro, isCancel, log, outro, select, spinner, text } from "@cl
 import chalk from "chalk";
 import dedent from "dedent";
 import degit from "degit";
-import { encode } from "uuid-b32";
 import { $ } from "zx";
 import {
 	applyD1Migrations,
@@ -190,26 +189,22 @@ const generateAdminToken = async (basePath: string) => {
 	const adminTokenMigrationFilePath = join(basePath, "migrations", adminTokenMigrationFileName);
 
 	const adminTokenMigrationFileExists = await pathExists(adminTokenMigrationFilePath);
-	if (!adminTokenMigrationFileExists) {
-		const adminToken = encode(randomUUID());
-		const now = Date.now();
-
-		await writeFile(
-			adminTokenMigrationFilePath,
-			`INSERT INTO token (token, name, scopes, created_at, updated_at) VALUES ('${adminToken}', 'admin-token', '[{"type": "token:read+write", "values": ["*"]}, {"type": "user:read+write", "values": ["*"]}, {"type": "package:read+write", "values": ["*"]}]', ${now}, ${now});`
-		);
-		cliSpinner.stop(`Admin token migration file generated at ${adminTokenMigrationFilePath}`);
-		return adminToken;
+	if (adminTokenMigrationFileExists) {
+		// Only the token hash is stored, so an existing admin token cannot be recovered.
+		cliSpinner.stop(`Admin token migration file already exists at ${adminTokenMigrationFilePath}, keeping it`);
+		return undefined;
 	}
-	const migrationFileContent = await readFile(adminTokenMigrationFilePath, "utf-8");
-	cliSpinner.stop(`Admin token migration file already exists at ${adminTokenMigrationFilePath}`);
 
-	// extract token from migration file
-	const match = migrationFileContent.match(
-		/INSERT INTO token \(token, name, scopes, created_at, updated_at\) VALUES \('([^']+)'/
+	const adminToken = `npf_${randomBytes(32).toString("base64url")}`;
+	const adminTokenHash = createHash("sha256").update(adminToken).digest("hex");
+	const now = Date.now();
+
+	await writeFile(
+		adminTokenMigrationFilePath,
+		`INSERT INTO token (id, token_hash, name, scopes, created_at, updated_at) VALUES ('${randomUUID()}', '${adminTokenHash}', 'admin-token', '[{"type": "token:read+write", "values": ["*"]}, {"type": "user:read+write", "values": ["*"]}, {"type": "package:read+write", "values": ["*"]}]', ${now}, ${now});`
 	);
-
-	return match?.[0] ?? "";
+	cliSpinner.stop(`Admin token migration file generated at ${adminTokenMigrationFilePath}`);
+	return adminToken;
 };
 
 export const install = async () => {
@@ -302,7 +297,7 @@ export const install = async () => {
 				chalk.green(dedent`
 				🔥 npflared is now ready to use!
 				🔗 Deployed to: ${chalk.bold.white(deployedUrl)}
-				👮 Admin token: ${chalk.bold.white(adminToken)}
+				👮 Admin token: ${chalk.bold.white(adminToken ?? "unchanged (only shown when first generated)")}
 				📚 Check documentation for more information: ${chalk.bold.white("https://npflared.thomas-cogez.fr")}
 			`)
 			);

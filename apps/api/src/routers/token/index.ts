@@ -11,7 +11,7 @@ export const tokenRouter = $.createApp()
 	.post(
 		"/-/npm/v1/tokens",
 		describeRoute({
-			description: "Create a new token with specific scopes",
+			description: "Create a new token with specific scopes. The plaintext token is only returned in this response.",
 			responses: {
 				...standardOpenApiErrorResponses,
 				201: {
@@ -45,7 +45,7 @@ export const tokenRouter = $.createApp()
 	.get(
 		"/-/npm/v1/tokens",
 		describeRoute({
-			description: "List all tokens",
+			description: "List all tokens (without their secrets)",
 			responses: {
 				...standardOpenApiErrorResponses,
 				200: {
@@ -71,9 +71,9 @@ export const tokenRouter = $.createApp()
 		}
 	)
 	.get(
-		"/-/npm/v1/tokens/token/:token",
+		"/-/npm/v1/tokens/token/:id",
 		describeRoute({
-			description: "Get a token",
+			description: "Get a token by id",
 			responses: {
 				...standardOpenApiErrorResponses,
 				200: {
@@ -90,13 +90,13 @@ export const tokenRouter = $.createApp()
 		async (c) => {
 			const can = assertTokenAccess(c.get("token"));
 
-			const { token } = c.req.valid("param");
+			const { id } = c.req.valid("param");
 
-			if (!can("read", "token", token)) {
+			if (!can("read", "token", id)) {
 				throw HttpError.forbidden();
 			}
 
-			const targetedToken = await tokenService.getToken(token);
+			const targetedToken = await tokenService.getToken(id);
 
 			if (!targetedToken) {
 				throw HttpError.notFound();
@@ -106,9 +106,9 @@ export const tokenRouter = $.createApp()
 		}
 	)
 	.delete(
-		"/-/npm/v1/tokens/token/:token",
+		"/-/npm/v1/tokens/token/:id",
 		describeRoute({
-			description: "Delete a token",
+			description: "Revoke a token by id",
 			responses: {
 				...standardOpenApiErrorResponses,
 				200: {
@@ -125,13 +125,17 @@ export const tokenRouter = $.createApp()
 		async (c) => {
 			const can = assertTokenAccess(c.get("token"));
 
-			const { token } = c.req.valid("param");
+			const { id } = c.req.valid("param");
 
-			if (!can("write", "token", token)) {
+			if (!can("write", "token", id)) {
 				throw HttpError.forbidden();
 			}
 
-			await tokenService.deleteToken(token);
+			const deleted = await tokenService.deleteToken(id);
+
+			if (!deleted) {
+				throw HttpError.notFound();
+			}
 
 			return c.json({ message: "ok" });
 		}

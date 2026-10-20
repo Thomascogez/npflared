@@ -27,7 +27,7 @@ Set the `publishConfig` to your Npflared instance
 ```
 Set the `_authToken` in your `.npmrc`
 ```txt title=".npmrc"
-//localhost:8787/:_authToken=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+//localhost:8787/:_authToken=YOUR_AUTH_TOKEN
 ```
 
 Then you can publish your package 🎉
@@ -38,7 +38,7 @@ npm publish
 ### Installing a package
 Set the `_authToken` in your `.npmrc`
 ```txt title=".npmrc"
-//localhost:8787/:_authToken=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
+//localhost:8787/:_authToken=YOUR_AUTH_TOKEN
 ```
 
 Then you can install your package 🎉
