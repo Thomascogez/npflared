@@ -1,11 +1,19 @@
 import { z } from "zod";
 
 const tokenSchema = z.object({
-	token: z.string(),
+	id: z.string(),
 	name: z.string(),
 	scopes: z.array(z.object({ type: z.string(), values: z.array(z.string()) })),
 	createdAt: z.number(),
 	updatedAt: z.number()
+});
+
+const createdTokenSchema = tokenSchema.extend({
+	token: z.string().describe("Plaintext token. It is only returned once, at creation time.")
+});
+
+const tokenIdParam = z.object({
+	id: z.string().nonempty()
 });
 
 export const validators = {
@@ -36,14 +44,12 @@ export const validators = {
 			})
 		},
 		response: {
-			201: tokenSchema
+			201: createdTokenSchema
 		}
 	},
 	get: {
 		request: {
-			param: z.object({
-				token: z.string().nonempty()
-			})
+			param: tokenIdParam
 		},
 		response: {
 			200: tokenSchema
@@ -56,9 +62,7 @@ export const validators = {
 	},
 	delete: {
 		request: {
-			param: z.object({
-				token: z.string().nonempty()
-			})
+			param: tokenIdParam
 		},
 		response: {
 			200: z.object({ message: z.string() })

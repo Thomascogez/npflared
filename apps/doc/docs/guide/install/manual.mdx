@@ -51,19 +51,23 @@ Once your worker is deployed you have to run initial database migrations
 <PackageManagerTabs command="run migrate:prod" />
 
 ## 6. Create your admin token 
-In order to distribute tokens for other users, you will need to create an initial token with elevated privileges
+In order to distribute tokens for other users, you will need to create an initial token with elevated privileges.
 
-:::info
-You can generate any kind of random values
+Only a SHA-256 hash of the token is stored in the database, so generate a random token and its hash first:
+
+```bash
+ADMIN_TOKEN="npf_$(openssl rand -base64 32 | tr '+/' '-_' | tr -d '=')"
+ADMIN_TOKEN_HASH=$(printf '%s' "$ADMIN_TOKEN" | shasum -a 256 | cut -d ' ' -f 1)
+echo "Your admin token: $ADMIN_TOKEN"
+```
+
+:::warning
+Keep the printed token somewhere safe: it cannot be recovered from the database afterwards.
 :::
 
-Run the following command after replacing `ADMIN_TOKEN` with your desired token
+Then insert its hash:
 ```bash
-npx wrangler d1 execute DB --remote --yes --command "INSERT INTO token (token, name, scopes, created_at, updated_at) VALUES ('ADMIN_TOKEN', 'admin-token', '[{\"type\": \"token:read+write\", \"values\": [\"*\"]}, {\"type\": \"user:read+write\", \"values\": [\"*\"]}, {\"type\": \"package:read+write\", \"values\": [\"*\"]}]', 1734173399, 1734173399)"
+npx wrangler d1 execute DB --remote --yes --command "INSERT INTO token (id, token_hash, name, scopes) VALUES (lower(hex(randomblob(16))), '$ADMIN_TOKEN_HASH', 'admin-token', '[{\"type\": \"token:read+write\", \"values\": [\"*\"]}, {\"type\": \"user:read+write\", \"values\": [\"*\"]}, {\"type\": \"package:read+write\", \"values\": [\"*\"]}]')"
 ```
 
 And we are done 🎉
-
-
-
-

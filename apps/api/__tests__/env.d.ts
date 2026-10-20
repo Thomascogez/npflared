@@ -5,5 +5,8 @@ declare module "cloudflare:test" {
 		TEST_MIGRATIONS: D1Migration[];
 		FALLBACK_REGISTRY_ENDPOINT: string;
 		ADMIN_TOKEN: string;
+		ADMIN_TOKEN_ID: string;
+		LEGACY_TOKEN: string;
+		LEGACY_TOKEN_ID: string;
 	}
 }

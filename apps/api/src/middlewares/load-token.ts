@@ -1,4 +1,4 @@
-import { db } from "#db/index";
+import { tokenService } from "#services/token-service";
 import { $ } from "#utils/factory";
 
 export const loadToken = $.createMiddleware(async (c, next) => {
@@ -14,12 +14,10 @@ export const loadToken = $.createMiddleware(async (c, next) => {
 		return await next();
 	}
 
-	const targetedToken = await db.query.tokenTable.findFirst({
-		where: (table, { eq }) => eq(table.token, token)
-	});
+	const authenticatedToken = await tokenService.authenticate(token);
 
-	if (targetedToken) {
-		c.set("token", targetedToken);
+	if (authenticatedToken) {
+		c.set("token", authenticatedToken);
 	}
 
 	await next();
