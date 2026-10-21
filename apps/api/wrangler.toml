@@ -4,13 +4,14 @@ compatibility_date = "2026-01-07"
 
 compatibility_flags = [ "nodejs_compat" ]
 
+# Values that differ between deployments (resources, domain, Access application) are applied at build time
+# from the environment, see .env.example. The placeholders below are what a plain `wrangler` command sees.
 [vars]
 FALLBACK_REGISTRY_ENDPOINT = "https://registry.npmjs.org"
-# Admin authentication: the admin area (/_/admin and everything below it) stays closed until these are set.
+# Admin authentication: "cloudflare-access" needs CF_ACCESS_TEAM_DOMAIN and CF_ACCESS_AUD, provided as build
+# variables or as worker secrets; until then the admin area (/_/admin and everything below it) stays closed.
 # For local development, put ADMIN_AUTH_PROVIDER = "local" in a .dev.vars file (see .dev.vars.example).
 ADMIN_AUTH_PROVIDER = "cloudflare-access"
-CF_ACCESS_TEAM_DOMAIN = "" # Replace with your Cloudflare Zero Trust team domain, eg. "my-team.cloudflareaccess.com"
-CF_ACCESS_AUD = "" # Replace with the Application Audience (AUD) tag of the Access application protecting /_/admin
 
 [[r2_buckets]]
 binding = "BUCKET"

@@ -19,17 +19,15 @@ In your [Zero Trust dashboard](https://one.dash.cloudflare.com/), go to **Access
 Once the application is created, copy its **Application Audience (AUD) tag** from the application overview.
 
 ## 2. Configure your worker
-Add your team domain and the AUD tag to the `wrangler.toml` file:
+Provide your team domain and the AUD tag as the `CF_ACCESS_TEAM_DOMAIN` and `CF_ACCESS_AUD` build variables of your [Workers Builds](../install/workers-builds) project (or in `.env.local` when deploying from your machine):
 
-```toml title="wrangler.toml"
-[vars]
-ADMIN_AUTH_PROVIDER = "cloudflare-access"
-CF_ACCESS_TEAM_DOMAIN = "my-team.cloudflareaccess.com" # Replace with your Zero Trust team domain
-CF_ACCESS_AUD = "0123456789abcdef..." # Replace with the AUD tag of the Access application
+```shell title=".env.local"
+CF_ACCESS_TEAM_DOMAIN=my-team.cloudflareaccess.com # Replace with your Zero Trust team domain
+CF_ACCESS_AUD=0123456789abcdef... # Replace with the AUD tag of the Access application
 ```
 
 :::tip
-Both values can also be provided as [secrets](https://developers.cloudflare.com/workers/configuration/secrets/) (`wrangler secret put CF_ACCESS_AUD`) or as environment variables of a git-connected build, which keeps the `wrangler.toml` file identical between deployments.
+Both values can also be provided as [worker secrets](https://developers.cloudflare.com/workers/configuration/secrets/) (`wrangler secret put CF_ACCESS_AUD`), in which case leave the corresponding build variable unset.
 :::
 
 Then deploy your worker again.

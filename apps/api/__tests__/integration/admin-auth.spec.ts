@@ -244,8 +244,10 @@ describe("admin authentication", () => {
 		});
 
 		it("should close the admin area when authentication is not configured", async () => {
-			const aud = workerEnv.CF_ACCESS_AUD;
-			workerEnv.CF_ACCESS_AUD = "";
+			// Access values are not part of wrangler.toml (they are deployment-specific), only of the test bindings.
+			const mutableEnv = workerEnv as unknown as { CF_ACCESS_AUD: string };
+			const aud = mutableEnv.CF_ACCESS_AUD;
+			mutableEnv.CF_ACCESS_AUD = "";
 
 			try {
 				const response = await httpTestClient._.admin.api.me.$get(
@@ -259,7 +261,7 @@ describe("admin authentication", () => {
 					statusCode: 503
 				});
 			} finally {
-				workerEnv.CF_ACCESS_AUD = aud;
+				mutableEnv.CF_ACCESS_AUD = aud;
 			}
 		});
 
