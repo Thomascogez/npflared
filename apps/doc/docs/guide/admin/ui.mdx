@@ -15,12 +15,12 @@ Readmes are rendered from Markdown and sanitised before they are displayed. Pack
 - Revocation with a confirmation step.
 
 ## How it is served
-The UI is a Svelte 5 single-page application (`apps/admin`) built with Vite, Tailwind CSS 4 and shadcn-svelte. `pnpm build` writes it to `apps/api/public/_/admin`, which the worker serves as [static assets](https://developers.cloudflare.com/workers/static-assets/) with `run_worker_first`, so that every request to the admin area goes through admin authentication before anything is served. Deep links are answered with the application shell.
+The UI is a Svelte 5 single-page application (`apps/api/admin`) built with Vite, Tailwind CSS 4 and shadcn-svelte. It lives in the same Vite project as the worker through the [Cloudflare Vite plugin](https://developers.cloudflare.com/workers/vite-plugin/): `vite build` emits the worker and the client assets together, and the worker serves the assets itself with `run_worker_first`, so that every request to the admin area goes through admin authentication before anything is served. Only the hashed build assets under `/_/admin/assets/` are served directly. Deep links are answered with the application shell.
 
-`pnpm deploy` in `apps/api` builds the UI before deploying the worker. If the UI has not been built, the admin area answers `404`.
+`pnpm deploy` in `apps/api` builds everything and deploys the worker with the generated configuration.
 
 ## Developing the UI
-1. In `apps/api`, copy `.dev.vars.example` to `.dev.vars` (this selects the `local` admin authentication provider, which only trusts requests addressed to `localhost`), apply the local migrations with `pnpm migrate:local`, then start the worker with `pnpm dev`.
-2. In `apps/admin`, start Vite with `pnpm dev` and open `http://localhost:5173/_/admin/`. Requests to `/_/admin/api/*` are proxied to the worker.
+1. In `apps/api`, copy `.dev.vars.example` to `.dev.vars` (this selects the `local` admin authentication provider, which only trusts requests addressed to `localhost`) and apply the local migrations with `pnpm migrate:local`.
+2. Start `pnpm dev` in `apps/api` and open `http://localhost:5173/_/admin/`. The worker runs in the Workers runtime inside the Vite dev server, so the registry, the admin API and the UI share one origin, with hot module replacement for both.
 
-Alternatively build the UI (`pnpm build` in `apps/admin`) and open `http://localhost:8787/_/admin/` straight from the worker.
+`pnpm preview` serves the production build the same way, which is the closest thing to a deployment without deploying.

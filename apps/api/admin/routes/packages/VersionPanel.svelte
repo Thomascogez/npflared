@@ -53,23 +53,23 @@ const dependencyGroups = [
 				{#if groups.length === 0}
 					<p class="text-sm text-muted-foreground">This version has no dependencies.</p>
 				{:else}
-					<div class="flex flex-col gap-6">
-						{#each groups as group (group.key)}
-							<section>
-								<h3 class="mb-2 text-sm font-medium">{group.label}</h3>
-								<Table.Root>
-									<Table.Body>
-										{#each group.entries as [dependency, range] (dependency)}
-											<Table.Row>
-												<Table.Cell class="font-mono">{dependency}</Table.Cell>
-												<Table.Cell class="font-mono text-muted-foreground">{range}</Table.Cell>
-											</Table.Row>
-										{/each}
-									</Table.Body>
-								</Table.Root>
-							</section>
-						{/each}
-					</div>
+					<Table.Root class="table-fixed">
+						<Table.Body>
+							{#each groups as group (group.key)}
+								<Table.Row class="bg-muted/40 hover:bg-muted/40">
+									<Table.Head colspan={2} class="h-8 text-xs font-medium tracking-wide text-muted-foreground uppercase">
+										{group.label}
+									</Table.Head>
+								</Table.Row>
+								{#each group.entries as [dependency, range] (dependency)}
+									<Table.Row>
+										<Table.Cell class="w-1/2 font-mono">{dependency}</Table.Cell>
+										<Table.Cell class="font-mono text-muted-foreground">{range}</Table.Cell>
+									</Table.Row>
+								{/each}
+							{/each}
+						</Table.Body>
+					</Table.Root>
 				{/if}
 			</Card.Content>
 		</Card.Root>

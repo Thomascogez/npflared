@@ -2,7 +2,7 @@
  * A minimal history router: the app only has a handful of pages and is served
  * under a base path by the registry worker, which rewrites deep links to the shell.
  */
-const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const base = "/_/admin";
 
 const currentHref = () => {
 	const path = location.pathname.startsWith(base) ? location.pathname.slice(base.length) : location.pathname;

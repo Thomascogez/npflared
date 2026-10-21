@@ -57,7 +57,7 @@ You can check who you are authenticated as with the `GET /_/admin/api/me` endpoi
 ```
 
 ## Local development
-Cloudflare Access is not available in front of `wrangler dev`. For development only, the `local` provider trusts every request addressed to `localhost` (and nothing else): copy `.dev.vars.example` to `.dev.vars` in `apps/api`, which sets `ADMIN_AUTH_PROVIDER = "local"` for `wrangler dev` without touching the deployed configuration.
+Cloudflare Access is not available in front of the local dev server. For development only, the `local` provider trusts every request addressed to `localhost` (and nothing else): copy `.dev.vars.example` to `.dev.vars` in `apps/api`, which sets `ADMIN_AUTH_PROVIDER = "local"` for `pnpm dev` without touching the deployed configuration.
 
 ## Other providers
 Admin authentication is isolated behind a small provider interface (`apps/api/src/admin-auth`): a provider resolves the identity behind a request or rejects it.

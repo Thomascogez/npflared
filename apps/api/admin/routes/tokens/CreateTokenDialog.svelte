@@ -25,13 +25,18 @@ let submitting = $state(false);
 let error = $state<string | null>(null);
 let created = $state<CreatedToken | null>(null);
 
+/** Only package scopes are narrowed to specific names; token and user scopes always apply to all of them. */
+const appliesToPackages = (type: ScopeType) => type.startsWith("package:");
+
+const scopeValues = (scope: ScopeDraft) => (appliesToPackages(scope.type) ? parseValues(scope.values) : ["*"]);
+
 const parseValues = (raw: string) =>
 	raw
 		.split(",")
 		.map((value) => value.trim())
 		.filter((value) => value.length > 0);
 
-let valid = $derived(name.trim().length > 0 && scopes.every((scope) => parseValues(scope.values).length > 0));
+let valid = $derived(name.trim().length > 0 && scopes.every((scope) => scopeValues(scope).length > 0));
 
 const reset = () => {
 	name = "";
@@ -49,7 +54,7 @@ const submit = async (event: SubmitEvent) => {
 	try {
 		created = await api.createToken({
 			name: name.trim(),
-			scopes: scopes.map((scope) => ({ type: scope.type, values: parseValues(scope.values) }))
+			scopes: scopes.map((scope) => ({ type: scope.type, values: scopeValues(scope) }))
 		});
 		oncreated?.();
 	} catch (cause) {
@@ -129,7 +134,11 @@ const submit = async (event: SubmitEvent) => {
 									{/each}
 								</Select.Content>
 							</Select.Root>
-							<Input bind:value={scope.values} placeholder="* or names, comma separated" aria-label="Scope values" />
+							{#if appliesToPackages(scope.type)}
+								<Input bind:value={scope.values} placeholder="* or names, comma separated" aria-label="Package names" />
+							{:else}
+								<Input value="" placeholder="Applies to all" aria-label="Package names" disabled />
+							{/if}
 							<Button
 								variant="ghost"
 								size="icon-sm"
@@ -156,7 +165,8 @@ const submit = async (event: SubmitEvent) => {
 						</Button>
 					</div>
 					<p class="text-xs text-muted-foreground">
-						Use <code>*</code> for every package, or list package names such as <code>@my-scope/my-package</code>.
+						Package scopes take <code>*</code> for every package, or package names such as
+						<code>@my-scope/my-package</code>. Token and user scopes apply to all tokens and users.
 					</p>
 				</fieldset>
 

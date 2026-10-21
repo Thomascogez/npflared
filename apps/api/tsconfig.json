@@ -6,9 +6,10 @@
 		"strict": true,
 		"skipLibCheck": true,
 		"lib": ["ESNext"],
-		"types": ["@cloudflare/vitest-pool-workers"],
+		"types": ["@cloudflare/vitest-pool-workers", "node"],
 		"jsx": "react-jsx",
 		"jsxImportSource": "hono/jsx",
 		"noUncheckedIndexedAccess": true
-	}
+	},
+	"exclude": ["node_modules", "dist", "admin"]
 }

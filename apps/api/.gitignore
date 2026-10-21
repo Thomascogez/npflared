@@ -31,6 +31,3 @@ lerna-debug.log*
 
 # misc
 .DS_Store
-
-# Admin UI build output (see apps/admin)
-public/_

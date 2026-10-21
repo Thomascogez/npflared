@@ -21,9 +21,10 @@ binding = "DB"
 database_name = "D1_DATABASE_NAME"
 database_id = "D1_DATABASE_ID"
 
-# The admin UI (apps/admin) is built into ./public/_/admin and served by the worker itself,
-# so that every request to the admin area goes through admin authentication first.
+# The admin UI (./admin) is built by the Cloudflare Vite plugin into the worker's static assets.
+# Every request goes through the worker first so that the admin area is served behind admin
+# authentication; only the hashed build assets are served directly.
 [assets]
-directory = "./public"
+directory = "./dist/client"
 binding = "ASSETS"
-run_worker_first = ["/_/admin", "/_/admin/*"]
+run_worker_first = ["/*", "!/_/admin/assets/*"]

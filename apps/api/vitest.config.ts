@@ -1,4 +1,5 @@
 import { createHash, randomUUID } from "node:crypto";
+import { mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { type D1Migration, defineWorkersConfig, readD1Migrations } from "@cloudflare/vitest-pool-workers/config";
 
@@ -8,6 +9,9 @@ const adminScopes =
 export default defineWorkersConfig(async () => {
 	const migrationsPath = join(__dirname, "migrations");
 	const migrations = await readD1Migrations(migrationsPath);
+
+	// The assets directory (the client build output) must exist for the worker to start; the tests do not need its content.
+	mkdirSync(join(__dirname, "dist/client"), { recursive: true });
 
 	const now = Date.now();
 

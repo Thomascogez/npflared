@@ -41,21 +41,25 @@ export const adminRouter = $.createApp()
 		"/_/admin/*",
 		describeRoute({ hide: true }),
 		/**
-		 * Serves the admin UI (built by apps/admin into the worker's static assets).
-		 * Deep links are answered with the app shell, which routes them itself.
+		 * Serves the admin UI, which the Cloudflare Vite plugin builds into the worker's static assets.
+		 * The assets live at the root of the client build, so the admin prefix is dropped before looking
+		 * one up, and deep links are answered with the app shell, which routes them itself.
 		 */
 		async (c) => {
 			if (c.req.path.startsWith("/_/admin/api/")) {
 				throw HttpError.notFound();
 			}
 
-			const asset = await env.ASSETS.fetch(c.req.raw);
+			const assetUrl = new URL(c.req.url);
+			assetUrl.pathname = assetUrl.pathname.replace(/^\/_\/admin\/?/, "/");
+
+			const asset = await env.ASSETS.fetch(new Request(assetUrl, { headers: c.req.raw.headers }));
 
 			if (asset.status !== 404) {
 				return asset;
 			}
 
-			const shell = await env.ASSETS.fetch(new Request(new URL("/_/admin/index.html", c.req.url)));
+			const shell = await env.ASSETS.fetch(new URL("/index.html", c.req.url));
 
 			if (shell.status === 404) {
 				throw HttpError.notFound("The admin UI has not been built");

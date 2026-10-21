@@ -86,7 +86,7 @@ export class ApiError extends Error {
 	}
 }
 
-const apiBase = `${import.meta.env.BASE_URL}api`;
+const apiBase = "/_/admin/api";
 
 const request = async <T>(path: string, init: { method?: string; body?: unknown } = {}): Promise<T> => {
 	const response = await fetch(apiBase + path, {

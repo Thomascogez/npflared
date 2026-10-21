@@ -6,8 +6,7 @@
 			"!**/node_modules",
 			"!**/worker-configuration.d.ts",
 			"!**/package.json",
-			"!apps/admin/src/lib/components/ui",
-			"!apps/api/public"
+			"!apps/api/admin/lib/components/ui"
 		]
 	},
 	"vcs": {
