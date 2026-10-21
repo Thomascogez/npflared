@@ -1,0 +1,61 @@
+# Authentication
+
+The admin area of your registry (`/_/admin` and every path below it, including the `/_/admin/api/*` endpoints) is not protected by registry tokens.
+Instead, administrators are authenticated by [Cloudflare Access](https://developers.cloudflare.com/cloudflare-one/policies/access/), so there is no login page, session or user database to manage in Npflared itself.
+
+Registry endpoints are not affected: npm and pnpm keep authenticating with their registry token and never go through Cloudflare Access.
+The admin area lives under `/_/` because a package name can never start with an underscore, so it cannot collide with a package (a package named `admin` is still served at `/admin`).
+
+:::info
+Until Cloudflare Access is configured, every request to the admin area is answered with a `503` error: the admin area is closed by default.
+:::
+
+## 1. Create an Access application
+In your [Zero Trust dashboard](https://one.dash.cloudflare.com/), go to **Access > Applications** and add a **self-hosted** application:
+
+- **Application domain**: the domain of your registry, with `/_/admin` as path (eg. `registry.example.com/_/admin`). This covers `/_/admin` and everything below it.
+- **Policies**: whoever is allowed to administer the registry (for instance an *Allow* policy on your email domain). You can also create a [service token](https://developers.cloudflare.com/cloudflare-one/identity/service-tokens/) for automation.
+
+Once the application is created, copy its **Application Audience (AUD) tag** from the application overview.
+
+## 2. Configure your worker
+Add your team domain and the AUD tag to the `wrangler.toml` file:
+
+```toml title="wrangler.toml"
+[vars]
+ADMIN_AUTH_PROVIDER = "cloudflare-access"
+CF_ACCESS_TEAM_DOMAIN = "my-team.cloudflareaccess.com" # Replace with your Zero Trust team domain
+CF_ACCESS_AUD = "0123456789abcdef..." # Replace with the AUD tag of the Access application
+```
+
+:::tip
+Both values can also be provided as [secrets](https://developers.cloudflare.com/workers/configuration/secrets/) (`wrangler secret put CF_ACCESS_AUD`) or as environment variables of a git-connected build, which keeps the `wrangler.toml` file identical between deployments.
+:::
+
+Then deploy your worker again.
+
+## How requests are validated
+Cloudflare Access attaches a signed JWT to every request it lets through, in the `Cf-Access-Jwt-Assertion` header (or the `CF_Authorization` cookie in the browser).
+
+Npflared does not trust the Access route configuration alone: for every request to the admin area, it validates the JWT itself against the public keys of your team (`https://<team-domain>/cdn-cgi/access/certs`) and checks that:
+
+- the signature is valid and uses an asymmetric algorithm,
+- the token was issued by your team (`iss`),
+- the token was issued for your Access application (`aud`),
+- the token has not expired.
+
+A request failing any of these checks is answered with a `401` error, even if it somehow reached the worker without going through Access.
+
+You can check who you are authenticated as with the `GET /_/admin/api/me` endpoint:
+
+```js
+{
+	"provider": "cloudflare-access",
+	"subject": "7335d417-61da-459d-899c-0a01c76a2f94",
+	"email": "admin@example.com"
+}
+```
+
+## Other providers
+Admin authentication is isolated behind a small provider interface (`apps/api/src/admin-auth`): a provider resolves the identity behind a request or rejects it.
+Cloudflare Access is the only provider shipped today, but another one can be added without touching the admin routes themselves, and selected with the `ADMIN_AUTH_PROVIDER` variable.

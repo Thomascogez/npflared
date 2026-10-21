@@ -12,6 +12,11 @@
 	},
 	{
 		"type": "dir",
+		"name": "admin",
+		"label": "Admin"
+	},
+	{
+		"type": "dir",
 		"name": "cookbook",
 		"label": "Cookbook"
 	}

@@ -40,3 +40,24 @@ export const standardOpenApiErrorResponses = {
 		}
 	}
 } satisfies DescribeRouteOptions["responses"];
+
+/** Error responses of the admin routes, which are guarded by the admin authentication provider. */
+export const adminOpenApiErrorResponses = {
+	...standardOpenApiErrorResponses,
+	401: {
+		description: "Unauthorized",
+		content: {
+			"application/json": {
+				schema: resolver(errorSchema)
+			}
+		}
+	},
+	503: {
+		description: "Admin authentication is not configured",
+		content: {
+			"application/json": {
+				schema: resolver(errorSchema)
+			}
+		}
+	}
+} satisfies DescribeRouteOptions["responses"];

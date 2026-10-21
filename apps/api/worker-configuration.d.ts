@@ -9,6 +9,9 @@ declare namespace Cloudflare {
 		FALLBACK_REGISTRY_ENDPOINT: "https://registry.npmjs.org";
 		BUCKET: R2Bucket;
 		DB: D1Database;
+		ADMIN_AUTH_PROVIDER: "cloudflare-access";
+		CF_ACCESS_TEAM_DOMAIN: "";
+		CF_ACCESS_AUD: "";
 	}
 }
 interface Env extends Cloudflare.Env {}
@@ -16,7 +19,7 @@ type StringifyValues<EnvType extends Record<string, unknown>> = {
 	[Binding in keyof EnvType]: EnvType[Binding] extends string ? EnvType[Binding] : string;
 };
 declare namespace NodeJS {
-	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "FALLBACK_REGISTRY_ENDPOINT">> {}
+	interface ProcessEnv extends StringifyValues<Pick<Cloudflare.Env, "FALLBACK_REGISTRY_ENDPOINT" | "ADMIN_AUTH_PROVIDER" | "CF_ACCESS_TEAM_DOMAIN" | "CF_ACCESS_AUD">> {}
 }
 
 // Begin runtime types

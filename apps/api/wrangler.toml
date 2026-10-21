@@ -6,6 +6,10 @@ compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
 FALLBACK_REGISTRY_ENDPOINT = "https://registry.npmjs.org"
+# Admin authentication: the admin area (/_/admin and everything below it) stays closed until these are set.
+ADMIN_AUTH_PROVIDER = "cloudflare-access"
+CF_ACCESS_TEAM_DOMAIN = "" # Replace with your Cloudflare Zero Trust team domain, eg. "my-team.cloudflareaccess.com"
+CF_ACCESS_AUD = "" # Replace with the Application Audience (AUD) tag of the Access application protecting /_/admin
 
 [[r2_buckets]]
 binding = "BUCKET"

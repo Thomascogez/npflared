@@ -40,6 +40,8 @@ export default defineWorkersConfig(async () => {
 					miniflare: {
 						bindings: {
 							TEST_MIGRATIONS: migrations.concat(testSpecificMigrations),
+							CF_ACCESS_TEAM_DOMAIN: "npflared-test.cloudflareaccess.com",
+							CF_ACCESS_AUD: randomUUID().replaceAll("-", ""),
 							ADMIN_TOKEN: adminToken,
 							ADMIN_TOKEN_ID: adminTokenId,
 							LEGACY_TOKEN: legacyToken,

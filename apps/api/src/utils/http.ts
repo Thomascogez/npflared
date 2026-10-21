@@ -35,6 +35,10 @@ export class HttpError extends HTTPException {
 		return new HttpError(409, { error: message, statusCode: 409 });
 	}
 
+	static serviceUnavailable(message = "Service unavailable") {
+		return new HttpError(503, { error: message, statusCode: 503 });
+	}
+
 	static fromError(error: Error) {
 		return new HttpError(500, {
 			error: error.message,
