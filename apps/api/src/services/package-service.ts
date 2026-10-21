@@ -1,5 +1,5 @@
 import { env } from "cloudflare:workers";
-import { sql } from "drizzle-orm";
+import { and, asc, count, eq, sql } from "drizzle-orm";
 import type { z } from "zod";
 import { db } from "#db/index";
 import { packageReleaseTable, packageTable } from "#db/schema";
@@ -7,7 +7,107 @@ import type { validators } from "#routers/package/validators";
 import { base64ToReadableStream } from "#utils/common";
 import { HttpError } from "#utils/http";
 
+/** The subset of a published manifest the admin area reads. Everything else is passed through untouched. */
+type Manifest = {
+	description?: string;
+	readme?: string;
+	dependencies?: Record<string, string>;
+	devDependencies?: Record<string, string>;
+	peerDependencies?: Record<string, string>;
+	[key: string]: unknown;
+};
+
+/** Escapes `%`, `_` and `\` so a search term is matched literally by `LIKE`. */
+const escapeLikePattern = (value: string) => value.replace(/[\\%_]/g, "\\$&");
+
 export const packageService = {
+	/** Lists packages for the admin area, alphabetically, with an optional case-insensitive name search. */
+	async listPackages({ search, page, limit }: { search?: string; page: number; limit: number }) {
+		const filter = search ? sql`${packageTable.name} LIKE ${`%${escapeLikePattern(search)}%`} ESCAPE '\\'` : undefined;
+
+		const [[totalRow], rows] = await db.batch([
+			db.select({ total: count() }).from(packageTable).where(filter),
+			db
+				.select({
+					name: packageTable.name,
+					distTags: packageTable.distTags,
+					versionCount: count(packageReleaseTable.version),
+					createdAt: packageTable.createdAt,
+					updatedAt: packageTable.updatedAt
+				})
+				.from(packageTable)
+				.leftJoin(packageReleaseTable, eq(packageReleaseTable.package, packageTable.name))
+				.where(filter)
+				.groupBy(packageTable.name)
+				.orderBy(asc(packageTable.name))
+				.limit(limit)
+				.offset((page - 1) * limit)
+		]);
+
+		return {
+			items: rows.map((row) => ({ ...row, latestVersion: row.distTags.latest ?? null })),
+			total: totalRow?.total ?? 0,
+			page,
+			limit
+		};
+	},
+
+	/** Describes a package for the admin area: its dist-tags and every published version, newest first. */
+	async getPackageDetails(packageName: string) {
+		const publishedPackage = await db.query.packageTable.findFirst({
+			where: (table, { eq }) => eq(table.name, packageName),
+			with: {
+				packageReleases: {
+					columns: { version: true, tag: true, createdAt: true },
+					orderBy: (table, { desc }) => desc(table.createdAt)
+				}
+			}
+		});
+
+		if (!publishedPackage) {
+			return undefined;
+		}
+
+		const latestVersion = publishedPackage.distTags.latest ?? publishedPackage.packageReleases[0]?.version ?? null;
+
+		const latestRelease = latestVersion
+			? await db.query.packageReleaseTable.findFirst({
+					columns: { manifest: true },
+					where: (table, { and, eq }) => and(eq(table.package, packageName), eq(table.version, latestVersion))
+				})
+			: undefined;
+
+		const latestManifest = (latestRelease?.manifest ?? {}) as Manifest;
+
+		return {
+			name: publishedPackage.name,
+			description: latestManifest.description ?? null,
+			latestVersion,
+			distTags: publishedPackage.distTags,
+			versions: publishedPackage.packageReleases,
+			createdAt: publishedPackage.createdAt,
+			updatedAt: publishedPackage.updatedAt
+		};
+	},
+
+	/** Returns a published version with its manifest as published, which holds the readme and dependencies. */
+	async getPackageVersion(packageName: string, version: string) {
+		const release = await db.query.packageReleaseTable.findFirst({
+			where: and(eq(packageReleaseTable.package, packageName), eq(packageReleaseTable.version, version))
+		});
+
+		if (!release) {
+			return undefined;
+		}
+
+		return {
+			version: release.version,
+			tag: release.tag,
+			createdAt: release.createdAt,
+			manifest: release.manifest as Manifest
+		};
+	},
+
 	async getPackage(packageName: string) {
 		const publishedPackage = await db.query.packageTable.findFirst({
 			with: { packageReleases: true },

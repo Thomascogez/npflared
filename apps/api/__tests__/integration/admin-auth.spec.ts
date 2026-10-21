@@ -3,68 +3,24 @@ import { env as workerEnv } from "cloudflare:workers";
 import { sign } from "hono/jwt";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import app from "#index";
-import { httpTestClient } from "../utils";
+import {
+	type AccessSigningKey,
+	createAccessToken,
+	createAccessSigningKey as createSigningKey,
+	getAccessSigningKey,
+	httpTestClient,
+	accessIssuer as issuer,
+	mockAccessCerts
+} from "../utils";
 
-const issuer = `https://${env.CF_ACCESS_TEAM_DOMAIN}`;
-
-type AccessJwk = JsonWebKey & { kid: string };
-
-type SigningKey = {
-	kid: string;
-	privateJwk: AccessJwk;
-	publicJwk: AccessJwk;
-};
-
-/** Generates an RS256 key pair the way Cloudflare Access publishes its signing keys. */
-const createSigningKey = async (kid = crypto.randomUUID()): Promise<SigningKey> => {
-	const { privateKey, publicKey } = (await crypto.subtle.generateKey(
-		{ name: "RSASSA-PKCS1-v1_5", modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: "SHA-256" },
-		true,
-		["sign", "verify"]
-	)) as CryptoKeyPair;
-
-	const exportJwk = (key: CryptoKey) => crypto.subtle.exportKey("jwk", key) as Promise<JsonWebKey>;
-
-	return {
-		kid,
-		privateJwk: { ...(await exportJwk(privateKey)), kid, alg: "RS256" },
-		publicJwk: { ...(await exportJwk(publicKey)), kid, alg: "RS256", use: "sig" }
-	};
-};
-
-/** Serves the given keys from the team's certs endpoint for exactly one request. */
-const mockAccessCerts = (...keys: SigningKey[]) => {
-	fetchMock
-		.get(issuer)
-		.intercept({ path: "/cdn-cgi/access/certs" })
-		.reply(200, { keys: keys.map(({ publicJwk }) => publicJwk) }, { headers: { "content-type": "application/json" } });
-};
-
-let signingKey: SigningKey;
-
-const createAccessToken = (claims: Record<string, unknown> = {}, key = signingKey) => {
-	const now = Math.floor(Date.now() / 1000);
-
-	return sign(
-		{
-			aud: [env.CF_ACCESS_AUD],
-			iss: issuer,
-			sub: "7335d417-61da-459d-899c-0a01c76a2f94",
-			email: "admin@example.com",
-			iat: now,
-			exp: now + 300,
-			...claims
-		},
-		key.privateJwk
-	);
-};
+let signingKey: AccessSigningKey;
 
 describe("admin authentication", () => {
 	beforeAll(async () => {
 		fetchMock.activate();
 		fetchMock.disableNetConnect();
 
-		signingKey = await createSigningKey();
+		signingKey = await getAccessSigningKey();
 	});
 
 	afterEach(() => fetchMock.assertNoPendingInterceptors());

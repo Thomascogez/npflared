@@ -1,9 +1,15 @@
 import { createExecutionContext, env, fetchMock } from "cloudflare:test";
-import type { InferRequestType } from "hono/client";
 import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import app from "#index";
 import packagePublishPayload from "../mocks/package-publish-payload.json";
-import { createToken, httpTestClient, publishMockPackage } from "../utils";
+import {
+	createPublishPayload,
+	createToken,
+	httpTestClient,
+	publishMockPackage,
+	publishPackage,
+	tarballUrlOf
+} from "../utils";
 
 /**
  * Regression tests pinning the behaviour npm and pnpm rely on, so that admin features
@@ -15,8 +21,6 @@ const scopedPackageName = "@mock/scoped";
 const npmEncodedScopedPackageName = "@mock%2fscoped";
 const pnpmEncodedScopedPackageName = "@mock%2Fscoped";
 
-type PublishPayload = InferRequestType<(typeof httpTestClient)[":packageName"]["$put"]>["json"];
-
 /** The metadata document npm clients read: the manifests are passed through as published. */
 type PackageMetadata = {
 	_id: string;
@@ -24,43 +28,6 @@ type PackageMetadata = {
 	"dist-tags": Record<string, string>;
 	versions: Record<string, { version: string; dist: { tarball: string } } & Record<string, unknown>>;
 	time: Record<string, string>;
-};
-
-const tarballUrlOf = (name: string, version: string) => `http://localhost:8787/${name}/-/${name}-${version}.tgz`;
-
-/** Builds the payload `npm publish` sends for a package, reusing the mock tarball. */
-const createPublishPayload = (
-	name: string,
-	version = "1.0.0",
-	distTags: Record<string, string> = { latest: version }
-) => {
-	const baseVersion = packagePublishPayload.versions["1.0.0"];
-	const tarballName = `${name}-${version}.tgz`;
-
-	return {
-		_id: name,
-		name,
-		"dist-tags": distTags,
-		versions: {
-			[version]: {
-				...baseVersion,
-				_id: `${name}@${version}`,
-				name,
-				version,
-				dist: { ...baseVersion.dist, tarball: tarballUrlOf(name, version) }
-			}
-		},
-		_attachments: {
-			[tarballName]: packagePublishPayload._attachments["mock-1.0.0.tgz"]
-		}
-	};
-};
-
-const publishPackage = async (packageName: string, payload: PublishPayload, token: string) => {
-	return httpTestClient[":packageName"].$put(
-		{ json: payload, param: { packageName } },
-		{ headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } }
-	);
 };
 
 const getPackage = async (packageName: string, token: string) => {

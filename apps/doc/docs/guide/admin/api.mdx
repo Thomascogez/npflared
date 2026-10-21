@@ -1,0 +1,53 @@
+# API
+
+The admin API lives under `/_/admin/api/*` and is what the admin UI is built on. It is only reachable through [Cloudflare Access](./authentication): requests carry the Access JWT instead of a registry token, and administrators are not subject to token scopes.
+
+:::info
+Package names are URL-encoded in paths: `@my-scope/my-package` becomes `%40my-scope%2Fmy-package`.
+:::
+
+The interactive documentation of your registry (`/_/docs`) lists every endpoint with its schemas.
+
+## Packages
+
+Package management is read-only.
+
+| Endpoint | Description |
+| --- | --- |
+| `GET /_/admin/api/packages` | List packages, alphabetically. Supports `search` (case-insensitive match on the name), `page` (from 1) and `limit` (1 to 100, 20 by default). |
+| `GET /_/admin/api/packages/:package` | Details of a package: description, dist-tags and every published version with its publication date. |
+| `GET /_/admin/api/packages/:package/versions/:version` | A published version with its manifest as published, which holds the readme and the dependencies. |
+
+```bash
+curl https://my-npflared.dev/_/admin/api/packages?search=cool&limit=10 \
+  -H "Cf-Access-Jwt-Assertion: $ACCESS_JWT"
+```
+
+```js
+{
+	"items": [
+		{
+			"name": "my-cool-package",
+			"latestVersion": "1.2.0",
+			"distTags": { "latest": "1.2.0", "next": "2.0.0-beta.1" },
+			"versionCount": 3,
+			"createdAt": 1734173399000,
+			"updatedAt": 1734260000000
+		}
+	],
+	"total": 1,
+	"page": 1,
+	"limit": 10
+}
+```
+
+## Tokens
+
+These endpoints mirror the [registry token endpoints](../api/tokens) without requiring token scopes.
+
+| Endpoint | Description |
+| --- | --- |
+| `GET /_/admin/api/tokens` | List tokens with their names, scopes and creation dates. Secrets are never returned. |
+| `POST /_/admin/api/tokens` | Create a token. Takes the same body as `POST /-/npm/v1/tokens`; the plaintext token is returned once, in this response only. |
+| `GET /_/admin/api/tokens/:id` | Get a token by id. |
+| `DELETE /_/admin/api/tokens/:id` | Revoke a token by id. |
