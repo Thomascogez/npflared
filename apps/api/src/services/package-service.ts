@@ -137,15 +137,9 @@ export const packageService = {
 		}
 
 		const tarballMetadata = packageTarball.customMetadata;
-		if (!tarballMetadata) {
-			throw HttpError.internalServerError();
-		}
-
-		if (!("package" in tarballMetadata)) {
-			throw HttpError.internalServerError();
-		}
-
-		if (tarballMetadata.package !== packageName) {
+		if (!tarballMetadata || !("package" in tarballMetadata) || tarballMetadata.package !== packageName) {
+			// The tarball is not going to be sent: release its stream instead of leaving it open.
+			await packageTarball.body.cancel();
 			throw HttpError.internalServerError();
 		}
 
