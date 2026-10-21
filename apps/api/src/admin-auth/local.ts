@@ -4,7 +4,7 @@ import type { AdminAuthProvider } from "./provider";
 export const LOCAL_PROVIDER = "local";
 
 /** Hostnames a request only carries when it is addressed to the developer's own machine. */
-const LOCAL_HOSTNAMES = new Set(["localhost", "127.0.0.1", "[::1]", "npflared.localhost"]);
+const LOCAL_HOSTNAMES = new Set(["localhost", "127.0.0.1", "[::1]", "firestash.localhost"]);
 
 /**
  * Development-only provider for `pnpm dev`: trusts any request addressed to the local machine.

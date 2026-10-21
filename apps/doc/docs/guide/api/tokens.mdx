@@ -4,7 +4,7 @@ Tokens are the credentials used by npm clients (and by the API itself) to authen
 They are sent as a `Bearer` token in the `Authorization` header, which is what npm and pnpm do when `_authToken` is set in your `.npmrc`.
 
 :::warning
-Npflared only stores a SHA-256 hash of each token. The plaintext token is returned **once**, when it is created, and cannot be retrieved afterwards. Store it somewhere safe.
+Firestash only stores a SHA-256 hash of each token. The plaintext token is returned **once**, when it is created, and cannot be retrieved afterwards. Store it somewhere safe.
 :::
 
 ## Generate a new token 
@@ -30,12 +30,12 @@ You will need to send a `POST` request to the `/-/npm/v1/tokens` endpoint with t
 }
 ```
 
-The response contains the token details along with its plaintext value, which starts with `npf_`:
+The response contains the token details along with its plaintext value, which starts with `fst_`:
 
 ```js
 {
 	"id": "my-token-id",
-	"token": "npf_...", // Only returned here, store it safely
+	"token": "fst_...", // Only returned here, store it safely
 	"name": "My token",
 	"scopes": [...],
 	"createdAt": 1734173399000,
@@ -63,7 +63,7 @@ The `values` property is an array of strings. Use `*` to match every package (or
 You can get all tokens by sending a `GET` request to the `/-/npm/v1/tokens` endpoint.
 
 ```bash
-curl -X GET https://my-npflared.dev/-/npm/v1/tokens
+curl -X GET https://my-firestash.dev/-/npm/v1/tokens
 ```
 
 Each entry contains the token `id`, `name`, `scopes` and timestamps. Neither the token nor its hash is ever returned.
@@ -73,7 +73,7 @@ Each entry contains the token `id`, `name`, `scopes` and timestamps. Neither the
 You can get a token by sending a `GET` request to the `/-/npm/v1/tokens/token/:id` endpoint.
 
 ```bash
-curl -X GET https://my-npflared.dev/-/npm/v1/tokens/token/my-token-id
+curl -X GET https://my-firestash.dev/-/npm/v1/tokens/token/my-token-id
 ```
 
 :::info
@@ -85,7 +85,7 @@ The `:id` parameter is the `id` of the token you want to get, as returned when i
 You can revoke a token by sending a `DELETE` request to the `/-/npm/v1/tokens/token/:id` endpoint.
 
 ```bash
-curl -X DELETE https://my-npflared.dev/-/npm/v1/tokens/token/my-token-id
+curl -X DELETE https://my-firestash.dev/-/npm/v1/tokens/token/my-token-id
 ```
 
 :::info
@@ -94,7 +94,7 @@ The `:id` parameter is the `id` of the token you want to revoke. The token stops
 
 ## Migrating tokens created before hashing
 
-Tokens created by earlier versions of Npflared were stored in plaintext. After upgrading and running the migrations they keep working: each one is hashed, and its plaintext removed, the first time it is used.
+Tokens created by Npflared, which Firestash is forked from, were stored in plaintext. After upgrading and running the migrations they keep working: each one is hashed, and its plaintext removed, the first time it is used.
 
 To hash the remaining ones in one go, run the following from the `api` directory:
 

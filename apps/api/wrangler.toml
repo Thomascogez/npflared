@@ -1,4 +1,4 @@
-name = "npflared"
+name = "firestash"
 main = "src/index.ts"
 compatibility_date = "2026-01-07"
 
@@ -12,6 +12,8 @@ FALLBACK_REGISTRY_ENDPOINT = "https://registry.npmjs.org"
 # variables or as worker secrets; until then the admin area (/_/admin and everything below it) stays closed.
 # For local development, put ADMIN_AUTH_PROVIDER = "local" in a .dev.vars file (see .dev.vars.example).
 ADMIN_AUTH_PROVIDER = "cloudflare-access"
+# Address of the product documentation, linked from the usage page at the root of the registry. Optional.
+DOCS_URL = ""
 
 [[r2_buckets]]
 binding = "BUCKET"

@@ -1,6 +1,6 @@
 # Workers Builds
 
-Deploy Npflared straight from Git with [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/): Cloudflare builds and deploys the worker on every push. Nothing in the repository is specific to an account, so the same repository (or a mirror of it) can be deployed into several Cloudflare accounts, each with its own build variables.
+Deploy Firestash straight from Git with [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/): Cloudflare builds and deploys the worker on every push. Nothing in the repository is specific to an account, so the same repository (or a mirror of it) can be deployed into several Cloudflare accounts, each with its own build variables.
 
 ## 1. Create the resources
 In the account you deploy to:
@@ -30,19 +30,31 @@ Still in the project settings, add the following **build variables** (plain vari
 
 | Variable | Value |
 | --- | --- |
-| `NPFLARED_WORKER_NAME` | Name of the worker in this account, eg. `npflared` |
-| `NPFLARED_CUSTOM_DOMAIN` | Domain of the registry, eg. `registry.example.com`. Setting it also disables the `workers.dev` URL, so that the admin area is only reachable through Cloudflare Access. |
-| `NPFLARED_D1_DATABASE_NAME` | Name of the D1 database |
-| `NPFLARED_D1_DATABASE_ID` | Id of the D1 database |
-| `NPFLARED_R2_BUCKET_NAME` | Name of the R2 bucket |
+| `FIRESTASH_WORKER_NAME` | Name of the worker in this account, eg. `firestash` |
+| `FIRESTASH_CUSTOM_DOMAIN` | Domain of the registry, eg. `registry.example.com`. Setting it also disables the `workers.dev` URL, so that the admin area is only reachable through Cloudflare Access. |
+| `FIRESTASH_D1_DATABASE_NAME` | Name of the D1 database |
+| `FIRESTASH_D1_DATABASE_ID` | Id of the D1 database |
+| `FIRESTASH_R2_BUCKET_NAME` | Name of the R2 bucket |
 | `CF_ACCESS_TEAM_DOMAIN` | Zero Trust team domain, eg. `my-team.cloudflareaccess.com` |
 | `CF_ACCESS_AUD` | AUD tag of the Access application. Can be a worker secret instead (**Settings > Variables and Secrets**), in which case leave the build variable unset. |
 | `FALLBACK_REGISTRY_ENDPOINT` | Optional, `https://registry.npmjs.org` by default |
+| `DOCS_URL` | Optional, address of the documentation site linked from the usage page at the root of the registry |
 
 Then trigger a build. Once it is deployed, open `https://<your domain>/_/admin`, sign in through Access and create your first registry token from the **Tokens** page.
 
 ## Several accounts
 Each account gets its own Workers Builds project with its own variables. If an account cannot connect to the Git account holding the repository (a work account and a personal GitHub, for instance), mirror the repository into a Git account it can reach: as no deployment value lives in the files, the mirror never diverges and stays a plain fast-forward of the original.
+
+## Documentation site
+This documentation is a static site (`apps/doc`) that can be published the same way, as a Worker made only of static assets. Create a second Workers Builds project on the same repository with:
+
+| Setting | Value |
+| --- | --- |
+| Root directory | `apps/doc` |
+| Build command | `pnpm build` |
+| Deploy command | `pnpm exec wrangler deploy` |
+
+Give it a custom domain from the worker's settings if you like, and set that address as the `DOCS_URL` build variable of the registry so that the usage page at the root of the registry links to it. `pnpm deploy` in `apps/doc` does the same from your machine.
 
 ## Deploying from your machine
 The same variables can be provided locally: copy `apps/api/.env.example` to `apps/api/.env.local` (ignored by git), fill it in, then run `pnpm deploy` in `apps/api` with a Wrangler login for the target account. It builds, applies the migrations and deploys.

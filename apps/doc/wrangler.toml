@@ -1,0 +1,7 @@
+# The documentation site is a static build (rspress) served as Worker static assets, with no code.
+name = "firestash-docs"
+compatibility_date = "2026-01-07"
+
+[assets]
+directory = "./doc_build"
+not_found_handling = "404-page"

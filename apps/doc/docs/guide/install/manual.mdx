@@ -8,18 +8,19 @@ The recommended way to deploy is [Workers Builds](./workers-builds), which needs
 
 ### 1. Clone the project
 ```shell
-npx degit Thomascogez/npflared/apps/api
+git clone https://github.com/colinbate/firestash.git
+cd firestash
 ```
-:::info
-You can also clone the project using git command but degit allow you to only retrieve the necessary parts
-:::
 
 ## 2. Install dependencies
-After cloning the project you will need to install dependencies project using your favorite package manager 
-<PackageManagerTabs command="install" />
+Install the dependencies of the whole repository, then work from the `apps/api` directory for the remaining steps:
+```shell
+pnpm install
+cd apps/api
+```
 
 :::info
-This project use `pnpm` as it dependencies manager
+This project uses `pnpm` as its package manager.
 :::
 
 ## 3. Configure project
@@ -30,7 +31,7 @@ Go to your [Cloudflare Dashboard](https://dash.cloudflare.com/) and create a new
 Copy the name of your bucket into your `.env.local` file 
 
 ```shell title=".env.local"
-NPFLARED_R2_BUCKET_NAME=BUCKET_NAME # Replace BUCKET_NAME with the value you have previously copied
+FIRESTASH_R2_BUCKET_NAME=BUCKET_NAME # Replace BUCKET_NAME with the value you have previously copied
 ```
 
 ### Configure your D1 database
@@ -39,13 +40,13 @@ Copy the id and the name of your d1 database
 
 
 ```shell title=".env.local"
-NPFLARED_D1_DATABASE_NAME=D1_DATABASE_NAME # Replace D1_DATABASE_NAME with the value you have previously copied
-NPFLARED_D1_DATABASE_ID=D1_DATABASE_ID # Replace D1_DATABASE_ID with the value you have previously copied
+FIRESTASH_D1_DATABASE_NAME=D1_DATABASE_NAME # Replace D1_DATABASE_NAME with the value you have previously copied
+FIRESTASH_D1_DATABASE_ID=D1_DATABASE_ID # Replace D1_DATABASE_ID with the value you have previously copied
 ```
 
 ### Configure your domain and admin access
-Set `NPFLARED_CUSTOM_DOMAIN` to the domain of the registry, and `CF_ACCESS_TEAM_DOMAIN` and `CF_ACCESS_AUD` to the values of the Cloudflare Access application protecting `/_/admin` (see [Admin authentication](../admin/authentication)).
-## 4. Deploy your npflared worker
+Set `FIRESTASH_CUSTOM_DOMAIN` to the domain of the registry, and `CF_ACCESS_TEAM_DOMAIN` and `CF_ACCESS_AUD` to the values of the Cloudflare Access application protecting `/_/admin` (see [Admin authentication](../admin/authentication)).
+## 4. Deploy your firestash worker
 Once everything is set-up you can build, run the database migrations and deploy your worker in one go.
 <PackageManagerTabs command="run deploy" />
 
@@ -57,7 +58,7 @@ If you prefer not to use the admin UI, you can create an initial token with elev
 Only a SHA-256 hash of the token is stored in the database, so generate a random token and its hash first:
 
 ```bash
-ADMIN_TOKEN="npf_$(openssl rand -base64 32 | tr '+/' '-_' | tr -d '=')"
+ADMIN_TOKEN="fst_$(openssl rand -base64 32 | tr '+/' '-_' | tr -d '=')"
 ADMIN_TOKEN_HASH=$(printf '%s' "$ADMIN_TOKEN" | shasum -a 256 | cut -d ' ' -f 1)
 echo "Your admin token: $ADMIN_TOKEN"
 ```

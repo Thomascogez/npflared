@@ -1,5 +1,5 @@
 {
-  "name": "npflared",
+  "name": "firestash",
   "private": true,
   "scripts": {
     "build": "turbo build",

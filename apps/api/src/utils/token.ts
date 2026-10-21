@@ -1,5 +1,5 @@
-/** Prefix identifying npflared tokens, useful for secret scanning and recognisability. */
-export const TOKEN_PREFIX = "npf_";
+/** Prefix identifying firestash tokens, useful for secret scanning and recognisability. */
+export const TOKEN_PREFIX = "fst_";
 
 /** 256 bits of entropy per token. */
 const TOKEN_BYTES = 32;

@@ -28,27 +28,27 @@ const applyDeploymentConfig = (config: WorkerConfig, env: Record<string, string>
 		}
 	};
 
-	use("NPFLARED_WORKER_NAME", (name) => {
+	use("FIRESTASH_WORKER_NAME", (name) => {
 		config.name = name;
 	});
-	use("NPFLARED_CUSTOM_DOMAIN", (domain) => {
+	use("FIRESTASH_CUSTOM_DOMAIN", (domain) => {
 		// With a custom domain the workers.dev URL is disabled: the admin area is only protected by Access there.
 		config.routes = [{ pattern: domain, custom_domain: true }];
 		config.workers_dev = false;
 	});
 	for (const database of config.d1_databases ?? []) {
 		if (database.binding === "DB") {
-			use("NPFLARED_D1_DATABASE_ID", (id) => {
+			use("FIRESTASH_D1_DATABASE_ID", (id) => {
 				database.database_id = id;
 			});
-			use("NPFLARED_D1_DATABASE_NAME", (name) => {
+			use("FIRESTASH_D1_DATABASE_NAME", (name) => {
 				database.database_name = name;
 			});
 		}
 	}
 	for (const bucket of config.r2_buckets ?? []) {
 		if (bucket.binding === "BUCKET") {
-			use("NPFLARED_R2_BUCKET_NAME", (name) => {
+			use("FIRESTASH_R2_BUCKET_NAME", (name) => {
 				bucket.bucket_name = name;
 			});
 		}
@@ -66,7 +66,7 @@ const applyDeploymentConfig = (config: WorkerConfig, env: Record<string, string>
 
 	if (applied.length > 0 && !loggedAppliedValues) {
 		loggedAppliedValues = true;
-		console.log(`npflared: deployment values applied from the environment: ${applied.join(", ")}`);
+		console.log(`firestash: deployment values applied from the environment: ${applied.join(", ")}`);
 	}
 };
 

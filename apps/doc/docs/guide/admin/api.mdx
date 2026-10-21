@@ -19,7 +19,7 @@ Package management is read-only.
 | `GET /_/admin/api/packages/:package/versions/:version` | A published version with its manifest as published, which holds the readme and the dependencies. |
 
 ```bash
-curl https://my-npflared.dev/_/admin/api/packages?search=cool&limit=10 \
+curl https://my-firestash.dev/_/admin/api/packages?search=cool&limit=10 \
   -H "Cf-Access-Jwt-Assertion: $ACCESS_JWT"
 ```
 

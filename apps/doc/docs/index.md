@@ -2,24 +2,31 @@
 pageType: home
 
 hero:
-  name: Npflared 
-  tagline: A self hostable serverless private npm registry 
+  name: Firestash
+  tagline: A private npm registry on your Cloudflare account
   actions:
     - theme: brand
-      text: Quick Start
+      text: Quick start
       link: /guide/
     - theme: alt
       text: GitHub
-      link: https://github.com/Thomascogez/npflared
+      link: https://github.com/colinbate/firestash
 
 features:
-  - title: Free and open source
-    details: Get the benefit of a full blown private npm registry for you and your team.
-    icon: ❤️
-  - title: Npm clients compatible
-    details: You can use Npflared with your own stack without compromise as it aim to make main features 100% compatible with existing npm clients
+  - title: Compatible with npm clients
+    details: Publish and install with npm, pnpm or yarn and a registry token. Anything not published here is fetched from the public registry.
     icon: 🔌
-  - title: Self hostable on Cloudflare for free
-    details: Npflared is based on cloudflare services (worker, d1 and r2), this allow to host your own Npflared for free !
+    span: 6
+  - title: Runs on Cloudflare
+    details: A single Worker with D1 and R2, in your own account, within the free tier for most teams.
     icon: ☁️
+    span: 6
+  - title: An admin area
+    details: Browse packages and manage tokens from a web UI, signed in through Cloudflare Access. No user database to run.
+    icon: 🔐
+    span: 6
+  - title: Deploys from Git
+    details: Workers Builds deploys every push. Account-specific values are build variables, so one repository serves several accounts.
+    icon: 🚀
+    span: 6
 ---

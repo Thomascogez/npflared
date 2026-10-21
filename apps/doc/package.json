@@ -1,16 +1,18 @@
 {
-	"name": "@npflared/doc",
+	"name": "@firestash/doc",
 	"private": true,
 	"scripts": {
 		"dev": "rspress dev",
 		"build": "rspress build",
-		"preview": "rspress preview"
+		"preview": "rspress preview",
+		"deploy": "rspress build && wrangler deploy"
 	},
 	"dependencies": {
 		"@rspress/core": "^2.0.5"
 	},
 	"devDependencies": {
-		"@types/node": "^25.0.6"
+		"@types/node": "^25.0.6",
+		"wrangler": "^4.151.0"
 	},
 	"files": [
 		"dist"

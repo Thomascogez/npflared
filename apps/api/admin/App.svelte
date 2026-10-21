@@ -3,7 +3,6 @@ import KeyRoundIcon from "@lucide/svelte/icons/key-round";
 import PackageIcon from "@lucide/svelte/icons/package";
 import { api } from "$lib/api";
 import { handleLinkClick, router } from "$lib/router.svelte";
-import logo from "./logo.svg";
 import NotFoundPage from "./routes/NotFoundPage.svelte";
 import PackagePage from "./routes/PackagePage.svelte";
 import PackagesPage from "./routes/PackagesPage.svelte";
@@ -50,7 +49,7 @@ const identity = api.me();
 	<header class="border-b">
 		<div class="mx-auto flex h-14 max-w-6xl items-center gap-4 px-4 sm:gap-6">
 			<a href={router.resolve("/packages")} class="flex items-center gap-2 font-semibold">
-				<img src={logo} alt="Npflared" class="h-6 w-auto" />
+				<span class="text-base font-semibold tracking-tight">Firestash</span>
 			</a>
 			<nav aria-label="Main" class="flex items-center gap-1">
 				{#each navigation as item (item.href)}

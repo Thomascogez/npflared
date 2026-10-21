@@ -16,7 +16,7 @@ export default defineWorkersConfig(async () => {
 	const now = Date.now();
 
 	const adminTokenId = randomUUID();
-	const adminToken = `npf_${randomUUID()}`;
+	const adminToken = `fst_${randomUUID()}`;
 	const adminTokenHash = createHash("sha256").update(adminToken).digest("hex");
 
 	// A token created before hashing was introduced: stored in plaintext, no hash yet.
@@ -46,7 +46,7 @@ export default defineWorkersConfig(async () => {
 							TEST_MIGRATIONS: migrations.concat(testSpecificMigrations),
 							// Pinned so that a developer's .dev.vars (eg. the local provider) cannot change what the tests exercise.
 							ADMIN_AUTH_PROVIDER: "cloudflare-access",
-							CF_ACCESS_TEAM_DOMAIN: "npflared-test.cloudflareaccess.com",
+							CF_ACCESS_TEAM_DOMAIN: "firestash-test.cloudflareaccess.com",
 							CF_ACCESS_AUD: randomUUID().replaceAll("-", ""),
 							ADMIN_TOKEN: adminToken,
 							ADMIN_TOKEN_ID: adminTokenId,
