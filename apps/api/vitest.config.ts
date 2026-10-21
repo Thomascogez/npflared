@@ -40,6 +40,8 @@ export default defineWorkersConfig(async () => {
 					miniflare: {
 						bindings: {
 							TEST_MIGRATIONS: migrations.concat(testSpecificMigrations),
+							// Pinned so that a developer's .dev.vars (eg. the local provider) cannot change what the tests exercise.
+							ADMIN_AUTH_PROVIDER: "cloudflare-access",
 							CF_ACCESS_TEAM_DOMAIN: "npflared-test.cloudflareaccess.com",
 							CF_ACCESS_AUD: randomUUID().replaceAll("-", ""),
 							ADMIN_TOKEN: adminToken,

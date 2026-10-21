@@ -1,9 +1,10 @@
 import { CLOUDFLARE_ACCESS_PROVIDER, createCloudflareAccessProvider } from "./cloudflare-access";
+import { createLocalProvider, LOCAL_PROVIDER } from "./local";
 import type { AdminAuthProvider } from "./provider";
 
 /** Environment variables driving admin authentication. All of them are deployment-specific. */
 export type AdminAuthConfig = {
-	/** Which provider authenticates administrators. Defaults to Cloudflare Access. */
+	/** Which provider authenticates administrators: `cloudflare-access` (default) or `local` (development only). */
 	ADMIN_AUTH_PROVIDER?: string;
 	CF_ACCESS_TEAM_DOMAIN?: string;
 	CF_ACCESS_AUD?: string;
@@ -16,7 +17,8 @@ const providers: Record<string, (config: AdminAuthConfig) => AdminAuthProvider |
 		}
 
 		return createCloudflareAccessProvider({ teamDomain: CF_ACCESS_TEAM_DOMAIN, aud: CF_ACCESS_AUD });
-	}
+	},
+	[LOCAL_PROVIDER]: () => createLocalProvider()
 };
 
 /**

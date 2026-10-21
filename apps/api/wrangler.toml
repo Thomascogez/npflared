@@ -7,6 +7,7 @@ compatibility_flags = [ "nodejs_compat" ]
 [vars]
 FALLBACK_REGISTRY_ENDPOINT = "https://registry.npmjs.org"
 # Admin authentication: the admin area (/_/admin and everything below it) stays closed until these are set.
+# For local development, put ADMIN_AUTH_PROVIDER = "local" in a .dev.vars file (see .dev.vars.example).
 ADMIN_AUTH_PROVIDER = "cloudflare-access"
 CF_ACCESS_TEAM_DOMAIN = "" # Replace with your Cloudflare Zero Trust team domain, eg. "my-team.cloudflareaccess.com"
 CF_ACCESS_AUD = "" # Replace with the Application Audience (AUD) tag of the Access application protecting /_/admin
@@ -19,3 +20,10 @@ bucket_name = "bucket-name"
 binding = "DB"
 database_name = "D1_DATABASE_NAME"
 database_id = "D1_DATABASE_ID"
+
+# The admin UI (apps/admin) is built into ./public/_/admin and served by the worker itself,
+# so that every request to the admin area goes through admin authentication first.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = ["/_/admin", "/_/admin/*"]

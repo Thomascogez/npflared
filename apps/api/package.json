@@ -7,7 +7,7 @@
 	},
 	"scripts": {
 		"dev": "wrangler dev",
-		"deploy": "wrangler deploy --minify",
+		"deploy": "pnpm --filter @npflared/admin build && wrangler deploy --minify",
 		"generate-migrations": "drizzle-kit generate",
 		"migrate:local": "npx wrangler d1 migrations apply DB",
 		"migrate:prod": "npx wrangler d1 migrations apply DB --remote",

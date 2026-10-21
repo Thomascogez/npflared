@@ -1,0 +1,2 @@
+# Copy to .dev.vars for `wrangler dev`. The local provider trusts requests addressed to localhost only.
+ADMIN_AUTH_PROVIDER = "local"

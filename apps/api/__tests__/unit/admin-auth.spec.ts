@@ -29,6 +29,10 @@ describe("resolveAdminAuthProvider", () => {
 		expect(resolveAdminAuthProvider({ ...accessConfig, CF_ACCESS_TEAM_DOMAIN: "" })).toBeUndefined();
 	});
 
+	it("should resolve the local provider without any other configuration", () => {
+		expect(resolveAdminAuthProvider({ ADMIN_AUTH_PROVIDER: "local" })).to.have.property("name", "local");
+	});
+
 	it("should resolve nothing for an unknown provider", () => {
 		expect(resolveAdminAuthProvider({ ...accessConfig, ADMIN_AUTH_PROVIDER: "unknown" })).toBeUndefined();
 	});

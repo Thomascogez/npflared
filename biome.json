@@ -1,7 +1,14 @@
 {
 	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
 	"files": {
-		"includes": ["apps/**", "!**/node_modules", "!**/worker-configuration.d.ts", "!**/package.json"]
+		"includes": [
+			"apps/**",
+			"!**/node_modules",
+			"!**/worker-configuration.d.ts",
+			"!**/package.json",
+			"!apps/admin/src/lib/components/ui",
+			"!apps/api/public"
+		]
 	},
 	"vcs": {
 		"enabled": true,
@@ -57,6 +64,11 @@
 			}
 		}
 	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
 	"javascript": {
 		"formatter": {
 			"enabled": true,
@@ -70,6 +82,17 @@
 		}
 	},
 	"overrides": [
+		{
+			"includes": ["**/*.svelte"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noUnusedImports": "off",
+						"noUnusedVariables": "off"
+					}
+				}
+			}
+		},
 		{
 			"includes": ["apps/api/**"],
 			"linter": {

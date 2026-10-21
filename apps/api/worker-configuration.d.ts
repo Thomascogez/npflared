@@ -9,6 +9,7 @@ declare namespace Cloudflare {
 		FALLBACK_REGISTRY_ENDPOINT: "https://registry.npmjs.org";
 		BUCKET: R2Bucket;
 		DB: D1Database;
+		ASSETS: Fetcher;
 		ADMIN_AUTH_PROVIDER: "cloudflare-access";
 		CF_ACCESS_TEAM_DOMAIN: "";
 		CF_ACCESS_AUD: "";

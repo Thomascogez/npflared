@@ -6,6 +6,7 @@ import app from "#index";
 import {
 	type AccessSigningKey,
 	createAccessToken,
+	createAdminHeaders,
 	createAccessSigningKey as createSigningKey,
 	getAccessSigningKey,
 	httpTestClient,
@@ -207,6 +208,32 @@ describe("admin authentication", () => {
 			}
 		});
 
+		it("should answer deep links with the app shell once authenticated", async () => {
+			const headers = await createAdminHeaders();
+
+			const response = await app.request("/_/admin/packages/mock", { headers }, env, createExecutionContext());
+
+			// The shell only exists once apps/admin has been built, which the test suite does not require.
+			expect([200, 404]).toContain(response.status);
+			if (response.status === 404) {
+				expect(await response.json()).to.deep.equal({ error: "The admin UI has not been built", statusCode: 404 });
+			} else {
+				expect(response.headers.get("content-type")).toContain("text/html");
+			}
+		});
+
+		it("should not answer unknown admin API routes with the app shell", async () => {
+			const response = await app.request(
+				"/_/admin/api/unknown",
+				{ headers: await createAdminHeaders() },
+				env,
+				createExecutionContext()
+			);
+
+			expect(response.status).toBe(404);
+			expect(await response.json()).to.deep.equal({ error: "Not found", statusCode: 404 });
+		});
+
 		it("should leave a package named admin to the registry", async () => {
 			fetchMock.get(env.FALLBACK_REGISTRY_ENDPOINT).intercept({ path: "/admin" }).reply(200, { name: "admin" });
 
@@ -233,6 +260,34 @@ describe("admin authentication", () => {
 				});
 			} finally {
 				workerEnv.CF_ACCESS_AUD = aud;
+			}
+		});
+
+		it("should trust local requests only with the local provider", async () => {
+			// The generated types pin the variable to its wrangler.toml value; it is a plain string at runtime.
+			const mutableEnv = workerEnv as { ADMIN_AUTH_PROVIDER: string };
+			const provider = mutableEnv.ADMIN_AUTH_PROVIDER;
+			mutableEnv.ADMIN_AUTH_PROVIDER = "local";
+
+			try {
+				const local = await app.request(
+					"http://localhost:8787/_/admin/api/me",
+					undefined,
+					env,
+					createExecutionContext()
+				);
+				expect(local.status).toBe(200);
+				expect(await local.json()).to.deep.equal({ provider: "local", subject: "local-developer" });
+
+				const remote = await app.request(
+					"https://registry.example.com/_/admin/api/me",
+					undefined,
+					env,
+					createExecutionContext()
+				);
+				expect(remote.status).toBe(401);
+			} finally {
+				mutableEnv.ADMIN_AUTH_PROVIDER = provider;
 			}
 		});
 
