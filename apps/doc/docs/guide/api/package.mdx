@@ -1,5 +1,9 @@
 # Package
 
+:::tip
+You will rarely call these endpoints yourself. They implement the part of the npm registry protocol that `npm install` and `npm publish` use, so npm, pnpm and yarn talk to them on your behalf once your `.npmrc` points at your registry. See the [quick start](../) for the client setup.
+:::
+
 ## Get a package
 
 :::info
@@ -16,13 +20,20 @@ curl -X GET https://my-firestash.dev/package
 The `:package` parameter is the package you want to get.
 :::
 
-## Publish a package 
+The response is the package document: its dist-tags and the manifest of every published version. Each version's `dist.tarball` points back at the registry (`/:package/-/:package-:version.tgz`), which is where the client downloads the tarball from with the same token.
+
+## Publish a package
 
 :::info
 In order to publish a package, you will need to be authenticated and having at least the `package:write` permission on the targeted package.
 :::
 
-You can publish a package by sending a `PUT` request to the `/:package`. It usually done by your package manager.
-Here an overview of what happen when you publish a package:
+You can publish a package by sending a `PUT` request to the `/:package` endpoint. This is what `npm publish` does, and the payload is the same one the public registry accepts, so nothing is specific to Firestash. For one version, the registry:
 
-![Publish a package](/publish-flow.png)
+1. Checks the token and its `package:write` scope for this package.
+2. Rejects the version if it is already published. Versions are immutable: to replace one, publish a new version.
+3. Validates the payload: it must carry one version with its dist-tag and one attachment, named `:package-:version.tgz` and matching the version's `dist.tarball` URL.
+4. Stores the package and the version's manifest, and applies the dist-tag, in D1.
+5. Decodes the base64 tarball as a stream and uploads it to R2.
+
+The client's side of this is building the tarball, generating the manifest from `package.json` and sending both as one JSON document with the tarball base64-encoded in `_attachments`, along with the `Authorization` header.

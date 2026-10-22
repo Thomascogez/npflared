@@ -3,6 +3,7 @@ pageType: home
 
 hero:
   name: Firestash
+  text: '<img src="/firestash.avif" alt="" class="firestash-hero-logo" />'
   tagline: A private npm registry on your Cloudflare account
   actions:
     - theme: brand

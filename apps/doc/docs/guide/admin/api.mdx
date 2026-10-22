@@ -1,6 +1,10 @@
 # API
 
-The admin API lives under `/_/admin/api/*` and is what the admin UI is built on. It is only reachable through [Cloudflare Access](./authentication): requests carry the Access JWT instead of a registry token, and administrators are not subject to token scopes.
+The admin API lives under `/_/admin/api/*` and is what the [admin UI](./ui) is built on. It is only reachable through [Cloudflare Access](./authentication): requests carry the Access JWT instead of a registry token, and administrators are not subject to token scopes.
+
+:::tip
+This API exists to serve the admin UI, not for programmatic use. The Access JWT the UI relies on is issued when you sign in through the browser and expires with the Access session, so it is not a credential you would store in a script. The endpoints are listed here for reference. If you need to automate token management, use the [registry token endpoints](../api/tokens) with a `token:write` token instead, or create an Access [service token](https://developers.cloudflare.com/cloudflare-one/identity/service-tokens/) for your Access application.
+:::
 
 :::info
 Package names are URL-encoded in paths: `@my-scope/my-package` becomes `%40my-scope%2Fmy-package`.

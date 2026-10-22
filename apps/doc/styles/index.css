@@ -6,3 +6,15 @@
 	--rp-home-hero-secondary-color: #cc3534;
 	--rp-home-background-bg: unset;
 }
+
+.rp-home-hero__subtitle:has(.firestash-hero-logo) {
+	margin-top: 0.5rem;
+	line-height: 0;
+}
+
+.firestash-hero-logo {
+	display: block;
+	width: min(100%, 26rem);
+	height: auto;
+	margin: 0 auto;
+}
