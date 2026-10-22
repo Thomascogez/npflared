@@ -1,5 +1,7 @@
 # Firestash
 
+<img src="./apps/doc/docs/public/firestash.avif" height="222">
+
 A private npm registry that runs entirely in your Cloudflare account, on Workers, D1 and R2, with an admin UI behind Cloudflare Access.
 
 - **Works with npm, pnpm and yarn.** Publish and install with a registry token; packages that are not published to the registry are fetched from the public npm registry, so it can be the only registry your projects use.
