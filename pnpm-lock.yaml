@@ -84,9 +84,6 @@ importers:
       degit:
         specifier: ^2.8.4
         version: 2.8.4
-      uuid-b32:
-        specifier: ^1.0.1
-        version: 1.0.1
       yargs:
         specifier: ^18.0.0
         version: 18.0.0
@@ -2018,12 +2015,6 @@ packages:
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
 
-  base32-decode@1.0.0:
-    resolution: {integrity: sha512-KNWUX/R7wKenwE/G/qFMzGScOgVntOmbE27vvc6GrniDGYb6a5+qWcuoXl8WIOQL7q0TpK7nZDm1Y04Yi3Yn5g==}
-
-  base32-encode@1.2.0:
-    resolution: {integrity: sha512-cHFU8XeRyx0GgmoWi5qHMCVRiqU6J3MHWxVgun7jggCBUpVzm1Ir7M9dYr2whjSNc3tFeXfQ/oZjQu/4u55h9A==}
-
   better-path-resolve@1.0.0:
     resolution: {integrity: sha512-pbnl5XzGBdrFU/wT4jqmJVPn2B6UHPBOhzMQkY/SPUPB6QtUXtmBHBIwCbXJol93mOpGMnQyP/+BB19q04xj7g==}
     engines: {node: '>=4'}
@@ -3402,9 +3393,6 @@ packages:
     resolution: {integrity: sha512-azl+t0z7pw/z958Gy9svOTuzqIk6xq+NSheJzn5MMWtWTFywIacg2wUlzKFGtt3cthx0r2SxMK0yzJOR0IES7Q==}
     engines: {node: '>=14.0.0'}
 
-  to-data-view@1.1.0:
-    resolution: {integrity: sha512-1eAdufMg6mwgmlojAx3QeMnzB/BTVp7Tbndi3U7ftcT2zCZadjxkkmLmd97zmaxWi+sgGcgWrokmpEoy0Dn0vQ==}
-
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
@@ -3528,14 +3516,6 @@ packages:
     peerDependenciesMeta:
       synckit:
         optional: true
-
-  uuid-b32@1.0.1:
-    resolution: {integrity: sha512-VB7favEm1aQusxGxpCTbf48IjWZGHJ0Lh9nnWV2TcfLpvYshom6K+RmaATjrLNVT4y1UmP9FphbTCUP7Tk7YAA==}
-    hasBin: true
-
-  uuid@8.3.2:
-    resolution: {integrity: sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg==}
-    hasBin: true
 
   vfile-location@5.0.3:
     resolution: {integrity: sha512-5yXvWDEgqeiYiBe1lbxYF7UMAIm/IcopxMHrMQDq3nvKcjPKIhZklUKL+AE7J7uApI4kwe2snsK+eI6UTj9EHg==}
@@ -5175,12 +5155,6 @@ snapshots:
   astring@1.9.0: {}
 
   bail@2.0.2: {}
-
-  base32-decode@1.0.0: {}
-
-  base32-encode@1.2.0:
-    dependencies:
-      to-data-view: 1.1.0
 
   better-path-resolve@1.0.0:
     dependencies:
@@ -6947,8 +6921,6 @@ snapshots:
 
   tinyspy@4.0.4: {}
 
-  to-data-view@1.1.0: {}
-
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
@@ -7079,14 +7051,6 @@ snapshots:
   unrun@0.2.31:
     dependencies:
       rolldown: 1.0.0-rc.8
-
-  uuid-b32@1.0.1:
-    dependencies:
-      base32-decode: 1.0.0
-      base32-encode: 1.2.0
-      uuid: 8.3.2
-
-  uuid@8.3.2: {}
 
   vfile-location@5.0.3:
     dependencies:

@@ -1,5 +1,12 @@
 # Tokens
 
+Tokens are the credentials used by npm clients (and by the API itself) to authenticate against your registry.
+They are sent as a `Bearer` token in the `Authorization` header, which is what npm and pnpm do when `_authToken` is set in your `.npmrc`.
+
+:::warning
+Npflared only stores a SHA-256 hash of each token. The plaintext token is returned **once**, when it is created, and cannot be retrieved afterwards. Store it somewhere safe.
+:::
+
 ## Generate a new token 
 :::info
 In order to generate a new token, you will need to be authenticated and having at least the `token:write` permission with value `*`.
@@ -23,6 +30,19 @@ You will need to send a `POST` request to the `/-/npm/v1/tokens` endpoint with t
 }
 ```
 
+The response contains the token details along with its plaintext value, which starts with `npf_`:
+
+```js
+{
+	"id": "my-token-id",
+	"token": "npf_...", // Only returned here, store it safely
+	"name": "My token",
+	"scopes": [...],
+	"createdAt": 1734173399000,
+	"updatedAt": 1734173399000
+}
+```
+
 You can send has many scopes as you want.
 
 | Scope type | Description |
@@ -35,7 +55,7 @@ You can send has many scopes as you want.
 | `token:read+write` | Read and write access to a token |
 
 :::info
-The `values` property is an array of strings. You can use glob patterns to match packages.
+The `values` property is an array of strings. Use `*` to match every package (or every token), or list the exact package names (or token ids) the scope applies to.
 :::
 
 ## Get all tokens
@@ -46,25 +66,40 @@ You can get all tokens by sending a `GET` request to the `/-/npm/v1/tokens` endp
 curl -X GET https://my-npflared.dev/-/npm/v1/tokens
 ```
 
+Each entry contains the token `id`, `name`, `scopes` and timestamps. Neither the token nor its hash is ever returned.
+
 ## Get a token
 
-You can get a token by sending a `GET` request to the `/-/npm/v1/tokens/token/:token` endpoint.
+You can get a token by sending a `GET` request to the `/-/npm/v1/tokens/token/:id` endpoint.
 
 ```bash
-curl -X GET https://my-npflared.dev/-/npm/v1/tokens/token/my-token
+curl -X GET https://my-npflared.dev/-/npm/v1/tokens/token/my-token-id
 ```
 
 :::info
-The `:token` parameter is the token you want to get.
+The `:id` parameter is the `id` of the token you want to get, as returned when it was created or listed.
 :::
 
-## Delete a token
+## Revoke a token
 
-You can delete a token by sending a `DELETE` request to the `/-/npm/v1/tokens/token/:token` endpoint.
+You can revoke a token by sending a `DELETE` request to the `/-/npm/v1/tokens/token/:id` endpoint.
 
 ```bash
-curl -X DELETE https://my-npflared.dev/-/npm/v1/tokens/token/my-token
+curl -X DELETE https://my-npflared.dev/-/npm/v1/tokens/token/my-token-id
 ```
 
 :::info
-The `:token` parameter is the token you want to delete.
+The `:id` parameter is the `id` of the token you want to revoke. The token stops working immediately.
+:::
+
+## Migrating tokens created before hashing
+
+Tokens created by earlier versions of Npflared were stored in plaintext. After upgrading and running the migrations they keep working: each one is hashed, and its plaintext removed, the first time it is used.
+
+To hash the remaining ones in one go, run the following from the `api` directory:
+
+```bash
+pnpm migrate-tokens:prod
+```
+
+Use `pnpm migrate-tokens:local` for a local development database.

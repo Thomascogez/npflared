@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import type { tokenTable } from "../../src/db/schema";
+import type { PublicToken } from "../../src/services/token-service";
 import { assertTokenAccess } from "../../src/utils/access";
 
-type Token = typeof tokenTable.$inferSelect;
+type Token = PublicToken;
 
 describe("assetTokenAccess", () => {
 	describe("Check read only access", () => {
 		const readOnlyAccessToken: Token = {
 			name: "test-token",
-			token: "test-token",
+			id: "test-token-id",
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 			scopes: [{ type: "package:read", values: ["test-package"] }]
@@ -16,7 +16,7 @@ describe("assetTokenAccess", () => {
 
 		const writeOnlyAccessToken: Token = {
 			name: "test-token",
-			token: "test-token",
+			id: "test-token-id",
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 			scopes: [{ type: "package:write", values: ["test-package"] }]
@@ -24,7 +24,7 @@ describe("assetTokenAccess", () => {
 
 		const readWriteAccessToken: Token = {
 			name: "test-token",
-			token: "test-token",
+			id: "test-token-id",
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 			scopes: [{ type: "package:read+write", values: ["test-package"] }]
@@ -32,7 +32,7 @@ describe("assetTokenAccess", () => {
 
 		const readOnlyAccessTokenWildcardAccess: Token = {
 			name: "test-token",
-			token: "test-token",
+			id: "test-token-id",
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 			scopes: [{ type: "package:read", values: ["*"] }]
@@ -67,7 +67,7 @@ describe("assetTokenAccess", () => {
 	describe("Check write only access", () => {
 		const readOnlyAccessToken: Token = {
 			name: "test-token",
-			token: "test-token",
+			id: "test-token-id",
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 			scopes: [{ type: "package:read", values: ["test-package"] }]
@@ -75,7 +75,7 @@ describe("assetTokenAccess", () => {
 
 		const writeOnlyAccessToken: Token = {
 			name: "test-token",
-			token: "test-token",
+			id: "test-token-id",
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 			scopes: [{ type: "package:write", values: ["test-package"] }]
@@ -83,7 +83,7 @@ describe("assetTokenAccess", () => {
 
 		const readWriteAccessToken: Token = {
 			name: "test-token",
-			token: "test-token",
+			id: "test-token-id",
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 			scopes: [{ type: "package:read+write", values: ["test-package"] }]
@@ -91,7 +91,7 @@ describe("assetTokenAccess", () => {
 
 		const readOnlyAccessTokenWildcardAccess: Token = {
 			name: "test-token",
-			token: "test-token",
+			id: "test-token-id",
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 			scopes: [{ type: "package:read", values: ["*"] }]
@@ -99,7 +99,7 @@ describe("assetTokenAccess", () => {
 
 		const writeOnlyAccessTokenWildcardAccess: Token = {
 			name: "test-token",
-			token: "test-token",
+			id: "test-token-id",
 			createdAt: Date.now(),
 			updatedAt: Date.now(),
 			scopes: [{ type: "package:write", values: ["*"] }]

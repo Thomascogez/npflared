@@ -4,7 +4,14 @@ import { integer, primaryKey, sqliteTable, text } from "drizzle-orm/sqlite-core"
 const unixEpochMs = sql`(unixepoch('subsec') * 1000)`;
 
 export const tokenTable = sqliteTable("token", {
-	token: text("token").primaryKey().notNull(),
+	id: text("id").primaryKey().notNull(),
+	/** SHA-256 hex digest of the plaintext token. The plaintext itself is never stored. */
+	tokenHash: text("token_hash").unique(),
+	/**
+	 * Plaintext token of rows created before hashing was introduced.
+	 * Cleared (and `tokenHash` filled in) the first time the token is used.
+	 */
+	legacyToken: text("legacy_token").unique(),
 	name: text("name").notNull(),
 	scopes: text("scopes", { mode: "json" }).notNull().$type<Array<{ type: string; values: Array<string> }>>(),
 	createdAt: integer("created_at").notNull().default(unixEpochMs),
